@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Gastos</title>
+    <style>
+        /* Reset e Estilos Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
+            margin: 0 auto;
+        }
+        
+        /* Cabeçalho */
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            background-color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .report-header h1 {
+            font-size: 1.25rem;
+            color: #4361ee;
+        }
+        
+        .back-button, .export-button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #4361ee;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .back-button:hover, .export-button:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Filtro de Tempo */
+        .time-filter {
+            margin: 15px 0;
+        }
+        
+        .time-filter select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            font-size: 1rem;
+        }
+        
+        /* Gráfico Simulado */
+        .chart-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .doughnut-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #4361ee 0% 35%,
+                #3f37c9 35% 55%,
+                #4cc9f0 55% 70%,
+                #4895ef 70% 85%,
+                #560bad 85% 100%
+            );
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .chart-center {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            top: 50px;
+            left: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4361ee;
+        }
+        
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        /* Total Gasto */
+        .total-expenses {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .total-expenses h2 {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .total-expenses .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4361ee;
+        }
+        
+        .total-expenses .period {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        /* Lista de Assinaturas */
+        .subscriptions-list {
+            margin-bottom: 30px;
+        }
+        
+        .subscription-item {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sub-info h3 {
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+        
+        .sub-category {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .sub-amount p {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: right;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4361ee;
+            border-radius: 3px;
+        }
+        
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+            }
+            
+            .report-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .doughnut-chart {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .chart-center {
+                width: 120px;
+                height: 120px;
+                top: 65px;
+                left: 65px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <button class="back-button"><a href="index.html" style="text-decoration: none;">←</a></button>
+            <h1>Relatório de Gastos</h1>
+            <button class="export-button">↗</button>
+        </header>
+
+        <main class="report-content">
+            <div class="time-filter">
+                <select>
+                    <option>Último mês</option>
+                    <option>Último trimestre</option>
+                    <option selected>Último ano</option>
+                    <option>Todo período</option>
+                </select>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="chart-title">Distribuição de Gastos</h3>
+                <div class="doughnut-chart">
+                    <div class="chart-center">R$ 327,90</div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4361ee;"></div>
+                        <span>Netflix (35%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #3f37c9;"></div>
+                        <span>Spotify (20%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4cc9f0;"></div>
+                        <span>Amazon (15%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4895ef;"></div>
+                        <span>Disney+ (15%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #560bad;"></div>
+                        <span>Outros (15%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="total-expenses">
+                <h2>Total Gasto</h2>
+                <p class="amount">R$ 327,90</p>
+                <p class="period">no último ano</p>
+            </div>
+
+            <div class="subscriptions-list">
+                <div class="subscription-item">
+                    <div class="sub-info">
+                        <h3>Netflix Premium</h3>
+                        <p class="sub-category">Entretenimento</p>
+                    </div>
+                    <div class="sub-amount">
+                        <p>R$ 55,90/mês</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subscription-item">
+                    <div class="sub-info">
+                        <h3>Spotify Família</h3>
+                        <p class="sub-category">Música</p>
+                    </div>
+                    <div class="sub-amount">
+                        <p>R$ 27,90/mês</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 18%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subscription-item">
+                    <div class="sub-info">
+                        <h3>Amazon Prime</h3>
+                        <p class="sub-category">Compras</p>
+                    </div>
+                    <div class="sub-amount">
+                        <p>R$ 19,90/mês</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 12%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subscription-item">
+                    <div class="sub-info">
+                        <h3>Disney+</h3>
+                        <p class="sub-category">Entretenimento</p>
+                    </div>
+                    <div class="sub-amount">
+                        <p>R$ 33,90/mês</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 21%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,37 +1,116 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<html>
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>SubNinja</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="styles.css">
+    <title>Assinaturas</title>
 </head>
-
 <body>
-  <script src="script.js"></script>
-  <h1 id="novaAssinatura">Nova Assinatura</h1>
-  <div class="bloco-pagina"><pre>
-  <label for="Nome">Nome</label><br>
-  <input type="text" placeholder="Nome" id="Nome" name="Nome"><br>
-  <label for="Frequência">Frequência</label><br>
-  <input type="text" placeholder="Frequência" id="Frequência" name="Frequência"><br>
-  <label for="Método de Pagamento">Método de Pagamento</label><br>
-  <input type="text" placeholder="Método de Pagamento" id="Método de Pagamento" name="Método de Pagamento"><br>
-  <label for="Categoria">Categoria</label><br>
-  <input type="text" placeholder="Categoria" id="Categoria" name="Categoria"><br>
-  <label for="Valor">Valor</label><br>
-  <input type="text" placeholder="Valor" id="Valor" name="Valor"><br>
-  <label for="Tipo">Tipo</label><br>
-  <input type="text" placeholder="Tipo" id="Tipo" name="Tipo"><br>
-  <label for="Notificação">Notificação</label><br>
-  <input type="text" placeholder="Notificação" id="Notificação" name="Notificação"><br>
-  </pre></div><br>
-  <div class="container">
-   <div class="div-botao-can">Cancelar</div>
-   <div class="div-botao-sal">Salvar</div>
-  </div>
+    <div class="container">
+        <header class="header">
+          <a href="index.html" class="logo-link">
+            <img src="images/logo_subninja.png" alt="Logo - Voltar para página inicial" class="logo-image">
+          </a>
+            <h1 class="title">SubNinja</h1>
+            <button class="search-button">
+                <img class="search-icon" src="images/search.svg" alt="Buscar"/>
+            </button>
+        </header>
+        
+        <main class="main-content">
+          <div class="action-buttons">
+            <button class="report-button">
+                <img class="chart-icon" src="images/chart.svg" alt="Gráfico"/>
+                <a href="relatorio.html" style="text-decoration: none;">Relatório de Gastos</a>
+            </button>
+            <button class="add-button">
+                <img class="add-icon" src="images/plus.svg" alt="Adicionar"/>
+                <a href="novaAssinatura.html" style="text-decoration: none;">Adicionar Assinatura</a>
+            </button>
+        </div>
+            <div class="subscriptions-list">
+                <div class="subscription-card">
+                    <div class="card-content">
+                        <div class="subscription-info">
+                            <h2 class="subscription-name">Assinatura 1</h2>
+                            <p class="subscription-type">Básica</p>
+                        </div>
+                        <div class="subscription-details">
+                            <p class="subscription-price">R$100,00<span>/mês</span></p>
+                            <div class="due-date">
+                                <img class="calendar-icon" src="images/calendar.svg" alt="Calendário"/>
+                                <p>Em 2 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subscription-card">
+                    <div class="card-content">
+                        <div class="subscription-info">
+                            <h2 class="subscription-name">Assinatura 2</h2>
+                            <p class="subscription-type">Premium</p>
+                        </div>
+                        <div class="subscription-details">
+                            <p class="subscription-price">R$54,90<span>/mês</span></p>
+                            <div class="due-date">
+                                <img class="calendar-icon" src="images/calendar.svg" alt="Calendário"/>
+                                <p>Em 1 mês</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subscription-card">
+                    <div class="card-content">
+                        <div class="subscription-info">
+                            <h2 class="subscription-name">Assinatura 3</h2>
+                            <p class="subscription-type">Família</p>
+                        </div>
+                        <div class="subscription-details">
+                            <p class="subscription-price">R$200,00<span>/ano</span></p>
+                            <div class="due-date">
+                                <img class="calendar-icon" src="images/calendar.svg" alt="Calendário"/>
+                                <p>Em 9 meses</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subscription-card">
+                    <div class="card-content">
+                        <div class="subscription-info">
+                            <h2 class="subscription-name">Assinatura 4</h2>
+                            <p class="subscription-type">Professional</p>
+                        </div>
+                        <div class="subscription-details">
+                            <p class="subscription-price">R$45,90<span>/mês</span></p>
+                            <div class="due-date">
+                                <img class="calendar-icon" src="images/calendar.svg" alt="Calendário"/>
+                                <p>Hoje</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subscription-card">
+                    <div class="card-content">
+                        <div class="subscription-info">
+                            <h2 class="subscription-name">Assinatura 5</h2>
+                            <p class="subscription-type">Essential</p>
+                        </div>
+                        <div class="subscription-details">
+                            <p class="subscription-price">R$100,00<span>/mês</span></p>
+                            <div class="due-date">
+                                <img class="calendar-icon" src="images/calendar.svg" alt="Calendário"/>
+                                <p>Em 2 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
-
 </html>
