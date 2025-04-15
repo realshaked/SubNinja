@@ -1,0 +1,372 @@
+/* ===== RESET E ESTILOS GLOBAIS ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #000000;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+.container {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 0 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.menu-button, .search-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.menu-icon, .search-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar.show {
+  left: 0;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250%; /* começa escondida */
+  width: 250px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+
+#sidebar a {
+  color: #ffffff;
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+#sidebar a:hover {
+  background-color: #495057;
+}
+
+#content {
+  margin-left: 250px;
+  padding: 2rem;
+}
+
+#sidebar.show {
+  left: 0;
+}
+
+#content {
+  margin-left: 0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  transition: transform 0.3s ease;
+  max-width: 100%;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+/* ===== BOTÕES DE AÇÃO ===== */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.report-button, .add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 0;
+}
+
+.report-button {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.add-button {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.report-button:hover {
+  background-color: #bbdefb;
+}
+
+.add-button:hover {
+  background-color: #c8e6c9;
+}
+
+.chart-icon, .add-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== LISTA DE ASSINATURAS ===== */
+.subscriptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.subscription-card {
+  background-color: #fffcfc;
+  border: 1px solid #cec2c2;
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.subscription-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subscription-info {
+  flex: 1;
+}
+
+.subscription-name {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.subscription-type {
+  font-size: 16px;
+  font-weight: 300;
+  color: #000000;
+}
+
+.subscription-details {
+  text-align: right;
+}
+
+.subscription-price {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.subscription-price span {
+  font-weight: 300;
+  color: #575454;
+  font-size: 14px;
+}
+
+.due-date {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: #8f8b8b;
+  font-size: 14px;
+}
+
+.calendar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.subscription-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+/* ===== ESTILOS ADICIONAIS ===== */
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.clickable-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-icon-lg i {
+  font-size: 2.5rem;
+  color: #4361ee;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-item i {
+  font-size: 1.2rem;
+  margin-top: 3px;
+  color: #6c757d;
+}
+
+.card {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.input-group-text {
+  font-size: 0.875rem;
+}
+
+.btn {
+  transition: all 0.2s;
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.form-control, .form-select {
+  font-size: 1rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 360px) {
+  .report-button, .add-button {
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+
+  .chart-icon, .add-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .logo-image {
+    height: 35px;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .subscription-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .subscription-actions .btn {
+    width: 100%;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    left: -250px;
+    transition: all 0.3s;
+  }
