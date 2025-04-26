@@ -1,43 +1,241 @@
-#root {
-  max-width: 1280px;
+/* RESET E GLOBAIS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background-color: #f8f9fa;
+  color: #000000;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+  width: 100%;
+  max-width: 390px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 80px 15px 15px 15px; /* top padding compensando o header */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.menu-button, .search-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.menu-icon, .search-icon, .add-icon, .calendar-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap;
   text-align: center;
 }
 
-.assinatura-lista {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+/* LISTA DE ASSINATURAS */
+ .assinatura-lista {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 20px;
   flex-grow: 1;
   overflow-y: auto;
 }
 
-.card-assinatura {
+/* CARD DE ASSINATURA */
+ .card-assinatura {
   background-color: #fffcfc;
   border: 1px solid #cec2c2;
   border-radius: 12px;
-  padding: 15px;
+  padding: 10px;
   width: 100%;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card-assinatura:hover {
+ .card-assinatura:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-conteudo{
+ .card-conteudo {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.detalhes-assinatura{
+.info-assinatura {
+  flex: 1;
+}
+
+.detalhes-assinatura {
   text-align: right;
 }
 
-.info-assinatura {
+ .preco-assinatura {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+ .preco-assinatura span {
+  font-weight: 300;
+  color: #575454;
+  font-size: 14px;
+}
+
+ .data-vencimento {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: #8f8b8b;
+  font-size: 14px;
+}
+
+/* BOTÕES */
+.btn, .add-button, .report-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
   flex: 1;
+  min-width: 0;
+}
+
+.add-button {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.add-button:hover {
+  background-color: #c8e6c9;
+}
+
+.report-button {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.report-button:hover {
+  background-color: #bbdefb;
+}
+
+/* FORMULÁRIOS */
+.form-control, .form-select {
+  font-size: 1rem;
+}
+
+.form-label, .input-group-text {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 360px) {
+  .btn, .add-button, .report-button {
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+
+  .chart-icon, .add-icon, .calendar-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .logo-image {
+    height: 35px;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .subscription-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .subscription-actions .btn {
+    width: 100%;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    left: -250px;
+    transition: all 0.3s;
+  }
 }

@@ -13,7 +13,7 @@ export default function AssinaturaCard({ nome,tipo,preco,dataVencimento,periodo}
                             {preco}<span>{periodo}</span>
                         </p>
                         <div className="data-vencimento">
-                            <img className="calendario-icone" src = "./assets/calendar.svg"/><p>{dataVencimento}</p>
+                            <img className="calendario-icone" src = ".\src\assets\calendar.svg"/><p>{dataVencimento}</p>
                         </div>
                     </div>
                 </div>

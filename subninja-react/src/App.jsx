@@ -1,13 +1,29 @@
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
-import AssinaturaLista from './componentes/assinaturas/AssinaturaLista'
+import Layout from './componentes/Layout';
+import AssinaturaLista from './componentes/assinaturas/AssinaturaLista';
+import NovaAssinatura from './componentes/assinaturas/NovaAssinatura';
+
 
 function App() {
   return (
-    <div className="app">
-      <h1>Minhas Assinaturas</h1>
+  
+    <Layout>
       <AssinaturaLista />
-    </div>
+    </Layout>
+    
+   
+    
+    
+    
+    // <Router>
+    //   <Routes>
+    //     <Route> 
+    //       <Route path="/" element={<AssinaturaLista />} />
+    //       <Route path="/nova-assinatura" element={<NovaAssinatura />} />
+    //     </Route>
+    //   </Routes>
+    // </Router>
   );
 }
 
