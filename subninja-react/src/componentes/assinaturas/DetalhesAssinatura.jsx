@@ -1,5 +1,7 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
+
+const navigate = useNavigate();
 
 const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, metodoPagamento, notificacao}) => {
   const location = useLocation();
@@ -51,6 +53,12 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
                 <small className="text-muted">Notificação</small>
                 <p id="detailNotification">{assinatura.notificacao}</p>
               </div>
+              <div>
+                <button className="btn btn-secondary" onClick={() => navigate('/categorias')}>
+                  <i className="bi bi-arrow-left"></i> Ir para Categorias
+                </button>
+              </div>
+
             </div>
           </div>
         </div>

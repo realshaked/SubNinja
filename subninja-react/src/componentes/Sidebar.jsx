@@ -1,5 +1,6 @@
 import { Button, Nav } from 'react-bootstrap';
-import { X, HouseDoor, PlusCircle, CardList, BarChart, InfoCircle } from 'react-bootstrap-icons';
+import { X, HouseDoor, PlusCircle, BarChart } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, onClose }) => {
   return (
@@ -20,16 +21,16 @@ const Sidebar = ({ isOpen, onClose }) => {
       </Button>
 
       <Nav className="flex-column px-3 pt-3">
-        <Nav.Link href="/" className="text-white mb-2">
+        <Nav.Link as={Link} to="/" className="text-white mb-2">
           <HouseDoor className="me-2" /> Home
         </Nav.Link>
-        <Nav.Link href="/nova-assinatura" className="text-white mb-2">
+        <Nav.Link as={Link} to="/nova-assinatura" className="text-white mb-2">
           <PlusCircle className="me-2" /> Nova Assinatura
         </Nav.Link>
-        <Nav.Link href="/nova-categoria" className="text-white mb-2">
+        <Nav.Link as={Link} to="/categorias/NovaCategoria" className="text-white mb-2">
           <PlusCircle className="me-2" /> Nova Categoria
         </Nav.Link>
-        <Nav.Link href="/relatorio" className="text-white mb-2">
+        <Nav.Link as={Link} to="/relatorio" className="text-white mb-2">
           <BarChart className="me-2" /> Relatório de Gastos
         </Nav.Link>
       </Nav>
