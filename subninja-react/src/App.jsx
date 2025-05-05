@@ -3,6 +3,9 @@ import Layout from './componentes/Layout';
 import AssinaturaLista from './componentes/assinaturas/AssinaturaLista';
 import NovaAssinatura from './componentes/assinaturas/NovaAssinatura';
 import Categorias from './componentes/categorias/Categorias';  // Importando a página de Categorias
+import {store} from './store'; // Importando o store do Redux
+import { Provider } from 'react-redux'; // Importando o Provider do Redux
+
 
 function App() {
   return (
