@@ -1,49 +1,55 @@
-import React from 'react';
+import React from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaBook, FaHeartbeat, FaUsers } from 'react-icons/fa';
 
-const NovaCategoria = ({ nome, cor, onChangeNome, onChangeCor, onSave }) => {
+const icones = {
+  Streaming: <FaFilm />,
+  Jogos: <FaGamepad />,
+  Música: <FaMusic />,
+  Software: <FaCode />,
+  Educação: <FaBook />,
+  Saúde: <FaHeartbeat />,
+  Família: <FaUsers />,
+  Outro: <FaQuestion />,
+};
+
+const NovaCategoria = ({ show, onHide, nome, cor, icone, setNome, setCor, setIcone, onSalvar }) => {
   return (
-    <div className="modal fade" id="novaCategoriaModal" tabIndex="-1" aria-hidden="true">
-      <div className="modal-dialog">
-        <form id="formCategoria" onSubmit={onSave} className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Nova Categoria</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div className="modal-body">
-            <div className="mb-3">
-              <label htmlFor="categoriaNome" className="form-label">Nome da Categoria</label>
-              <input
-                type="text"
-                className="form-control"
-                id="categoriaNome"
-                value={nome}
-                onChange={(e) => onChangeNome(e.target.value)}
-                required
-              />
+    <Modal show={show} onHide={onHide}>
+      <Form onSubmit={onSalvar}>
+        <Modal.Header closeButton>
+          <Modal.Title>Nova Categoria</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label>Nome da Categoria</Form.Label>
+            <Form.Control type="text" value={nome} onChange={(e) => setNome(e.target.value)} required />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Cor</Form.Label>
+            <Form.Control type="color" value={cor} onChange={(e) => setCor(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Ícone</Form.Label>
+            <div className="d-flex gap-3 flex-wrap">
+              {Object.entries(icones).map(([key, Icon]) => (
+                <Button
+                  key={key}
+                  variant={icone === key ? 'primary' : 'outline-secondary'}
+                  onClick={() => setIcone(key)}
+                >
+                  {Icon}
+                </Button>
+              ))}
             </div>
-
-            <div className="mb-3">
-              <label htmlFor="categoriaCor" className="form-label">Cor</label>
-              <div className="d-flex align-items-center">
-                <input
-                  type="color"
-                  className="form-control form-control-color"
-                  id="categoriaCor"
-                  value={cor}
-                  onChange={(e) => onChangeCor(e.target.value)}
-                  title="Escolha uma cor"
-                />
-                <span className="ms-3">Selecione uma cor para a categoria</span>
-              </div>
-            </div>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" className="btn btn-primary">Salvar Categoria</button>
-          </div>
-        </form>
-      </div>
-    </div>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>Cancelar</Button>
+          <Button type="submit" variant="primary">Salvar</Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
   );
 };
 

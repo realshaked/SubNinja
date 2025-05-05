@@ -1,5 +1,17 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaBook, FaHeartbeat, FaUsers } from 'react-icons/fa';
+
+const icones = {
+  Streaming: <FaFilm />,
+  Jogos: <FaGamepad />,
+  Música: <FaMusic />,
+  Software: <FaCode />,
+  Educação: <FaBook />,
+  Saúde: <FaHeartbeat />,
+  Família: <FaUsers />,
+  Outro: <FaQuestion />,
+};
 
 const EditarCategoria = ({
   show,
@@ -7,8 +19,10 @@ const EditarCategoria = ({
   onSubmit,
   nome,
   cor,
+  icone,
   setNome,
   setCor,
+  setIcone,
 }) => {
   return (
     <Modal show={show} onHide={onHide}>
@@ -17,7 +31,7 @@ const EditarCategoria = ({
           <Modal.Title>Editar Categoria</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group className="mb-3" controlId="editarCategoriaNome">
+          <Form.Group className="mb-3">
             <Form.Label>Nome da Categoria</Form.Label>
             <Form.Control
               type="text"
@@ -26,17 +40,28 @@ const EditarCategoria = ({
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="editarCategoriaCor">
+
+          <Form.Group className="mb-3">
             <Form.Label>Cor</Form.Label>
-            <div className="d-flex align-items-center">
-              <Form.Control
-                type="color"
-                value={cor}
-                onChange={(e) => setCor(e.target.value)}
-                className="form-control-color"
-                title="Escolha uma cor"
-              />
-              <span className="ms-3">Selecione uma cor para a categoria</span>
+            <Form.Control
+              type="color"
+              value={cor}
+              onChange={(e) => setCor(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ícone</Form.Label>
+            <div className="d-flex gap-3 flex-wrap">
+              {Object.entries(icones).map(([key, Icon]) => (
+                <Button
+                  key={key}
+                  variant={icone === key ? 'primary' : 'outline-secondary'}
+                  onClick={() => setIcone(key)}
+                >
+                  {Icon}
+                </Button>
+              ))}
             </div>
           </Form.Group>
         </Modal.Body>

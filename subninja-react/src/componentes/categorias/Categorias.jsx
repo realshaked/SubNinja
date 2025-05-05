@@ -1,46 +1,75 @@
 import React, { useState } from 'react';
-import Sidebar from '../../componentes/Sidebar';
-import Header from '../../componentes/Header';
 import CategoriaTabela from './CategoriaTabela';
 import NovaCategoria from './NovaCategoria';
 import EditarCategoria from './EditarCategoria';
 import ExcluirCategoria from './ExcluirCategoria';
+import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaSchool, FaHeart, FaHospitalAlt } from 'react-icons/fa';
 
 const Categorias = () => {
   const [categorias, setCategorias] = useState([
-    { nome: 'Streaming', cor: '#4361ee', imagem: '' },
-    { nome: 'Software', cor: '#4cc9f0', imagem: ''  },
-    { nome: 'Jogos', cor: '#7209b7', imagem: ''  },
-    { nome: 'Música', cor: '#f72585', imagem: ''  },
+    { nome: 'Streaming', cor: '#4361ee', icone: 'Streaming' },
+    { nome: 'Software', cor: '#4cc9f0', icone: 'Software' },
+    { nome: 'Jogos', cor: '#7209b7', icone: 'Jogos' },
+    { nome: 'Música', cor: '#f72585', icone: 'Música' },
+    { nome: 'Educação', cor: '#00BFFF', icone: 'Educação' },
+    { nome: 'Saúde', cor: '#32CD32', icone: 'Saúde' },
+    { nome: 'Família', cor: '#FFD700', icone: 'Família' },
   ]);
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [modalNovaAberto, setModalNovaAberto] = useState(false);
   const [modalEditarAberto, setModalEditarAberto] = useState(false);
   const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
+
+  const [nomeCategoria, setNomeCategoria] = useState('');
+  const [corCategoria, setCorCategoria] = useState('#000000');
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
 
-  const handleAddCategoria = (novaCategoria) => {
-    setCategorias([...categorias, novaCategoria]);
+  const [nomeNova, setNomeNova] = useState('');
+  const [corNova, setCorNova] = useState('#000000');
+  const [iconeNova, setIconeNova] = useState('Outro');
+
+  // Nova Categoria
+  const handleAddCategoria = (e) => {
+    e.preventDefault();
+    setCategorias([...categorias, { nome: nomeNova, cor: corNova, icone: iconeNova }]);
+    setModalNovaAberto(false);
+    setNomeNova('');
+    setCorNova('#000000');
+    setIconeNova('Outro');
   };
 
-  const handleEditCategoria = (editada) => {
-    setCategorias(categorias.map(cat => cat.nome === editada.nome ? editada : cat));
+  // Editar Categoria
+  const handleEditCategoria = (e) => {
+    e.preventDefault();
+    if (!categoriaSelecionada) return;
+
+    const editada = {
+      ...categoriaSelecionada,
+      nome: nomeCategoria,
+      cor: corCategoria,
+    };
+
+    setCategorias(categorias.map(cat =>
+      cat.nome === categoriaSelecionada.nome ? editada : cat
+    ));
+    setModalEditarAberto(false);
   };
 
-  const handleDeleteCategoria = (nome) => {
-    setCategorias(categorias.filter(cat => cat.nome !== nome));
+  // Excluir Categoria
+  const handleDeleteCategoria = () => {
+    if (!categoriaSelecionada) return;
+    setCategorias(categorias.filter(cat => cat.nome !== categoriaSelecionada.nome));
+    setModalExcluirAberto(false);
   };
 
   return (
     <div className="container py-4">
-      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
-      <Header onMenuClick={() => setSidebarOpen(true)} />
-
       <CategoriaTabela
         categorias={categorias}
         onEdit={(categoria) => {
           setCategoriaSelecionada(categoria);
+          setNomeCategoria(categoria.nome);
+          setCorCategoria(categoria.cor);
           setModalEditarAberto(true);
         }}
         onDelete={(categoria) => {
@@ -52,27 +81,35 @@ const Categorias = () => {
         }}
       />
 
-      {/* Modais aqui */}
       <NovaCategoria
-        open={modalNovaAberto}
-        onClose={() => setModalNovaAberto(false)}
+        show={modalNovaAberto}
+        onHide={() => setModalNovaAberto(false)}
+        nome={nomeNova}
+        cor={corNova}
+        icone={iconeNova}
+        setNome={setNomeNova}
+        setCor={setCorNova}
+        setIcone={setIconeNova}
         onSalvar={handleAddCategoria}
       />
 
       <EditarCategoria
-      open={modalEditarAberto}
-      categoria={categoriaSelecionada}
-      onClose={() => setModalEditarAberto(false)}
-      onSalvar={handleEditCategoria}
+        show={modalEditarAberto}
+        onHide={() => setModalEditarAberto(false)}
+        onSubmit={handleEditCategoria}
+        nome={nomeCategoria}
+        cor={corCategoria}
+        setNome={setNomeCategoria}
+        setCor={setCorCategoria}
       />
 
       <ExcluirCategoria
-      open={modalExcluirAberto}
-      categoria={categoriaSelecionada}
-      onClose={() => setModalExcluirAberto(false)}
-      onSalvar={handleDeleteCategoria}
+        show={modalExcluirAberto}
+        onHide={() => setModalExcluirAberto(false)}
+        onConfirm={handleDeleteCategoria}
+        nome={categoriaSelecionada?.nome}
+        cor={categoriaSelecionada?.cor} // Passando a cor aqui
       />
-
     </div>
   );
 };

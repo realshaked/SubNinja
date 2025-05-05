@@ -27,8 +27,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Nav.Link as={Link} to="/nova-assinatura" className="text-white mb-2">
           <PlusCircle className="me-2" /> Nova Assinatura
         </Nav.Link>
-        <Nav.Link as={Link} to="/categorias/NovaCategoria" className="text-white mb-2">
-          <PlusCircle className="me-2" /> Nova Categoria
+        <Nav.Link as={Link} to="/categorias" className="text-white mb-2">
+          <PlusCircle className="me-2" /> Categorias
         </Nav.Link>
         <Nav.Link as={Link} to="/relatorio" className="text-white mb-2">
           <BarChart className="me-2" /> Relatório de Gastos

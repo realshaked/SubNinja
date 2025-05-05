@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ExcluirCategoria = ({ show, onHide, onConfirm, nome }) => {
+const ExcluirCategoria = ({ show, onHide, onConfirm, nome, cor }) => {
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -9,7 +9,19 @@ const ExcluirCategoria = ({ show, onHide, onConfirm, nome }) => {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Tem certeza que deseja excluir a categoria <strong>{nome}</strong>?
+          Tem certeza que deseja excluir a categoria{" "}
+          <span
+            style={{
+              backgroundColor: cor || "#000",  // Garantindo que a cor da categoria seja usada corretamente
+              color: "#fff",
+              padding: "0.3em 0.6em",
+              borderRadius: "0.5em",
+              fontWeight: "bold",
+            }}
+          >
+            {nome}
+          </span>
+          ?
         </p>
         <p className="text-danger">
           <small>Esta ação não pode ser desfeita.</small>
