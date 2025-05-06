@@ -25,38 +25,26 @@ const initialState = {
     ],
 };
 
-function addAssinatura(assinaturas,assinatura) {
-    let proxId = 1 + assinaturas.map(a => a.id).reduce((a,b) => Math.max(a,b));
-    return assinaturas.concat([{...action.payload, id: proxId}]);
-}
-
-function deleteAssinatura(assinaturas, id) {
-    return assinaturas.filter(assinatura => assinatura.id !== id);
-}
-
-function updateAssinatura(assinaturas, assinatura) {
-    let index = assinaturas.map(a => a.id).indexOf(action.payload.id);
-    assinaturas.splice(index, 1, action.payload);
-    return assinaturas;
-}
-
-
-
 const assinaturaSlice = createSlice({
-    name:'assinaturas',
+    name: 'assinaturas',
     initialState,
     reducers: {
         addAssinatura: (state, action) => {
-            state.assinaturas = addAssinatura(state.assinaturas, action.payload);
+            const proxId = state.assinaturas.length > 0
+                ? Math.max(...state.assinaturas.map(a => a.id)) + 1
+                : 1;
+            state.assinaturas.push({ ...action.payload, id: proxId });
         },
         deleteAssinatura: (state, action) => {
-            state.assinaturas = deleteAssinatura(state.assinaturas, action.payload.id);
+            state.assinaturas = state.assinaturas.filter(assinatura => assinatura.id !== action.payload.id);
         },
         updateAssinatura: (state, action) => {
-            state.assinaturas = updateAssinatura(state.assinaturas, action.payload);
-        }
-
-    }
+            const index = state.assinaturas.findIndex(a => a.id === action.payload.id);
+            if (index !== -1) {
+                state.assinaturas[index] = action.payload;
+            }
+        },
+    },
 });
 
 export const { addAssinatura, deleteAssinatura, updateAssinatura } = assinaturaSlice.actions;

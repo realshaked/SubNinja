@@ -1,39 +1,32 @@
 import React from "react";
-import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaBook, FaHeartbeat, FaUsers } from "react-icons/fa";
-
-const icones = {
-  Streaming: <FaFilm />,
-  Jogos: <FaGamepad />,
-  Música: <FaMusic />,
-  Software: <FaCode />,
-  Educação: <FaBook />,
-  Saúde: <FaHeartbeat />,
-  Família: <FaUsers />,
-  Outro: <FaQuestion />,
-};
+import icones from "../../icones";
 
 const CategoriaLinha = ({ categoria, onEdit, onDelete }) => {
+  const Icone = icones[categoria.icone] || icones.FaQuestion; // Obtém o componente do ícone
+
   return (
     <tr>
-      <td>{icones[categoria.icone] || icones['Outro']}</td>
+      <td>
+        <Icone /> {/* Renderiza o ícone como um componente React */}
+      </td>
       <td>
         <span
-          className="badge"
           style={{
             backgroundColor: categoria.cor,
             color: "#fff",
-            padding: "0.5em 1em",
-            borderRadius: "0.5em"
+            padding: "0.3em 0.6em",
+            borderRadius: "0.5em",
+            fontWeight: "bold",
           }}
         >
           {categoria.nome}
         </span>
       </td>
       <td>
-        <button className="btn btn-sm btn-warning me-2" onClick={onEdit}>
+        <button className="btn btn-warning btn-sm me-2" onClick={onEdit}>
           Editar
         </button>
-        <button className="btn btn-sm btn-danger" onClick={onDelete}>
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
           Excluir
         </button>
       </td>

@@ -1,32 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaBook, FaHeartbeat, FaUsers } from 'react-icons/fa';
+import icones from "../../icones";
 
-const icones = {
-  Streaming: <FaFilm />,
-  Jogos: <FaGamepad />,
-  Música: <FaMusic />,
-  Software: <FaCode />,
-  Educação: <FaBook />,
-  Saúde: <FaHeartbeat />,
-  Família: <FaUsers />,
-  Outro: <FaQuestion />,
-};
+const EditarCategoria = ({ show, onHide, onSubmit, categoria }) => {
+  const [nome, setNome] = useState(categoria?.nome || "");
+  const [cor, setCor] = useState(categoria?.cor || "#000000");
+  const [icone, setIcone] = useState(categoria?.icone || "FaQuestion");
 
-const EditarCategoria = ({
-  show,
-  onHide,
-  onSubmit,
-  nome,
-  cor,
-  icone,
-  setNome,
-  setCor,
-  setIcone,
-}) => {
+  useEffect(() => {
+    if (categoria) {
+      setNome(categoria.nome);
+      setCor(categoria.cor);
+      setIcone(categoria.icone);
+    }
+  }, [categoria]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ id: categoria.id, nome, cor, icone });
+  };
+
   return (
     <Modal show={show} onHide={onHide}>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Categoria</Modal.Title>
         </Modal.Header>
@@ -40,7 +36,6 @@ const EditarCategoria = ({
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>Cor</Form.Label>
             <Form.Control
@@ -49,19 +44,21 @@ const EditarCategoria = ({
               onChange={(e) => setCor(e.target.value)}
             />
           </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>Ícone</Form.Label>
             <div className="d-flex gap-3 flex-wrap">
-              {Object.entries(icones).map(([key, Icon]) => (
-                <Button
-                  key={key}
-                  variant={icone === key ? 'primary' : 'outline-secondary'}
-                  onClick={() => setIcone(key)}
-                >
-                  {Icon}
-                </Button>
-              ))}
+              {Object.keys(icones).map((key) => {
+                const Icone = icones[key];
+                return (
+                  <Button
+                    key={key}
+                    variant={icone === key ? "primary" : "outline-secondary"}
+                    onClick={() => setIcone(key)}
+                  >
+                    <Icone />
+                  </Button>
+                );
+              })}
             </div>
           </Form.Group>
         </Modal.Body>
@@ -70,7 +67,7 @@ const EditarCategoria = ({
             Cancelar
           </Button>
           <Button type="submit" variant="primary">
-            Salvar Alterações
+            Salvar
           </Button>
         </Modal.Footer>
       </Form>

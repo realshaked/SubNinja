@@ -1,114 +1,99 @@
-import React, { useState } from 'react';
-import CategoriaTabela from './CategoriaTabela';
-import NovaCategoria from './NovaCategoria';
-import EditarCategoria from './EditarCategoria';
-import ExcluirCategoria from './ExcluirCategoria';
-import { FaFilm, FaGamepad, FaMusic, FaCode, FaQuestion, FaSchool, FaHeart, FaHospitalAlt } from 'react-icons/fa';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchCategorias,
+  addCategoria,
+  editCategoria,
+  deleteCategoria,
+  selectCategoria,
+  clearCategoriaSelecionada,
+} from "./categoriasSlice";
+import CategoriaTabela from "./CategoriaTabela";
+import NovaCategoria from "./NovaCategoria";
+import EditarCategoria from "./EditarCategoria";
+import ExcluirCategoria from "./ExcluirCategoria";
 
 const Categorias = () => {
-  const [categorias, setCategorias] = useState([
-    { nome: 'Streaming', cor: '#4361ee', icone: 'Streaming' },
-    { nome: 'Software', cor: '#4cc9f0', icone: 'Software' },
-    { nome: 'Jogos', cor: '#7209b7', icone: 'Jogos' },
-    { nome: 'Música', cor: '#f72585', icone: 'Música' },
-    { nome: 'Educação', cor: '#00BFFF', icone: 'Educação' },
-    { nome: 'Saúde', cor: '#32CD32', icone: 'Saúde' },
-    { nome: 'Família', cor: '#FFD700', icone: 'Família' },
-  ]);
+  const categorias = useSelector((state) => state.categorias.categorias);
+  const status = useSelector((state) => state.categorias.status);
+  const error = useSelector((state) => state.categorias.error);
+  const categoriaSelecionada = useSelector((state) => state.categorias.categoriaSelecionada);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchCategorias());
+    }
+  }, [status, dispatch]);
 
   const [modalNovaAberto, setModalNovaAberto] = useState(false);
   const [modalEditarAberto, setModalEditarAberto] = useState(false);
   const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
 
-  const [nomeCategoria, setNomeCategoria] = useState('');
-  const [corCategoria, setCorCategoria] = useState('#000000');
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
-
-  const [nomeNova, setNomeNova] = useState('');
-  const [corNova, setCorNova] = useState('#000000');
-  const [iconeNova, setIconeNova] = useState('Outro');
-
-  // Nova Categoria
-  const handleAddCategoria = (e) => {
-    e.preventDefault();
-    setCategorias([...categorias, { nome: nomeNova, cor: corNova, icone: iconeNova }]);
+  const handleAddCategoria = (novaCategoria) => {
+    dispatch(addCategoria(novaCategoria));
     setModalNovaAberto(false);
-    setNomeNova('');
-    setCorNova('#000000');
-    setIconeNova('Outro');
   };
 
-  // Editar Categoria
-  const handleEditCategoria = (e) => {
-    e.preventDefault();
-    if (!categoriaSelecionada) return;
-
-    const editada = {
-      ...categoriaSelecionada,
-      nome: nomeCategoria,
-      cor: corCategoria,
-    };
-
-    setCategorias(categorias.map(cat =>
-      cat.nome === categoriaSelecionada.nome ? editada : cat
-    ));
+  const handleEditCategoria = (categoriaEditada) => {
+    dispatch(editCategoria(categoriaEditada));
     setModalEditarAberto(false);
+    dispatch(clearCategoriaSelecionada());
   };
 
-  // Excluir Categoria
   const handleDeleteCategoria = () => {
-    if (!categoriaSelecionada) return;
-    setCategorias(categorias.filter(cat => cat.nome !== categoriaSelecionada.nome));
+    dispatch(deleteCategoria({ id: categoriaSelecionada.id }));
     setModalExcluirAberto(false);
+    dispatch(clearCategoriaSelecionada());
   };
+
+  if (status === 'loading') {
+    return <p>Carregando categorias...</p>;
+  }
+
+  if (status === 'failed') {
+    return <p>Erro: {error}</p>;
+  }
 
   return (
     <div className="container py-4">
       <CategoriaTabela
         categorias={categorias}
         onEdit={(categoria) => {
-          setCategoriaSelecionada(categoria);
-          setNomeCategoria(categoria.nome);
-          setCorCategoria(categoria.cor);
+          dispatch(selectCategoria(categoria));
           setModalEditarAberto(true);
         }}
         onDelete={(categoria) => {
-          setCategoriaSelecionada(categoria);
+          dispatch(selectCategoria(categoria));
           setModalExcluirAberto(true);
         }}
-        onNovaCategoria={() => {
-          setModalNovaAberto(true);
-        }}
+        onNovaCategoria={() => setModalNovaAberto(true)}
       />
 
       <NovaCategoria
         show={modalNovaAberto}
         onHide={() => setModalNovaAberto(false)}
-        nome={nomeNova}
-        cor={corNova}
-        icone={iconeNova}
-        setNome={setNomeNova}
-        setCor={setCorNova}
-        setIcone={setIconeNova}
         onSalvar={handleAddCategoria}
       />
 
       <EditarCategoria
         show={modalEditarAberto}
-        onHide={() => setModalEditarAberto(false)}
+        onHide={() => {
+          setModalEditarAberto(false);
+          dispatch(clearCategoriaSelecionada());
+        }}
         onSubmit={handleEditCategoria}
-        nome={nomeCategoria}
-        cor={corCategoria}
-        setNome={setNomeCategoria}
-        setCor={setCorCategoria}
+        categoria={categoriaSelecionada}
       />
 
       <ExcluirCategoria
         show={modalExcluirAberto}
-        onHide={() => setModalExcluirAberto(false)}
+        onHide={() => {
+          setModalExcluirAberto(false);
+          dispatch(clearCategoriaSelecionada());
+        }}
         onConfirm={handleDeleteCategoria}
-        nome={categoriaSelecionada?.nome}
-        cor={categoriaSelecionada?.cor} // Passando a cor aqui
+        categoria={categoriaSelecionada}
       />
     </div>
   );
