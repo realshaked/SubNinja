@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import AssinaturaCard from './AssinaturaCard';
 
 function AssinaturaLista() {
-  
+
+  const assinaturas = [
+    // ... suas assinaturas
+  ];
 
   return (
     <div className="assinatura-lista">
