@@ -7,6 +7,8 @@ import {
   deleteCategoria,
   selectCategoria,
   clearCategoriaSelecionada,
+  abrirModal,
+  fecharModal,
 } from "./categoriasSlice";
 import CategoriaTabela from "./CategoriaTabela";
 import NovaCategoria from "./NovaCategoria";
@@ -18,6 +20,7 @@ const Categorias = () => {
   const status = useSelector((state) => state.categorias.status);
   const error = useSelector((state) => state.categorias.error);
   const categoriaSelecionada = useSelector((state) => state.categorias.categoriaSelecionada);
+  const modais = useSelector((state) => state.categorias.modais);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,24 +29,20 @@ const Categorias = () => {
     }
   }, [status, dispatch]);
 
-  const [modalNovaAberto, setModalNovaAberto] = useState(false);
-  const [modalEditarAberto, setModalEditarAberto] = useState(false);
-  const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
-
   const handleAddCategoria = (novaCategoria) => {
     dispatch(addCategoria(novaCategoria));
-    setModalNovaAberto(false);
+    dispatch(fecharModal('novaCategoria'));
   };
 
   const handleEditCategoria = (categoriaEditada) => {
     dispatch(editCategoria(categoriaEditada));
-    setModalEditarAberto(false);
+    dispatch(fecharModal('editarCategoria'));
     dispatch(clearCategoriaSelecionada());
   };
 
   const handleDeleteCategoria = () => {
     dispatch(deleteCategoria({ id: categoriaSelecionada.id }));
-    setModalExcluirAberto(false);
+    dispatch(fecharModal('excluirCategoria'));
     dispatch(clearCategoriaSelecionada());
   };
 
@@ -61,25 +60,25 @@ const Categorias = () => {
         categorias={categorias}
         onEdit={(categoria) => {
           dispatch(selectCategoria(categoria));
-          setModalEditarAberto(true);
+          dispatch(abrirModal('editarCategoria'));
         }}
         onDelete={(categoria) => {
           dispatch(selectCategoria(categoria));
-          setModalExcluirAberto(true);
+          dispatch(abrirModal('excluirCategoria'));
         }}
-        onNovaCategoria={() => setModalNovaAberto(true)}
+        onNovaCategoria={() => dispatch(abrirModal('novaCategoria'))}
       />
 
       <NovaCategoria
-        show={modalNovaAberto}
-        onHide={() => setModalNovaAberto(false)}
+        show={modais.novaCategoria}
+        onHide={() => dispatch(fecharModal('novaCategoria'))}
         onSalvar={handleAddCategoria}
       />
 
       <EditarCategoria
-        show={modalEditarAberto}
+        show={modais.editarCategoria}
         onHide={() => {
-          setModalEditarAberto(false);
+          dispatch(fecharModal('editarCategoria'));
           dispatch(clearCategoriaSelecionada());
         }}
         onSubmit={handleEditCategoria}
@@ -87,9 +86,9 @@ const Categorias = () => {
       />
 
       <ExcluirCategoria
-        show={modalExcluirAberto}
+        show={modais.excluirCategoria}
         onHide={() => {
-          setModalExcluirAberto(false);
+          dispatch(fecharModal('excluirCategoria'));
           dispatch(clearCategoriaSelecionada());
         }}
         onConfirm={handleDeleteCategoria}

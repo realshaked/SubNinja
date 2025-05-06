@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
-// Ação assíncrona para buscar categorias do servidor
 export const fetchCategorias = createAsyncThunk(
   'categorias/fetchCategorias',
-  async (_, thunkAPI) => {
-    try {
-      const response = await axios.get('/api/categorias'); // Substitua pela URL real da API
-      return response.data; // Retorna os dados da API
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data || 'Erro ao buscar categorias');
-    }
+  async () => {
+    return [
+      { id: 1, nome: 'Streaming', cor: '#4361ee', icone: 'FaFilm' },
+      { id: 2, nome: 'Software', cor: '#4cc9f0', icone: 'FaCode' },
+      { id: 3, nome: 'Jogos', cor: '#7209b7', icone: 'FaGamepad' },
+      { id: 4, nome: 'Música', cor: '#f72585', icone: 'FaMusic' },
+    ];
   }
 );
 
@@ -19,6 +17,11 @@ const initialState = {
   categoriaSelecionada: null,
   status: 'idle', // idle | loading | succeeded | failed
   error: null,
+  modais: {
+    novaCategoria: false,
+    editarCategoria: false,
+    excluirCategoria: false,
+  },
 };
 
 const categoriasSlice = createSlice({
@@ -46,6 +49,12 @@ const categoriasSlice = createSlice({
     clearCategoriaSelecionada: (state) => {
       state.categoriaSelecionada = null;
     },
+    abrirModal: (state, action) => {
+      state.modais[action.payload] = true;
+    },
+    fecharModal: (state, action) => {
+      state.modais[action.payload] = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -55,7 +64,7 @@ const categoriasSlice = createSlice({
       })
       .addCase(fetchCategorias.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.categorias = action.payload; // Atualiza o estado com os dados da API
+        state.categorias = action.payload;
       })
       .addCase(fetchCategorias.rejected, (state, action) => {
         state.status = 'failed';
@@ -70,6 +79,8 @@ export const {
   deleteCategoria,
   selectCategoria,
   clearCategoriaSelecionada,
+  abrirModal,
+  fecharModal,
 } = categoriasSlice.actions;
 
 export default categoriasSlice.reducer;
