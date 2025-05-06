@@ -1,12 +1,11 @@
 // NÃO precisa importar BrowserRouter, Routes, Route aqui
-import { Link } from 'react-router-dom';
+import React from 'react';
 import AssinaturaCard from './AssinaturaCard';
+import { useSelector } from 'react-redux';
 
 function AssinaturaLista() {
 
-  const assinaturas = [
-    // ... suas assinaturas
-  ];
+  const assinaturas = useSelector((state) => state.assinaturas.assinaturas);
 
   return (
     <div className="assinatura-lista">
@@ -17,10 +16,11 @@ function AssinaturaLista() {
           nome={assinatura.nome}
           tipo={assinatura.tipo}
           preco={assinatura.preco}
-          periodo={assinatura.periodo}
+          frequencia={assinatura.frequencia}
           dataVencimento={assinatura.dataVencimento}
           metodoPagamento={assinatura.metodoPagamento}
           notificacao={assinatura.notificacao}
+          categoria={assinatura.categoria}
         />
       ))}
     </div>

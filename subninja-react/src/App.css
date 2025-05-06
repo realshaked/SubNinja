@@ -94,7 +94,7 @@ html, body {
 }
 
 /* CARD DE ASSINATURA */
- .card-assinatura {
+ /* .card-assinatura {
   background-color: #fffcfc;
   border: 1px solid #cec2c2;
   border-radius: 12px;
@@ -141,7 +141,7 @@ html, body {
   gap: 8px;
   color: #8f8b8b;
   font-size: 14px;
-}
+} */
 
 /* BOTÕES */
 .btn, .add-button, .report-button {

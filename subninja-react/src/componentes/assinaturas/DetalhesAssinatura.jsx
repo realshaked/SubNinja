@@ -1,16 +1,18 @@
 import React from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-const navigate = useNavigate();
-
-const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, metodoPagamento, notificacao}) => {
+const DetalhesAssinatura = () => {
   const location = useLocation();
+  const {id} = useParams();
   const assinatura = location.state;
 
+  if (!assinatura) {
+    return <p>Assinatura não encontrada.</p>;
+  }
+
   return (
-    
     <>
-    <div className="card shadow-sm mb-4">
+      <div className="card shadow-sm mb-4">
         <div className="card-body">
           <div className="d-flex align-items-start mb-4">
             <div className="subscription-icon-lg me-3">
@@ -18,7 +20,7 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
             </div>
             <div>
               <h2 id="detailName">{assinatura.nome}</h2>
-              <span className="badge bg-primary" id="detailCategory">{assinatura.tipo}</span>
+              <span className="badge bg-primary" id="detailCategory">{assinatura.categoria}</span>
             </div>
           </div>
 
@@ -27,7 +29,7 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
               <i className="bi bi-currency-dollar"></i>
               <div>
                 <small className="text-muted">Valor</small>
-                <p id="detailPrice">{assinatura.preco}</p>
+                <p id="detailPrice">R$ {assinatura.valor}</p>
               </div>
             </div>
 
@@ -53,12 +55,6 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
                 <small className="text-muted">Notificação</small>
                 <p id="detailNotification">{assinatura.notificacao}</p>
               </div>
-              <div>
-                <button className="btn btn-secondary" onClick={() => navigate('/categorias')}>
-                  <i className="bi bi-arrow-left"></i> Ir para Categorias
-                </button>
-              </div>
-
             </div>
           </div>
         </div>
@@ -84,12 +80,30 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
             </div>
             <div className="modal-body">
               <form id="formEditarAssinatura">
-                {/* Campos do formulário */}
                 <div className="mb-3">
                   <label className="form-label">Nome</label>
-                  <input type="text" className="form-control" id="editNome" required />
+                  <input type="text" className="form-control" id="editNome" defaultValue={assinatura.nome} required />
                 </div>
-                {/* Outros campos... */}
+                <div className="mb-3">
+                  <label className="form-label">Valor</label>
+                  <input type="number" className="form-control" id="editValor" defaultValue={assinatura.valor} required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Categoria</label>
+                  <input type="text" className="form-control" id="editCategoria" defaultValue={assinatura.categoria} required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Data de Vencimento</label>
+                  <input type="date" className="form-control" id="editDataVencimento" defaultValue={assinatura.dataVencimento} required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Método de Pagamento</label>
+                  <input type="text" className="form-control" id="editMetodoPagamento" defaultValue={assinatura.metodoPagamento} required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Notificação</label>
+                  <input type="text" className="form-control" id="editNotificacao" defaultValue={assinatura.notificacao} required />
+                </div>
               </form>
             </div>
             <div className="modal-footer">
@@ -109,18 +123,17 @@ const DetalhesAssinatura = ({ id, nome, tipo, preco, dataVencimento, periodo, me
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <p>Tem certeza que deseja excluir a assinatura <strong id="assinaturaNomeExcluir"></strong>?</p>
+              <p>Tem certeza que deseja excluir a assinatura <strong>{assinatura.nome}</strong>?</p>
               <p className="text-danger"><small>Esta ação não pode ser desfeita.</small></p>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" className="btn btn-danger" id="confirmarExclusaoAssinatura">Excluir</button>
+              <button type="button" className="btn btn-danger">Excluir</button>
             </div>
           </div>
         </div>
       </div>
     </>
-      
   );
 };
 
