@@ -19,7 +19,7 @@ const CategoriaTabela = ({ categorias, onEdit, onDelete, onNovaCategoria }) => {
         <tbody>
           {categorias.map((cat) => (
             <CategoriaLinha
-              key={cat.id} // Use o `id` como chave única
+              key={cat.id}
               categoria={cat}
               onEdit={() => onEdit(cat)}
               onDelete={() => onDelete(cat)}

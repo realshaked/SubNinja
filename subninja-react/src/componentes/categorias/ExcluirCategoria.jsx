@@ -12,14 +12,14 @@ const ExcluirCategoria = ({ show, onHide, onConfirm, categoria }) => {
           Tem certeza que deseja excluir a categoria{" "}
           <span
             style={{
-              backgroundColor: categoria?.cor || "#000", // Usa a cor da categoria
+              backgroundColor: categoria?.cor || "#000",
               color: "#fff",
               padding: "0.3em 0.6em",
               borderRadius: "0.5em",
               fontWeight: "bold",
             }}
           >
-            {categoria?.nome || "Categoria"} {/* Usa o nome da categoria */}
+            {categoria?.nome || "Categoria"}
           </span>
           ?
         </p>

@@ -2,7 +2,7 @@ import React from "react";
 import icones from "../../icones";
 
 const CategoriaLinha = ({ categoria, onEdit, onDelete }) => {
-  const Icone = icones[categoria.icone] || icones.FaQuestion; // Obtém o componente do ícone
+  const Icone = icones[categoria.icone] || icones.FaQuestion;
 
   return (
     <tr>

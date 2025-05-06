@@ -50,7 +50,7 @@ const NovaCategoria = ({ show, onHide, onSalvar }) => {
                     variant={icone === key ? "primary" : "outline-secondary"}
                     onClick={() => setIcone(key)}
                   >
-                    <Icone /> {/* Renderiza o ícone */}
+                    <Icone />
                   </Button>
                 );
               })}
