@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchCategorias,
-  addCategoria,
-  editCategoria,
+  createCategoria,
+  updateCategoria,
   deleteCategoria,
+} from "./categoriasThunks";
+import {
   selectCategoria,
   clearCategoriaSelecionada,
   abrirModal,
-  fecharModal,
+  fecharModal
 } from "./categoriasSlice";
 import CategoriaTabela from "./CategoriaTabela";
 import NovaCategoria from "./NovaCategoria";
@@ -27,15 +29,15 @@ const Categorias = () => {
     if (status === 'idle') {
       dispatch(fetchCategorias());
     }
-  }, [status, dispatch]);
+  }, [status, dispatch]);  
 
-  const handleAddCategoria = (novaCategoria) => {
-    dispatch(addCategoria(novaCategoria));
+  const handleCreateCategoria = (novaCategoria) => {
+    dispatch(createCategoria(novaCategoria));
     dispatch(fecharModal('novaCategoria'));
   };
 
-  const handleEditCategoria = (categoriaEditada) => {
-    dispatch(editCategoria(categoriaEditada));
+  const handleUpdateCategoria = (categoriaEditada) => {
+    dispatch(updateCategoria(categoriaEditada));
     dispatch(fecharModal('editarCategoria'));
     dispatch(clearCategoriaSelecionada());
   };
@@ -72,7 +74,7 @@ const Categorias = () => {
       <NovaCategoria
         show={modais.novaCategoria}
         onHide={() => dispatch(fecharModal('novaCategoria'))}
-        onSalvar={handleAddCategoria}
+        onSalvar={handleCreateCategoria}
       />
 
       <EditarCategoria
@@ -81,7 +83,7 @@ const Categorias = () => {
           dispatch(fecharModal('editarCategoria'));
           dispatch(clearCategoriaSelecionada());
         }}
-        onSubmit={handleEditCategoria}
+        onSubmit={handleUpdateCategoria}
         categoria={categoriaSelecionada}
       />
 
