@@ -37,7 +37,10 @@ const NovaAssinatura = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addAssinatura(formData));
+    dispatch(addAssinatura({
+      ...formData,
+      valor: Number(formData.valor)  // conversão para número
+    }));
     navigate('/'); // Redireciona para a lista de assinaturas após salvar
   }
   

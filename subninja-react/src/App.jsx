@@ -7,6 +7,7 @@ import Categorias from './componentes/categorias/Categorias';  // Importando a p
 import store from './store'; // Importando o store do Redux
 import { Provider } from 'react-redux'; // Importando o Provider do Redux
 import DetalhesAssinatura from './componentes/assinaturas/DetalhesAssinatura';
+import Relatorios from './componentes/relatorios/Relatorios';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/nova-assinatura" element={<NovaAssinatura />} />
           <Route path="/categorias" element={<Categorias />} /> {/* Rota para Categorias */}
           <Route path = "/assinatura/:id" element={<DetalhesAssinatura />} />
+          <Route path="/relatorios" element={<Relatorios />} />
         </Routes>
       </Layout>
     </Router>

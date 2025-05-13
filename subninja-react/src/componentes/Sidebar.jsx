@@ -30,7 +30,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Nav.Link as={Link} to="/categorias" className="text-white mb-2">
           <PlusCircle className="me-2" /> Categorias
         </Nav.Link>
-        <Nav.Link as={Link} to="/relatorio" className="text-white mb-2">
+        <Nav.Link as={Link} to="/relatorios" className="text-white mb-2">
           <BarChart className="me-2" /> Relatório de Gastos
         </Nav.Link>
       </Nav>
