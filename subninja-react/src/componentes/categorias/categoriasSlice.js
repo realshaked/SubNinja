@@ -1,17 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { fetchCategorias, createCategoria, updateCategoria, deleteCategoria } from './categoriasThunks';
 
-const initialState = {
-  categorias: [],
-  categoriaSelecionada: null,
-  status: 'idle',
+const categoriasAdapter = createEntityAdapter({
+  selectId: (categoria) => categoria.id,
+  sortComparer: (a, b) => a.nome.localeCompare(b.nome),
+});
+
+const initialState = categoriasAdapter.getInitialState({
+  status: 'idle', // idle | loading | succeeded | failed
   error: null,
   modais: {
     novaCategoria: false,
     editarCategoria: false,
     excluirCategoria: false,
   },
-};
+  categoriaSelecionada: null,
+});
 
 const categoriasSlice = createSlice({
   name: 'categorias',
@@ -38,26 +42,32 @@ const categoriasSlice = createSlice({
       })
       .addCase(fetchCategorias.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.categorias = action.payload;
+        categoriasAdapter.setAll(state, action.payload);
       })
       .addCase(fetchCategorias.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Erro desconhecido';
       })
       .addCase(createCategoria.fulfilled, (state, action) => {
-        state.categorias.push(action.payload);
+        categoriasAdapter.addOne(state, action.payload);
       })
       .addCase(updateCategoria.fulfilled, (state, action) => {
-        const index = state.categorias.findIndex(cat => cat.id === action.payload.id);
-        if (index !== -1) {
-          state.categorias[index] = action.payload;
-        }
+        categoriasAdapter.updateOne(state, {
+          id: action.payload.id,
+          changes: action.payload,
+        });
       })
       .addCase(deleteCategoria.fulfilled, (state, action) => {
-        state.categorias = state.categorias.filter(cat => cat.id !== action.payload);
+        categoriasAdapter.removeOne(state, action.payload);
       });
   },
 });
+
+export const {
+  selectAll: selectAllCategorias,
+  selectById: selectCategoriaById,
+  selectIds: selectCategoriaIds,
+} = categoriasAdapter.getSelectors((state) => state.categorias);
 
 export const {
   selectCategoria,

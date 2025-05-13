@@ -10,7 +10,8 @@ import {
   selectCategoria,
   clearCategoriaSelecionada,
   abrirModal,
-  fecharModal
+  fecharModal,
+  selectAllCategorias,
 } from "./categoriasSlice";
 import CategoriaTabela from "./CategoriaTabela";
 import NovaCategoria from "./NovaCategoria";
@@ -18,7 +19,7 @@ import EditarCategoria from "./EditarCategoria";
 import ExcluirCategoria from "./ExcluirCategoria";
 
 const Categorias = () => {
-  const categorias = useSelector((state) => state.categorias.categorias);
+  const categorias = useSelector(selectAllCategorias); // Usar o selector do adapter
   const status = useSelector((state) => state.categorias.status);
   const error = useSelector((state) => state.categorias.error);
   const categoriaSelecionada = useSelector((state) => state.categorias.categoriaSelecionada);
@@ -26,34 +27,34 @@ const Categorias = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === "idle") {
       dispatch(fetchCategorias());
     }
-  }, [status, dispatch]);  
+  }, [status, dispatch]);
 
   const handleCreateCategoria = (novaCategoria) => {
     dispatch(createCategoria(novaCategoria));
-    dispatch(fecharModal('novaCategoria'));
+    dispatch(fecharModal("novaCategoria"));
   };
 
   const handleUpdateCategoria = (categoriaEditada) => {
     dispatch(updateCategoria(categoriaEditada));
-    dispatch(fecharModal('editarCategoria'));
+    dispatch(fecharModal("editarCategoria"));
     dispatch(clearCategoriaSelecionada());
   };
 
   const handleDeleteCategoria = () => {
     dispatch(deleteCategoria({ id: categoriaSelecionada.id }));
-    dispatch(fecharModal('excluirCategoria'));
+    dispatch(fecharModal("excluirCategoria"));
     dispatch(clearCategoriaSelecionada());
   };
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <p>Carregando categorias...</p>;
   }
 
-  if (status === 'failed') {
-    return <p>Erro: {error}</p>;
+  if (status === "failed") {
+    return <p className="text-danger">Erro ao carregar categorias: {error}</p>;
   }
 
   return (
@@ -62,25 +63,25 @@ const Categorias = () => {
         categorias={categorias}
         onEdit={(categoria) => {
           dispatch(selectCategoria(categoria));
-          dispatch(abrirModal('editarCategoria'));
+          dispatch(abrirModal("editarCategoria"));
         }}
         onDelete={(categoria) => {
           dispatch(selectCategoria(categoria));
-          dispatch(abrirModal('excluirCategoria'));
+          dispatch(abrirModal("excluirCategoria"));
         }}
-        onNovaCategoria={() => dispatch(abrirModal('novaCategoria'))}
+        onNovaCategoria={() => dispatch(abrirModal("novaCategoria"))}
       />
 
       <NovaCategoria
         show={modais.novaCategoria}
-        onHide={() => dispatch(fecharModal('novaCategoria'))}
+        onHide={() => dispatch(fecharModal("novaCategoria"))}
         onSalvar={handleCreateCategoria}
       />
 
       <EditarCategoria
         show={modais.editarCategoria}
         onHide={() => {
-          dispatch(fecharModal('editarCategoria'));
+          dispatch(fecharModal("editarCategoria"));
           dispatch(clearCategoriaSelecionada());
         }}
         onSubmit={handleUpdateCategoria}
@@ -90,7 +91,7 @@ const Categorias = () => {
       <ExcluirCategoria
         show={modais.excluirCategoria}
         onHide={() => {
-          dispatch(fecharModal('excluirCategoria'));
+          dispatch(fecharModal("excluirCategoria"));
           dispatch(clearCategoriaSelecionada());
         }}
         onConfirm={handleDeleteCategoria}
