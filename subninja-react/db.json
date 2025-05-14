@@ -23,6 +23,12 @@
       "nome": "Música",
       "cor": "#630596",
       "icone": "FaMusic"
+    },
+    {
+      "id": "c647",
+      "nome": "nova",
+      "cor": "#26a269",
+      "icone": "FaBook"
     }
   ],
   "usuarios": [
