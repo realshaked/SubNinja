@@ -1,17 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { selectAssinaturaPorId } from "./assinaturaSlice";
 
-export default function AssinaturaCard(props) {
-  console.log('propriedas recebidas: ', props);
-  const {id, nome, tipo, preco, dataVencimento, frequencia, metodoPagamento, notificacao} = props;
+export default function AssinaturaCard({ id }) {
+  const assinatura = useSelector((state) => selectAssinaturaPorId(state, id));
+
+  if (!assinatura) {
+    return <div>Assinatura não encontrada</div>;
+  }
+
+  const { nome, tipo, categoria, valor, dataVencimento, frequencia, plano } =
+    assinatura;
+
   return (
     <Link
-      to={`/assinatura/${id}`}
-      state={{ id, nome, tipo, preco, dataVencimento, frequencia, metodoPagamento, notificacao }}
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      to={`/assinaturas/${id}`}
+      state={assinatura}
+      style={{ textDecoration: "none", color: "inherit" }}
     >
-      <Card className="mb-3 shadow-sm">
+      <Card className="mb-3 shadow-sm hover-effect">
         <Card.Body>
           <div className="d-flex align-items-center">
             <div className="me-3">
@@ -19,28 +28,28 @@ export default function AssinaturaCard(props) {
             </div>
             <div>
               <Card.Title className="mb-1">{nome}</Card.Title>
-              <Card.Subtitle className="text-muted">{tipo}</Card.Subtitle>
+              <div className="d-flex gap-2">
+                <span className="badge bg-primary">{tipo}</span>
+                {categoria && (
+                  <span className="badge bg-secondary">{categoria}</span>
+                )}
+              </div>
             </div>
           </div>
           <div className="mt-3">
             <p className="mb-1">
-              <strong>Preço:</strong> {preco} <span>{frequencia}</span>
+              <strong>Valor:</strong> R$ {valor.toFixed(2)} ({frequencia})
             </p>
             <p className="mb-1">
-              <strong>Vencimento:</strong> {dataVencimento}
+              <strong>Próximo vencimento:</strong>{" "}
+              {new Date(dataVencimento).toLocaleDateString()}
             </p>
             <p className="mb-1">
-              <strong>Método de Pagamento:</strong> {metodoPagamento}
-            </p>
-            <p className="mb-1">
-              <strong>Notificação:</strong> {notificacao}
+              <strong>Plano:</strong> {plano}
             </p>
           </div>
-          <Button variant="primary" className="mt-3 w-100">
-            Ver Detalhes
-          </Button>
         </Card.Body>
       </Card>
     </Link>
   );
-};
+}

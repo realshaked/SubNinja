@@ -48,12 +48,14 @@ export const updateAssinatura = createAsyncThunk(
 
 export const deleteAssinatura = createAsyncThunk(
   'assinaturas/deleteAssinatura',
-  async ({ id }, { rejectWithValue }) => {
+  async ( id, {rejectWithValue }) => {
     try {
       const response = await fetch(`http://localhost:3001/assinaturas/${id}`, {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
       });
       if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
         throw new Error('Erro ao excluir a assinatura');
       }
       return id;

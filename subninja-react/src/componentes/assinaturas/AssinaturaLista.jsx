@@ -1,28 +1,36 @@
-// NÃO precisa importar BrowserRouter, Routes, Route aqui
-import React from 'react';
-import AssinaturaCard from './AssinaturaCard';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import AssinaturaCard from "./AssinaturaCard";
+import { fetchAssinaturas } from "./assinaturaThunks";
+import { selectAllAssinaturas } from "./assinaturaSlice";
 
 function AssinaturaLista() {
+  const dispatch = useDispatch();
+  const assinaturas = useSelector(selectAllAssinaturas);
+  const status = useSelector((state) => state.assinaturas.loading);
+  const error = useSelector((state) => state.assinaturas.error);
 
-  const assinaturas = useSelector((state) => state.assinaturas.assinaturas);
+  useEffect(() => {
+    dispatch(fetchAssinaturas());
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <div>Carregando assinaturas...</div>;
+  }
+
+  if (status === "failed") {
+    return <div>Erro ao carregar assinaturas: {error}</div>;
+  }
 
   return (
     <div className="assinatura-lista">
-      {assinaturas.map((assinatura) => (
-        <AssinaturaCard
-          key={assinatura.id}
-          id={assinatura.id}
-          nome={assinatura.nome}
-          tipo={assinatura.tipo}
-          preco={assinatura.preco}
-          frequencia={assinatura.frequencia}
-          dataVencimento={assinatura.dataVencimento}
-          metodoPagamento={assinatura.metodoPagamento}
-          notificacao={assinatura.notificacao}
-          categoria={assinatura.categoria}
-        />
-      ))}
+      {assinaturas.length > 0 ? (
+        assinaturas.map((assinatura) => (
+          <AssinaturaCard key={assinatura.id} id={assinatura.id} />
+        ))
+      ) : (
+        <div className="text-muted">Nenhuma assinatura cadastrada</div>
+      )}
     </div>
   );
 }

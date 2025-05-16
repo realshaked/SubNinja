@@ -40,10 +40,56 @@
   ],
   "assinaturas": [
     {
-      "id": "1",
-      "usuarioId": 1,
-      "categoriaId": 1,
-      "nome": "Netflix"
+      "id": "1747432646975",
+      "nome": "netflix",
+      "frequencia": "mensal",
+      "metodoPagamento": "credito",
+      "categoria": "streaming",
+      "valor": 60,
+      "plano": "Multitelas",
+      "notificacao": "email",
+      "dataAssinatura": "2025-05-09",
+      "status": "ativa",
+      "dataCriacao": "2025-05-16T21:57:26.975Z"
+    },
+    {
+      "id": "1747433669350",
+      "nome": "teste2",
+      "frequencia": "mensal",
+      "metodoPagamento": "debito",
+      "categoria": "jogos",
+      "valor": 90,
+      "plano": "Deluxe",
+      "notificacao": "sms",
+      "dataAssinatura": "2025-05-16",
+      "status": "ativa",
+      "dataCriacao": "2025-05-16T22:14:29.350Z"
+    },
+    {
+      "id": "1747434309200",
+      "nome": "teste 4",
+      "frequencia": "semanal",
+      "metodoPagamento": "credito",
+      "categoria": "software",
+      "valor": 100,
+      "plano": "deuxe",
+      "notificacao": "sms",
+      "dataAssinatura": "2025-05-16",
+      "dataVencimento": "",
+      "dataCriacao": "2025-05-16T22:25:09.200Z"
+    },
+    {
+      "id": "1747434605174",
+      "nome": "teste 5",
+      "frequencia": "mensal",
+      "metodoPagamento": "debito",
+      "categoria": "software",
+      "valor": 2067,
+      "plano": "basic",
+      "notificacao": "nenhuma",
+      "dataAssinatura": "2025-05-16",
+      "dataVencimento": "",
+      "dataCriacao": "2025-05-16T22:30:05.174Z"
     }
   ]
 }

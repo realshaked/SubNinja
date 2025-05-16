@@ -1,26 +1,54 @@
-import React from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import EditarAssinatura from "./EditarAssinatura";
+import ExcluirAssinatura from "./ExcluirAssinatura";
 
 const DetalhesAssinatura = () => {
   const location = useLocation();
-  const {id} = useParams();
+  const { id } = useParams();
   const assinatura = location.state;
+  const [showEditarModal, setShowEditarModal] = useState(false);
+  const [showExcluirModal, setShowExcluirModal] = useState(false);
+  const navigate = useNavigate();
 
   if (!assinatura) {
-    return <p>Assinatura não encontrada.</p>;
+    return (
+      <div className="alert alert-warning mt-3">
+        Assinatura não encontrada.{" "}
+        <button className="btn btn-link p-0" onClick={() => navigate(-1)}>
+          Voltar
+        </button>
+      </div>
+    );
   }
 
+  const formatarData = (dataString) => {
+    return new Date(dataString).toLocaleDateString("pt-BR");
+  };
+
   return (
-    <>
+    <div className="container mt-4">
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <div className="d-flex align-items-start mb-4">
             <div className="subscription-icon-lg me-3">
-              <i className="bi bi-play-circle-fill" id="detailIcon"></i>
+              <i
+                className={`bi bi-${
+                  assinatura.icone || "credit-card"
+                } text-primary fs-1`}
+              ></i>
             </div>
             <div>
-              <h2 id="detailName">{assinatura.nome}</h2>
-              <span className="badge bg-primary" id="detailCategory">{assinatura.categoria}</span>
+              <h2>{assinatura.nome}</h2>
+              <div className="d-flex gap-2 mb-2">
+                <span className="badge bg-primary">{assinatura.plano}</span>
+                {assinatura.categoria && (
+                  <span className="badge bg-secondary">
+                    {assinatura.categoria}
+                  </span>
+                )}
+              </div>
+              <p className="text-muted">{assinatura.frequencia}</p>
             </div>
           </div>
 
@@ -29,7 +57,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-currency-dollar"></i>
               <div>
                 <small className="text-muted">Valor</small>
-                <p id="detailPrice">R$ {assinatura.valor}</p>
+                <p>R$ {assinatura.valor.toFixed(2)}</p>
               </div>
             </div>
 
@@ -37,7 +65,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-calendar"></i>
               <div>
                 <small className="text-muted">Próximo vencimento</small>
-                <p id="detailDueDate">{assinatura.dataVencimento}</p>
+                <p>{formatarData(assinatura.dataVencimento)}</p>
               </div>
             </div>
 
@@ -45,95 +73,60 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-credit-card"></i>
               <div>
                 <small className="text-muted">Método de pagamento</small>
-                <p id="detailPayment">{assinatura.metodoPagamento}</p>
+                <p>{assinatura.metodoPagamento}</p>
               </div>
             </div>
 
-            <div className="detail-item">
-              <i className="bi bi-bell"></i>
-              <div>
-                <small className="text-muted">Notificação</small>
-                <p id="detailNotification">{assinatura.notificacao}</p>
+            {assinatura.notificacao && (
+              <div className="detail-item">
+                <i className="bi bi-bell"></i>
+                <div>
+                  <small className="text-muted">Notificação</small>
+                  <p>{assinatura.notificacao}</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Área de Ações */}
-      <div className="d-grid gap-2">
-        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarAssinaturaModal">
-          <i className="bi bi-pencil"></i> Editar Assinatura
+      <div className="d-grid gap-2 mb-4">
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowEditarModal(true)}
+        >
+          <i className="bi bi-pencil me-2"></i>Editar Assinatura
         </button>
-        <button className="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#excluirAssinaturaModal">
-          <i className="bi bi-trash"></i> Excluir Assinatura
+        <button
+          className="btn btn-outline-danger"
+          onClick={() => setShowExcluirModal(true)}
+        >
+          <i className="bi bi-trash me-2"></i>Excluir Assinatura
         </button>
       </div>
 
-      {/* Modal Editar Assinatura */}
-      <div className="modal fade" id="editarAssinaturaModal" tabIndex="-1" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Editar Assinatura</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <form id="formEditarAssinatura">
-                <div className="mb-3">
-                  <label className="form-label">Nome</label>
-                  <input type="text" className="form-control" id="editNome" defaultValue={assinatura.nome} required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Valor</label>
-                  <input type="number" className="form-control" id="editValor" defaultValue={assinatura.valor} required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Categoria</label>
-                  <input type="text" className="form-control" id="editCategoria" defaultValue={assinatura.categoria} required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Data de Vencimento</label>
-                  <input type="date" className="form-control" id="editDataVencimento" defaultValue={assinatura.dataVencimento} required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Método de Pagamento</label>
-                  <input type="text" className="form-control" id="editMetodoPagamento" defaultValue={assinatura.metodoPagamento} required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Notificação</label>
-                  <input type="text" className="form-control" id="editNotificacao" defaultValue={assinatura.notificacao} required />
-                </div>
-              </form>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" form="formEditarAssinatura" className="btn btn-primary">Salvar Alterações</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <EditarAssinatura
+        show={showEditarModal}
+        onHide={() => setShowEditarModal(false)}
+        assinatura={assinatura}
+        onSave={(updated) => {
+          console.log("Assinatura atualizada:", updated);
+          setShowEditarModal(false);
+          // Atualizar estado ou recarregar dados aqui
+        }}
+      />
 
-      {/* Modal Excluir Assinatura */}
-      <div className="modal fade" id="excluirAssinaturaModal" tabIndex="-1" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Excluir Assinatura</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <p>Tem certeza que deseja excluir a assinatura <strong>{assinatura.nome}</strong>?</p>
-              <p className="text-danger"><small>Esta ação não pode ser desfeita.</small></p>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" className="btn btn-danger">Excluir</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+      <ExcluirAssinatura
+        show={showExcluirModal}
+        onHide={() => setShowExcluirModal(false)}
+        assinatura={assinatura}
+        onConfirm={() => {
+          console.log("Excluir assinatura:", id);
+          setShowExcluirModal(false);
+          navigate("/assinaturas");
+        }}
+      />
+    </div>
   );
 };
 

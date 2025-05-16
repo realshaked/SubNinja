@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, FormControl } from "react-bootstrap";
 
 const EditarAssinatura = ({ show, onHide, onSubmit, assinatura }) => {
   const [nome, setNome] = useState(assinatura?.nome || "");
   const [valor, setValor] = useState(assinatura?.valor || 0);
   const [categoria, setCategoria] = useState(assinatura?.categoria || "");
-  const [dataVencimento, setDataVencimento] = useState(assinatura?.dataVencimento || "");
-  const [metodoPagamento, setMetodoPagamento] = useState(assinatura?.metodoPagamento || "");
+  const [dataAssinatura, setDataAssinatura] = useState(
+    assinatura?.dataAssinatura || ""
+  );
+  const [frequencia, setFrequencia] = useState(assinatura?.frequencia || "");
+  const [metodoPagamento, setMetodoPagamento] = useState(
+    assinatura?.metodoPagamento || ""
+  );
   const [notificacao, setNotificacao] = useState(assinatura?.notificacao || "");
+  const [plano, setPlano] = useState(assinatura?.plano || "");
 
   useEffect(() => {
     if (assinatura) {
       setNome(assinatura.nome);
       setValor(assinatura.valor);
       setCategoria(assinatura.categoria);
-      setDataVencimento(assinatura.dataVencimento);
+      setDataAssinatura(assinatura.dataAssinatura);
+      setFrequencia(assinatura.frequencia);
       setMetodoPagamento(assinatura.metodoPagamento);
       setNotificacao(assinatura.notificacao);
+      setPlano(assinatura.plano);
     }
   }, [assinatura]);
 
@@ -27,9 +35,11 @@ const EditarAssinatura = ({ show, onHide, onSubmit, assinatura }) => {
       nome,
       valor,
       categoria,
-      dataVencimento,
+      dataAssinatura,
+      frequencia,
       metodoPagamento,
-      notificacao
+      notificacao,
+      plano,
     });
   };
 
@@ -62,20 +72,29 @@ const EditarAssinatura = ({ show, onHide, onSubmit, assinatura }) => {
           <Form.Group className="mb-3">
             <Form.Label>Categoria</Form.Label>
             <Form.Control
-              type="text"
+              as="select"
               value={categoria}
               onChange={(e) => setCategoria(e.target.value)}
               required
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Data de Vencimento</Form.Label>
+            <Form.Label>Data de Assinatura</Form.Label>
             <Form.Control
               type="date"
-              value={dataVencimento}
-              onChange={(e) => setDataVencimento(e.target.value)}
+              value={dataAssinatura}
+              onChange={(e) => setDataAssinatura(e.target.value)}
               required
             />
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-medium">Frequência</Form.Label>
+              <Form.Control
+                as="select"
+                value={frequencia}
+                onChange={(e) => setFrequencia(e.target.value)}
+                required
+              ></Form.Control>
+            </Form.Group>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Método de Pagamento</Form.Label>
@@ -86,6 +105,20 @@ const EditarAssinatura = ({ show, onHide, onSubmit, assinatura }) => {
               required
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-medium">Plano</Form.Label>
+            <FormControl
+              type="text"
+              size="sm"
+              id="plano"
+              placeholder="Ex: Premium"
+              value={plano}
+              onChange={(e) => setPlano(e.target.value)}
+              required
+            />
+          </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Notificação</Form.Label>
             <Form.Control
