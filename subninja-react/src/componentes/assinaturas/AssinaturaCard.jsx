@@ -14,6 +14,14 @@ export default function AssinaturaCard({ id }) {
   const { nome, tipo, categoria, valor, dataVencimento, frequencia, plano } =
     assinatura;
 
+  const formatarDataDDMMYYYY = (data) => {
+    const dataObj = new Date(data);
+    const dia = String(dataObj.getDate()).padStart(2, "0");
+    const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
+    const ano = dataObj.getFullYear();
+    return `${dia}-${mes}-${ano}`;
+  };
+
   return (
     <Link
       to={`/assinaturas/${id}`}
@@ -42,7 +50,7 @@ export default function AssinaturaCard({ id }) {
             </p>
             <p className="mb-1">
               <strong>Próximo vencimento:</strong>{" "}
-              {new Date(dataVencimento).toLocaleDateString()}
+              {formatarDataDDMMYYYY(dataVencimento)}
             </p>
             <p className="mb-1">
               <strong>Plano:</strong> {plano}

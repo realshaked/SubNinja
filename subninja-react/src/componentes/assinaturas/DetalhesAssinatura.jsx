@@ -10,6 +10,24 @@ const DetalhesAssinatura = () => {
   const [showEditarModal, setShowEditarModal] = useState(false);
   const [showExcluirModal, setShowExcluirModal] = useState(false);
   const navigate = useNavigate();
+  /*   const assinaturaSelecionada = useSelector(
+    (state) => state.assinaturas.assinaturaSelecionada
+  );
+ */
+  const handleUpdateAssinatura = (assinaturaEditada) => {
+    dispatch(updateCategoria(assinaturaEditada));
+    setShowEditarModal(false);
+    dispatch(clearAssinaturaSelecionada());
+  };
+
+  // Função auxiliar para formatar data no padrão DD-MM-YYYY
+  const formatarDataDDMMYYYY = (data) => {
+    const dataObj = new Date(data);
+    const dia = String(dataObj.getDate()).padStart(2, "0");
+    const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
+    const ano = dataObj.getFullYear();
+    return `${dia}-${mes}-${ano}`;
+  };
 
   if (!assinatura) {
     return (
@@ -65,7 +83,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-calendar"></i>
               <div>
                 <small className="text-muted">Próximo vencimento</small>
-                <p>{formatarData(assinatura.dataVencimento)}</p>
+                <p>{formatarDataDDMMYYYY(assinatura.dataVencimento)}</p>
               </div>
             </div>
 
@@ -108,12 +126,8 @@ const DetalhesAssinatura = () => {
       <EditarAssinatura
         show={showEditarModal}
         onHide={() => setShowEditarModal(false)}
+        onSubmit={handleUpdateAssinatura}
         assinatura={assinatura}
-        onSave={(updated) => {
-          console.log("Assinatura atualizada:", updated);
-          setShowEditarModal(false);
-          // Atualizar estado ou recarregar dados aqui
-        }}
       />
 
       <ExcluirAssinatura

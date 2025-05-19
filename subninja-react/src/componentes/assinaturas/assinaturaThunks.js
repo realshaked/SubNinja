@@ -38,6 +38,10 @@ export const updateAssinatura = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(assinatura),
       });
+      if (!response.ok) {
+        const error = await response.json();
+        return rejectWithValue(error.message || 'Erro ao atualizar assinatura');
+      }
       const data = await response.json();
       return data;
     } catch (err) {

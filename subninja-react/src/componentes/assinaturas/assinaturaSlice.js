@@ -29,56 +29,6 @@ const assinaturaSlice = createSlice({
     clearAssinaturaSelecionada: (state) => {
       state.assinaturaSelecionada = null;
     },
-    
-    // Renovar uma assinatura (recalcular data de vencimento)
-    renovarAssinatura: (state, action) => {
-      const { id } = action.payload;
-      const assinatura = state.entities[id];
-      
-      if (assinatura) {
-        // Cálculo da nova data de vencimento baseado na frequência
-        const dataAtual = new Date(assinatura.dataVencimento);
-        let novaData = new Date(dataAtual);
-        
-        switch (assinatura.frequencia) {
-          case 'mensal':
-            novaData.setMonth(dataAtual.getMonth() + 1);
-            break;
-          case 'trimestral':
-            novaData.setMonth(dataAtual.getMonth() + 3);
-            break;
-          case 'semestral':
-            novaData.setMonth(dataAtual.getMonth() + 6);
-            break;
-          case 'anual':
-            novaData.setFullYear(dataAtual.getFullYear() + 1);
-            break;
-          case 'semanal':
-            novaData.setDate(dataAtual.getDate() + 7);
-            break;
-          default:
-            break;
-        }
-        
-        // Atualiza a assinatura com a nova data de vencimento
-        assinaturasAdapter.updateOne(state, {
-          id,
-          changes: {
-            dataVencimento: novaData.toISOString().split('T')[0],
-            ultimaRenovacao: new Date().toISOString()
-          }
-        });
-      }
-    },
-    
-    /* // Alterar status de uma assinatura (ativa/cancelada/pendente)
-    alterarStatusAssinatura: (state, action) => {
-      const { id, status } = action.payload;
-      assinaturasAdapter.updateOne(state, {
-        id,
-        changes: { status }
-      });
-    } */
   },
   extraReducers: (builder) => {
     builder
@@ -96,69 +46,10 @@ const assinaturaSlice = createSlice({
         state.error = action.payload || 'Erro desconhecido';
       })
       .addCase(createAssinatura.fulfilled, (state, action) => {
-    const assinatura = action.payload;
-    if (!assinatura.dataVencimento && assinatura.dataAssinatura && assinatura.frequencia) {
-      try {
-        // Garantir que a data está em formato adequado
-        const dataAssinatura = new Date(assinatura.dataAssinatura);
-        
-        // Verificar se a data é válida
-        if (isNaN(dataAssinatura.getTime())) {
-          console.error('Data de assinatura inválida:', assinatura.dataAssinatura);
-          // Tratamento para data inválida (pode ser um valor padrão ou lançar erro)
-        } else {
-          // Criar uma nova data para evitar modificar a original
-          let dataVencimento = new Date(dataAssinatura);
-          
-          // Usar uma função segura para adicionar meses
-          const addMonths = (date, months) => {
-            const newDate = new Date(date);
-            const currentMonth = newDate.getMonth();
-            const targetMonth = currentMonth + months;
-            
-            // Definir novo mês
-            newDate.setMonth(targetMonth);
-            
-            // Verificar se houve overflow de dias (ex: 31 Jan → 31 Fev que não existe)
-            if (newDate.getMonth() !== (targetMonth % 12)) {
-              // Ajustar para o último dia do mês anterior
-              newDate.setDate(0);
-            }
-            
-            return newDate;
-          };
-          
-          switch (assinatura.frequencia) {
-            case 'mensal':
-              dataVencimento = addMonths(dataAssinatura, 1);
-              break;
-            case 'trimestral':
-              dataVencimento = addMonths(dataAssinatura, 3);
-              break;
-            case 'semestral':
-              dataVencimento = addMonths(dataAssinatura, 6);
-              break;
-            case 'anual':
-              dataVencimento.setFullYear(dataAssinatura.getFullYear() + 1);
-              break;
-            case 'semanal':
-              dataVencimento.setDate(dataAssinatura.getDate() + 7);
-              break;
-            default:
-              break;
-          }
-          
-          // Formatação para YYYY-MM-DD
-          assinatura.dataVencimento = dataVencimento.toISOString().split('T')[0];
-        }
-      } catch (error) {
-        console.error('Erro ao calcular data de vencimento:', error);
-        // Tratamento do erro
-      }
-    }
-    
-    assinaturasAdapter.addOne(state, assinatura);
-})
+        state.status = 'succeeded';
+        const assinatura = action.payload;
+        assinaturasAdapter.addOne(state, assinatura);
+    })
       .addCase(updateAssinatura.fulfilled, (state, action) => {
         assinaturasAdapter.updateOne(state, {
           id: action.payload.id,
@@ -191,6 +82,10 @@ export const {
   selectIds: selectAssinaturaIds,
 } = assinaturasAdapter.getSelectors((state) => state.assinaturas);
 
+// Exportando o reducer
+export default assinaturaSlice.reducer;
+
+
 /* export const selectAssinaturasAtivas = (state) => {
   const assinaturas = selectAllAssinaturas(state);
   return assinaturas.filter(assinatura => assinatura.status === 'ativa');
@@ -213,5 +108,11 @@ export const selectAssinaturasVencendo = (state, diasAntecipacao = 7) => {
   }); 
 }; */
 
-// Exportando o reducer
-export default assinaturaSlice.reducer;
+ /* // Alterar status de uma assinatura (ativa/cancelada/pendente)
+    alterarStatusAssinatura: (state, action) => {
+      const { id, status } = action.payload;
+      assinaturasAdapter.updateOne(state, {
+        id,
+        changes: { status }
+      });
+    } */

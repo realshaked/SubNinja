@@ -37,15 +37,44 @@ const NovaAssinatura = () => {
     });
   };
 
+  const calcularDataVencimento = (dataAssinatura, frequencia) => {
+    let data = new Date(dataAssinatura);
+    switch (frequencia) {
+      case "mensal":
+        data.setMonth(data.getMonth() + 1);
+        break;
+      case "trimestral":
+        data.setMonth(data.getMonth() + 3);
+        break;
+      case "semestral":
+        data.setMonth(data.getMonth() + 6);
+        break;
+      case "anual":
+        data.setFullYear(data.getFullYear() + 1);
+        break;
+      case "semanal":
+        data.setDate(data.getDate() + 7);
+        break;
+      default:
+        break;
+    }
+    return data.toISOString().split("T")[0];
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const novaDataVencimento = calcularDataVencimento(
+      formData.dataAssinatura,
+      formData.frequencia
+    );
     // Criar objeto de assinatura com dados
     const novaAssinatura = {
       ...formData,
       id: Date.now().toString(), // Gerar ID único para a assinatura
       valor: Number(formData.valor), // Conversão para número
       dataCriacao: new Date().toISOString(), // Data de criação do registro
+      dataVencimento: novaDataVencimento,
     };
 
     // Dispatch do thunk para criar assinatura
