@@ -40,19 +40,6 @@
   ],
   "assinaturas": [
     {
-      "id": "1747767858907",
-      "nome": "Netflix",
-      "frequencia": "mensal",
-      "metodoPagamento": "credito",
-      "categoria": "streaming",
-      "valor": 65,
-      "plano": "Premium",
-      "notificacao": "email",
-      "dataAssinatura": "2024-05-20",
-      "dataVencimento": "2024-06-20",
-      "dataCriacao": "2025-05-20T19:04:18.907Z"
-    },
-    {
       "id": "1747768288739",
       "nome": "Spotify",
       "frequencia": "mensal",
@@ -64,6 +51,28 @@
       "dataAssinatura": "2025-05-20",
       "dataVencimento": "2025-06-20",
       "dataCriacao": "2025-05-20T19:11:28.739Z"
+    },
+    {
+      "id": "1747769635646",
+      "nome": "Prime",
+      "valor": 20,
+      "categoria": "streaming",
+      "dataAssinatura": "2025-05-20",
+      "frequencia": "mensal",
+      "metodoPagamento": "credito",
+      "notificacao": "email",
+      "plano": "Premium"
+    },
+    {
+      "id": "1747769848352",
+      "nome": "Netflix",
+      "valor": 65,
+      "categoria": "streaming",
+      "dataAssinatura": "2025-05-20",
+      "frequencia": "mensal",
+      "metodoPagamento": "credito",
+      "notificacao": "email",
+      "plano": "Premium"
     }
   ]
 }
