@@ -11,7 +11,7 @@ export default function AssinaturaCard({ id }) {
     return <div>Assinatura não encontrada</div>;
   }
 
-  const { nome, tipo, categoria, valor, dataVencimento, frequencia, plano } =
+  const { nome, tipo, categoriaId, valor, dataVencimento, frequencia, plano } =
     assinatura;
 
   const formatarDataDDMMYYYY = (data) => {
@@ -38,8 +38,8 @@ export default function AssinaturaCard({ id }) {
               <Card.Title className="mb-1">{nome}</Card.Title>
               <div className="d-flex gap-2">
                 <span className="badge bg-primary">{tipo}</span>
-                {categoria && (
-                  <span className="badge bg-secondary">{categoria}</span>
+                {categoriaId && (
+                  <span className="badge bg-secondary">{categoriaId}</span>
                 )}
               </div>
             </div>

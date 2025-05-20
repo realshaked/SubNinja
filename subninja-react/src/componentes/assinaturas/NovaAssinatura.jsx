@@ -12,10 +12,13 @@ import {
 import { useDispatch } from "react-redux";
 import { createAssinatura } from "./assinaturaThunks";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAllCategorias } from "../categorias/categoriasSlice";
 
 const NovaAssinatura = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const categorias = useSelector(selectAllCategorias);
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -187,19 +190,19 @@ const NovaAssinatura = () => {
                     <Form.Label className="fw-medium">Categoria</Form.Label>
                     <FormSelect
                       size="sm"
-                      id="categoria"
-                      value={formData.categoria}
+                      id="categoriaId"
+                      value={formData.categoriaId}
                       onChange={handleChange}
                       required
                     >
                       <option disabled value="">
                         Selecione a categoria
                       </option>
-                      <option value="streaming">Streaming</option>
-                      <option value="software">Software</option>
-                      <option value="jogos">Jogos</option>
-                      <option value="musica">Música</option>
-                      <option value="outros">Outros</option>
+                      {categorias.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.nome}
+                        </option>
+                      ))}
                     </FormSelect>
                   </Form.Group>
                 </Col>

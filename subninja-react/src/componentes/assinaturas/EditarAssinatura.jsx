@@ -19,7 +19,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const [formData, setFormData] = useState({
     nome: "",
     valor: "",
-    categoria: "",
+    categoriaId: "",
     dataAssinatura: "",
     frequencia: "",
     metodoPagamento: "",
@@ -46,12 +46,12 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   }, [assinatura]);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
+  const { id, value } = e.target;
+  setFormData({
+    ...formData,
+    [id]: value,
+  });
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
