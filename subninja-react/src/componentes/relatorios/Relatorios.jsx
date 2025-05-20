@@ -43,12 +43,12 @@ export default function Relatorios() {
   const inicioPeriodo = obterInicioPeriodo();
 
   const assinaturasFiltradas = assinaturas.filter((a) => {
-    const dataCriacao = new Date(a.dataCriacao);
+    const dataCriacao = new Date(a.dataAssinatura);
     return dataCriacao <= hoje && dataCriacao <= inicioPeriodo ? true : dataCriacao >= inicioPeriodo;
   });
 
   const valores = assinaturasFiltradas.map((a) => {
-    const dataCriacao = new Date(a.dataCriacao);
+    const dataCriacao = new Date(a.dataAssinatura);
     const inicioReal = dataCriacao > inicioPeriodo ? dataCriacao : inicioPeriodo;
     const meses = Math.max(1, mesesEntre(inicioReal, hoje));
     return a.valor * meses;
@@ -138,7 +138,7 @@ export default function Relatorios() {
 
       {/* Lista de assinaturas */}
       {assinaturasFiltradas.map((a, index) => {
-        const dataCriacao = new Date(a.dataCriacao);
+        const dataCriacao = new Date(a.dataAssinatura);
         const inicioReal = dataCriacao > inicioPeriodo ? dataCriacao : inicioPeriodo;
         const meses = Math.max(1, mesesEntre(inicioReal, hoje));
         const valorTotal = a.valor * meses;

@@ -1,5 +1,5 @@
 import { Button, Navbar, Container } from 'react-bootstrap';
-import { List, Search } from 'react-bootstrap-icons';
+import { List, PlusCircle } from 'react-bootstrap-icons';
 
 const Header = ({ onToggleSidebar }) => {
   return (
@@ -22,8 +22,8 @@ const Header = ({ onToggleSidebar }) => {
             <h1 className="title ms-2 mb-0">SubNinja</h1>
           </div>
 
-          <Button variant="link" className="search-button ms-auto">
-            <Search className="search-icon" size={20} />
+          <Button href = "/nova-assinatura" variant="link" className="bi bi-plus add-button">
+              <PlusCircle className="add-icon" size={20} /> 
           </Button>
         </Container>
       </Navbar>
