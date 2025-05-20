@@ -43,9 +43,9 @@
       "id": "1747767858907",
       "nome": "Netflix",
       "valor": 65,
-      "categoriaId": "c647",
+      "categoriaId": "1",
       "dataAssinatura": "2024-05-20",
-      "frequencia": "mensal",
+      "frequencia": "anual",
       "metodoPagamento": "credito",
       "notificacao": "email",
       "plano": "Premium"

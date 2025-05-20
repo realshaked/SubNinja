@@ -11,13 +11,15 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch  } from "react-redux";
 import { updateAssinatura } from "./assinaturaThunks";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
 import { fetchCategorias } from "../categorias/categoriasThunks";
+import { useNavigate } from "react-router-dom";
 
 const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: "",
     valor: "",
@@ -33,6 +35,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const categorias = useSelector(selectAllCategorias);
   const status = useSelector((state) => state.categorias.status);
 
+  // Garante que as categorias estejam carregadas
   useEffect(() => {
     if (status === "idle" || !categorias.length) {
       dispatch(fetchCategorias());
@@ -56,12 +59,12 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   }, [assinatura]);
 
   const handleChange = (e) => {
-  const { id, value } = e.target;
-  setFormData({
-    ...formData,
-    [id]: value,
-  });
-};
+    const { id, value } = e.target;
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,6 +87,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
       ).unwrap();
 
       onHide(); // Fecha o modal após sucesso
+      navigate("/assinaturas");
     } catch (err) {
       console.error("Falha ao atualizar assinatura:", err);
       setError(
@@ -176,28 +180,28 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
           </Form.Group>
 
           <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-medium">Categoria</Form.Label>
-              <FormSelect
-                size="sm"
-                id="categoriaId"
-                value={formData.categoriaId}
-                onChange={handleChange}
-                required
-                disabled={isSubmitting}
-              >
-                <option disabled value="">
-                  Selecione a categoria
-                </option>
-                {categorias.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.nome}
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-medium">Categoria</Form.Label>
+                <FormSelect
+                  size="sm"
+                  id="categoriaId"
+                  value={formData.categoriaId}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                >
+                  <option disabled value="">
+                    Selecione a categoria
                   </option>
-                ))}
-              </FormSelect>
-            </Form.Group>
-          </Col>
+                  {categorias.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.nome}
+                    </option>
+                  ))}
+                </FormSelect>
+              </Form.Group>
+            </Col>
 
             <Col md={6}>
               <Form.Group className="mb-3">
