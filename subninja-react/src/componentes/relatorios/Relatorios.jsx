@@ -6,13 +6,20 @@ import { useSelector } from 'react-redux';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 export default function Relatorios() {
-  const assinaturas = useSelector((state) => state.assinaturas.assinaturas);
-
+  const assinaturas = useSelector((state) => state.assinaturas.assinaturas || []);
+  const valores = assinaturas.map(a => Number(a.valor) || 0);
   const labels = assinaturas.map(a => a.nome);
-  const valores = assinaturas.map(a => a.valor);
   const categorias = assinaturas.map(a => a.categoria);
 
   const gastoTotal = valores.reduce((acc, val) => acc + val, 0);
+
+   if (!assinaturas || assinaturas.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <h3 style={{ color: '#666' }}>Nenhuma assinatura cadastrada.</h3>
+      </div>
+    );
+  }
 
   const COLORS = [
     '#8884d8',  // Roxo
@@ -92,7 +99,6 @@ export default function Relatorios() {
             </div>
             <div>
               <strong>R$ {a.valor.toFixed(2)}/mês</strong>
-              {/* Barra azul como na imagem */}
               <div style={{ height: '5px', width: '100px', backgroundColor: '#eee', borderRadius: '5px', marginTop: '5px' }}>
                 <div style={{ width: `${(a.valor / gastoTotal) * 100}%`, backgroundColor: '#4B0082', height: '100%', borderRadius: '5px' }}></div>
               </div>
