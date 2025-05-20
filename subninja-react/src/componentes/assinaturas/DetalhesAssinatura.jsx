@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditarAssinatura from "./EditarAssinatura";
 import ExcluirAssinatura from "./ExcluirAssinatura";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllCategorias } from "../categorias/categoriasSlice";
 
 const DetalhesAssinatura = () => {
   const location = useLocation();
@@ -10,6 +12,8 @@ const DetalhesAssinatura = () => {
   const [showEditarModal, setShowEditarModal] = useState(false);
   const [showExcluirModal, setShowExcluirModal] = useState(false);
   const navigate = useNavigate();
+  const categorias = useSelector(selectAllCategorias);
+  const categoria = categorias.find((cat) => cat.id === assinatura.categoriaId);
   /*   const assinaturaSelecionada = useSelector(
     (state) => state.assinaturas.assinaturaSelecionada
   );
@@ -60,9 +64,16 @@ const DetalhesAssinatura = () => {
               <h2>{assinatura.nome}</h2>
               <div className="d-flex gap-2 mb-2">
                 <span className="badge bg-primary">{assinatura.plano}</span>
-                {assinatura.categoria && (
-                  <span className="badge bg-secondary">
-                    {assinatura.categoria}
+                 {categoria && (
+                  <span
+                    className="badge"
+                    style={{
+                      backgroundColor: categoria.cor,
+                      color: "#fff",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {categoria.nome}
                   </span>
                 )}
               </div>

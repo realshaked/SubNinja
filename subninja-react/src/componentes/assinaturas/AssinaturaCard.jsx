@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { selectAssinaturaPorId } from "./assinaturaSlice";
+import { selectAllCategorias } from "../categorias/categoriasSlice";
 
 export default function AssinaturaCard({ id }) {
   const assinatura = useSelector((state) => selectAssinaturaPorId(state, id));
+  const categorias = useSelector(selectAllCategorias);
 
   if (!assinatura) {
     return <div>Assinatura não encontrada</div>;
   }
 
-  const { nome, tipo, categoriaId, valor, dataVencimento, frequencia, plano } =
-    assinatura;
+  const { nome, categoriaId, valor, dataVencimento, frequencia, plano } = assinatura;
+  const categoria = categorias.find((cat) => cat.id === categoriaId);
 
   const formatarDataDDMMYYYY = (data) => {
     const dataObj = new Date(data);
@@ -37,9 +39,17 @@ export default function AssinaturaCard({ id }) {
             <div>
               <Card.Title className="mb-1">{nome}</Card.Title>
               <div className="d-flex gap-2">
-                <span className="badge bg-primary">{tipo}</span>
-                {categoriaId && (
-                  <span className="badge bg-secondary">{categoriaId}</span>
+                {categoria && (
+                  <span
+                    className="badge"
+                    style={{
+                      backgroundColor: categoria.cor,
+                      color: "#fff",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {categoria.nome}
+                  </span>
                 )}
               </div>
             </div>

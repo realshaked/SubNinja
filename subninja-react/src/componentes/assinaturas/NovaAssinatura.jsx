@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -9,28 +9,35 @@ import {
   InputGroup,
   Button,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createAssinatura } from "./assinaturaThunks";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
+import { fetchCategorias } from "../categorias/categoriasThunks";
 
 const NovaAssinatura = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const categorias = useSelector(selectAllCategorias);
+  const status = useSelector((state) => state.categorias.status);
 
   const [formData, setFormData] = useState({
     nome: "",
     frequencia: "",
     metodoPagamento: "",
-    categoria: "",
+    categoriaId: "",
     valor: "",
     plano: "",
     notificacao: "",
     dataAssinatura: new Date().toISOString().split("T")[0],
     dataVencimento: "",
   });
+
+  useEffect(() => {
+    if (status === "idle" || !categorias.length) {
+      dispatch(fetchCategorias());
+    }
+  }, [dispatch, status, categorias.length]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -71,24 +78,21 @@ const NovaAssinatura = () => {
       formData.dataAssinatura,
       formData.frequencia
     );
-    // Criar objeto de assinatura com dados
     const novaAssinatura = {
       ...formData,
-      id: Date.now().toString(), // Gerar ID único para a assinatura
-      valor: Number(formData.valor), // Conversão para número
-      dataCriacao: new Date().toISOString(), // Data de criação do registro
+      id: Date.now().toString(),
+      valor: Number(formData.valor),
+      dataCriacao: new Date().toISOString(),
       dataVencimento: novaDataVencimento,
     };
 
-    // Dispatch do thunk para criar assinatura
     dispatch(createAssinatura(novaAssinatura));
 
-    // Limpar o formulário
     setFormData({
       nome: "",
       frequencia: "",
       metodoPagamento: "",
-      categoria: "",
+      categoriaId: "",
       valor: "",
       plano: "",
       notificacao: "",
@@ -96,12 +100,10 @@ const NovaAssinatura = () => {
       dataVencimento: "",
     });
 
-    // Navegar para a lista de assinaturas após salvar
     navigate("/assinaturas");
   };
 
   const handleCancel = () => {
-    // Navegar de volta para a lista de assinaturas
     navigate("/assinaturas");
   };
 

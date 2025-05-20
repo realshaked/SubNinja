@@ -11,8 +11,10 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { updateAssinatura } from "./assinaturaThunks";
+import { selectAllCategorias } from "../categorias/categoriasSlice";
+import { fetchCategorias } from "../categorias/categoriasThunks";
 
 const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const dispatch = useDispatch();
@@ -28,6 +30,14 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const categorias = useSelector(selectAllCategorias);
+  const status = useSelector((state) => state.categorias.status);
+
+  useEffect(() => {
+    if (status === "idle" || !categorias.length) {
+      dispatch(fetchCategorias());
+    }
+  }, [dispatch, status, categorias.length]);
 
   // Preenche o formulário quando a assinatura muda
   useEffect(() => {
@@ -35,7 +45,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
       setFormData({
         nome: assinatura.nome || "",
         valor: assinatura.valor || "",
-        categoria: assinatura.categoria || "",
+        categoriaId: assinatura.categoriaId || "",
         dataAssinatura: assinatura.dataAssinatura?.split("T")[0] || "",
         frequencia: assinatura.frequencia || "",
         metodoPagamento: assinatura.metodoPagamento || "",
@@ -166,28 +176,28 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
           </Form.Group>
 
           <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-medium">Categoria</Form.Label>
-                <FormSelect
-                  size="sm"
-                  id="categoria"
-                  value={formData.categoria}
-                  onChange={handleChange}
-                  required
-                  disabled={isSubmitting}
-                >
-                  <option disabled value="">
-                    Selecione a categoria
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-medium">Categoria</Form.Label>
+              <FormSelect
+                size="sm"
+                id="categoriaId"
+                value={formData.categoriaId}
+                onChange={handleChange}
+                required
+                disabled={isSubmitting}
+              >
+                <option disabled value="">
+                  Selecione a categoria
+                </option>
+                {categorias.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.nome}
                   </option>
-                  <option value="streaming">Streaming</option>
-                  <option value="software">Software</option>
-                  <option value="jogos">Jogos</option>
-                  <option value="musica">Música</option>
-                  <option value="outros">Outros</option>
-                </FormSelect>
-              </Form.Group>
-            </Col>
+                ))}
+              </FormSelect>
+            </Form.Group>
+          </Col>
 
             <Col md={6}>
               <Form.Group className="mb-3">
