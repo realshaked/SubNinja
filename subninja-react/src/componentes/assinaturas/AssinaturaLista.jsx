@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import AssinaturaCard from "./AssinaturaCard";
 import { fetchAssinaturas } from "./assinaturaThunks";
 import { selectAllAssinaturas } from "./assinaturaSlice";
+import { selectAllCategorias } from "../categorias/categoriasSlice";
+import { fetchCategorias } from "../categorias/categoriasThunks";
 
 function AssinaturaLista() {
   const dispatch = useDispatch();
@@ -10,9 +12,15 @@ function AssinaturaLista() {
   const status = useSelector((state) => state.assinaturas.loading);
   const error = useSelector((state) => state.assinaturas.error);
 
+  const categorias = useSelector(selectAllCategorias);
+  const statusCategorias = useSelector((state) => state.categorias.status);
+
   useEffect(() => {
     dispatch(fetchAssinaturas());
-  }, [dispatch]);
+    if(statusCategorias === "idle" || !categorias.length) {
+      dispatch(fetchCategorias());
+    }
+  }, [dispatch, statusCategorias, categorias.length]);
 
   if (status === "loading") {
     return <div>Carregando assinaturas...</div>;
