@@ -44,8 +44,9 @@
       "nome": "Netflix",
       "valor": 65,
       "categoriaId": "1",
-      "dataAssinatura": "2024-05-20",
-      "frequencia": "anual",
+      "dataAssinatura": "2025-04-03",
+      "dataVencimento": "2025-05-03",
+      "frequencia": "mensal",
       "metodoPagamento": "credito",
       "notificacao": "email",
       "plano": "Premium"
@@ -66,15 +67,14 @@
     {
       "id": "1747774512280",
       "nome": "Game Pass",
-      "frequencia": "semanal",
-      "metodoPagamento": "debito",
+      "valor": 70,
       "categoriaId": "2",
-      "valor": 484,
-      "plano": "Premium",
+      "dataAssinatura": "2025-06-03",
+      "dataVencimento": "2025-07-03",
+      "frequencia": "mensal",
+      "metodoPagamento": "debito",
       "notificacao": "sms",
-      "dataAssinatura": "2023-02-24",
-      "dataVencimento": "2023-03-03",
-      "dataCriacao": "2025-05-20T20:55:12.280Z"
+      "plano": "Premium"
     }
   ]
 }

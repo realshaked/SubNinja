@@ -25,6 +25,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     valor: "",
     categoriaId: "",
     dataAssinatura: "",
+    dataVencimento: "",
     frequencia: "",
     metodoPagamento: "",
     notificacao: "",
@@ -50,6 +51,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
         valor: assinatura.valor || "",
         categoriaId: assinatura.categoriaId || "",
         dataAssinatura: assinatura.dataAssinatura?.split("T")[0] || "",
+        dataVencimento: assinatura.dataVencimento || "",
         frequencia: assinatura.frequencia || "",
         metodoPagamento: assinatura.metodoPagamento || "",
         notificacao: assinatura.notificacao || "",
@@ -66,8 +68,37 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     });
   };
 
+  const calcularDataVencimento = (dataAssinatura, frequencia) => {
+    let data = new Date(dataAssinatura);
+    switch (frequencia) {
+      case "mensal":
+        data.setMonth(data.getMonth() + 1);
+        break;
+      case "trimestral":
+        data.setMonth(data.getMonth() + 3);
+        break;
+      case "semestral":
+        data.setMonth(data.getMonth() + 6);
+        break;
+      case "anual":
+        data.setFullYear(data.getFullYear() + 1);
+        break;
+      case "semanal":
+        data.setDate(data.getDate() + 7);
+        break;
+      default:
+        break;
+    }
+    return data.toISOString().split("T")[0];
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const novaDataVencimento = calcularDataVencimento(
+      formData.dataAssinatura,
+      formData.frequencia
+    );
 
     if (!assinatura?.id) {
       setError("ID da assinatura inválido");
@@ -83,6 +114,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
           id: assinatura.id,
           ...formData,
           valor: Number(formData.valor),
+          dataVencimento: novaDataVencimento,
         })
       ).unwrap();
 
