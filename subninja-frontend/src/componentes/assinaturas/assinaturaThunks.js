@@ -4,8 +4,10 @@ export const fetchAssinaturas = createAsyncThunk(
   'assinaturas/fetchAssinaturas',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/assinaturas');
+      const response = await fetch('/assinaturas');
       if (!response.ok) throw new Error('Erro ao buscar assinaturas');
+      const text = await response.text();
+      if (!text) return []; // Retorna array vazio se não houver dados
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);
@@ -17,7 +19,7 @@ export const createAssinatura = createAsyncThunk(
   'assinaturas/createAssinatura',
   async (novaAssinatura, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/assinaturas', {
+      const response = await fetch('/assinaturas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novaAssinatura),
@@ -33,7 +35,7 @@ export const updateAssinatura = createAsyncThunk(
   'assinaturas/updateAssinatura',
   async (assinatura, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/assinaturas/${assinatura.id}`, {
+      const response = await fetch(`/assinaturas/${assinatura.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(assinatura),
@@ -54,7 +56,7 @@ export const deleteAssinatura = createAsyncThunk(
   'assinaturas/deleteAssinatura',
   async ( id, {rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/assinaturas/${id}`, {
+      const response = await fetch(`/assinaturas/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -72,7 +74,7 @@ export const fetchAssinaturaById = createAsyncThunk(
   'assinaturas/fetchAssinaturaById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/assinaturas/${id}`);
+      const response = await fetch(`/assinaturas/${id}`);
       if (!response.ok) throw new Error('Erro ao buscar assinatura');
       return await response.json();
     } catch (err) {

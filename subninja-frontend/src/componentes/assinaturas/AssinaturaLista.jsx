@@ -17,7 +17,11 @@ function AssinaturaLista() {
 
   useEffect(() => {
     dispatch(fetchAssinaturas());
-    if(statusCategorias === "idle" || !categorias.length) {
+  }, [dispatch]);
+
+  // Busca categorias se necessário
+  useEffect(() => {
+    if (statusCategorias === "idle" || !categorias.length) {
       dispatch(fetchCategorias());
     }
   }, [dispatch, statusCategorias, categorias.length]);

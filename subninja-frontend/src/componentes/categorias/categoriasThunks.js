@@ -4,8 +4,10 @@ export const fetchCategorias = createAsyncThunk(
   'categorias/fetchCategorias',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/categorias');
+      const response = await fetch('/categorias');
       if (!response.ok) throw new Error('Erro ao buscar categorias');
+      const text = await response.text();
+      if (!text) return []; // Retorna array vazio se não houver dados
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);
@@ -17,7 +19,7 @@ export const createCategoria = createAsyncThunk(
   'categorias/createCategoria',
   async (novaCategoria, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/categorias', {
+      const response = await fetch('/categorias', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novaCategoria),
@@ -33,7 +35,7 @@ export const updateCategoria = createAsyncThunk(
   'categorias/updateCategoria',
   async (categoria, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/categorias/${categoria.id}`, {
+      const response = await fetch(`/categorias/${categoria.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(categoria),
@@ -50,7 +52,7 @@ export const deleteCategoria = createAsyncThunk(
     'categorias/deleteCategoria',
     async ({ id }, { rejectWithValue }) => {
       try {
-        const response = await fetch(`http://localhost:3001/categorias/${id}`, {
+        const response = await fetch(`/categorias/${id}`, {
           method: 'DELETE',
         });
         if (!response.ok) {
