@@ -38,6 +38,7 @@ const assinaturaSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAssinaturas.fulfilled, (state, action) => {
+        console.log('fetchAssinaturas fulfilled', action.payload);
         state.status = 'succeeded';
         assinaturasAdapter.setAll(state, action.payload);
       })

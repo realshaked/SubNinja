@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/categorias' : 'http://localhost:3000',
+      '/assinaturas' : 'http://localhost:3000',
     },
   },
 });

@@ -6,8 +6,8 @@ export const fetchAssinaturas = createAsyncThunk(
     try {
       const response = await fetch('/assinaturas');
       if (!response.ok) throw new Error('Erro ao buscar assinaturas');
-      const text = await response.text();
-      if (!text) return []; // Retorna array vazio se não houver dados
+   /*    const text = await response.text();
+      if (!text) return []; // Retorna array vazio se não houver dados */
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);

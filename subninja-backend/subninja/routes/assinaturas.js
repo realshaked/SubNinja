@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 let assinaturas = [
-  {id: 1, nome: 'Assinatura Básica', categoriaId:"1", valor:"10", plano: "premium", metodoPagamento: "cartao", frequencia: "mensal", dataVencimento: "", notificacao: "sms" },
-  {id: 2, nome: 'Assinatura Avançada', categoriaId:"2", valor:"20", plano: "premium", metodoPagamento: "pix", frequencia: "anual", dataVencimento: "", notificacao: "email" },
+  {id: 1, nome: 'Assinatura Básica', categoriaId:"1", valor:10, plano: "premium", metodoPagamento: "cartao", frequencia: "mensal", dataAssinatura:"10/06/2025", dataVencimento: "10/07/2025", notificacao: "sms" },
 ];
 
 // GET todas
