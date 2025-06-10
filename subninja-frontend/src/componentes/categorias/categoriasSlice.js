@@ -41,6 +41,7 @@ const categoriasSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCategorias.fulfilled, (state, action) => {
+         console.log('fetchCategorias fulfilled', action.payload);
         state.status = 'succeeded';
         categoriasAdapter.setAll(state, action.payload);
       })

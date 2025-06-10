@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 let categorias = [
-  {id: 2, nome: 'Categoria 2', cor:"", icone:"" },
+  {id: 1, nome: 'Categoria 1', cor:"", icone:"" },
 ];
 // GET todas
 router.get("/", (req, res) => {
@@ -20,8 +20,8 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
   const idx = categorias.findIndex(a => a.id == req.params.id);
   if (idx === -1) return res.status(404).json({ error: "categoria não encontrada" });
-  assinaturas[idx] = { ...categorias[idx], ...req.body, id: categorias[idx].id };
-  res.json(assinaturas[idx]);
+  categorias[idx] = { ...categorias[idx], ...req.body, id: categorias[idx].id };
+  res.json(categorias[idx]);
 });
 
 // DELETE

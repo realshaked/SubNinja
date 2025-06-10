@@ -34,10 +34,10 @@ const NovaAssinatura = () => {
   });
 
   useEffect(() => {
-    if (status === "idle" || !categorias.length) {
+    if (status === "idle") {
       dispatch(fetchCategorias());
     }
-  }, [dispatch, status, categorias.length]);
+  }, [dispatch, status]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;

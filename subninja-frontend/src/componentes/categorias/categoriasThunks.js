@@ -6,8 +6,6 @@ export const fetchCategorias = createAsyncThunk(
     try {
       const response = await fetch('/categorias');
       if (!response.ok) throw new Error('Erro ao buscar categorias');
-      const text = await response.text();
-      if (!text) return []; // Retorna array vazio se não houver dados
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);

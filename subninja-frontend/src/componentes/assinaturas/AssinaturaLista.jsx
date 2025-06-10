@@ -21,10 +21,10 @@ function AssinaturaLista() {
 
   // Busca categorias se necessário
   useEffect(() => {
-    if (statusCategorias === "idle" || !categorias.length) {
+    if (statusCategorias === "idle") {
       dispatch(fetchCategorias());
     }
-  }, [dispatch, statusCategorias, categorias.length]);
+  }, [dispatch, statusCategorias]);
 
   if (status === "loading") {
     return <div>Carregando assinaturas...</div>;

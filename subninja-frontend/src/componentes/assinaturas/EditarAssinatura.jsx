@@ -38,10 +38,10 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
 
   // Garante que as categorias estejam carregadas
   useEffect(() => {
-    if (status === "idle" || !categorias.length) {
+    if (status === "idle") {
       dispatch(fetchCategorias());
     }
-  }, [dispatch, status, categorias.length]);
+  }, [dispatch, status]);
 
   // Preenche o formulário quando a assinatura muda
   useEffect(() => {
