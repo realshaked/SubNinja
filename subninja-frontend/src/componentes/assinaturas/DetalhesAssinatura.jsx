@@ -2,30 +2,27 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditarAssinatura from "./EditarAssinatura";
 import ExcluirAssinatura from "./ExcluirAssinatura";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
+import { selectAssinaturaPorId } from "./assinaturaSlice";
 
 const DetalhesAssinatura = () => {
   const location = useLocation();
   const { id } = useParams();
-  const assinatura = location.state;
+  // Busca assinatura do Redux se não vier pelo state (garante F5 funcionar)
+  const assinatura =
+    location.state ||
+    useSelector((state) => selectAssinaturaPorId(state, id));
   const [showEditarModal, setShowEditarModal] = useState(false);
   const [showExcluirModal, setShowExcluirModal] = useState(false);
   const navigate = useNavigate();
   const categorias = useSelector(selectAllCategorias);
-  const categoria = categorias.find((cat) => cat._id === assinatura.categoriaId);
-  /*   const assinaturaSelecionada = useSelector(
-    (state) => state.assinaturas.assinaturaSelecionada
+  const categoria = categorias.find(
+    (cat) => String(cat._id) === String(assinatura?.categoriaId)
   );
- */
-  const handleUpdateAssinatura = (assinaturaEditada) => {
-    dispatch(updateCategoria(assinaturaEditada));
-    setShowEditarModal(false);
-    dispatch(clearAssinaturaSelecionada());
-  };
 
-  // Função auxiliar para formatar data no padrão DD-MM-YYYY
   const formatarDataDDMMYYYY = (data) => {
+    if (!data) return "-";
     const dataObj = new Date(data);
     const dia = String(dataObj.getDate()).padStart(2, "0");
     const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
@@ -44,10 +41,6 @@ const DetalhesAssinatura = () => {
     );
   }
 
-  const formatarData = (dataString) => {
-    return new Date(dataString).toLocaleDateString("pt-BR");
-  };
-
   return (
     <div className="container mt-4">
       <div className="card shadow-sm mb-4">
@@ -64,7 +57,7 @@ const DetalhesAssinatura = () => {
               <h2>{assinatura.nome}</h2>
               <div className="d-flex gap-2 mb-2">
                 <span className="badge bg-primary">{assinatura.plano}</span>
-                 {categoria && (
+                {categoria ? (
                   <span
                     className="badge"
                     style={{
@@ -75,6 +68,8 @@ const DetalhesAssinatura = () => {
                   >
                     {categoria.nome}
                   </span>
+                ) : (
+                  <span className="badge bg-secondary">Sem categoria</span>
                 )}
               </div>
               <p className="text-muted">{assinatura.frequencia}</p>
@@ -86,7 +81,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-currency-dollar"></i>
               <div>
                 <small className="text-muted">Valor</small>
-                <p>R$ {assinatura.valor.toFixed(2)}</p>
+                <p>R$ {Number(assinatura.valor).toFixed(2)}</p>
               </div>
             </div>
 
@@ -150,7 +145,6 @@ const DetalhesAssinatura = () => {
       <EditarAssinatura
         show={showEditarModal}
         onHide={() => setShowEditarModal(false)}
-        onSubmit={handleUpdateAssinatura}
         assinatura={assinatura}
       />
 
@@ -159,7 +153,6 @@ const DetalhesAssinatura = () => {
         onHide={() => setShowExcluirModal(false)}
         assinatura={assinatura}
         onConfirm={() => {
-          console.log("Excluir assinatura:", id);
           setShowExcluirModal(false);
           navigate("/assinaturas");
         }}

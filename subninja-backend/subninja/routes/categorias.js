@@ -1,4 +1,5 @@
 var express = require('express');
+const Assinaturas = require('../models/assinaturas');
 var router = express.Router();
 const Categoria = require('../models/categorias');
 
@@ -27,13 +28,20 @@ router.put("/:id", (req, res, next) => {
 });
 
 // DELETE
-router.delete("/:id", (req, res, next) => {
-  Categoria.findByIdAndDelete(req.params.id)
-    .then(categoria => {
-      if (!categoria) return res.status(404).json({ error: "Categoria não encontrada" });
-      res.status(204).end();
-    })
-    .catch(err => next(err));
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const categoria = await Categoria.findByIdAndDelete(req.params.id);
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria não encontrada" });
+    }
+    await Assinaturas.updateMany(
+      { categoriaId: req.params.id },
+      { $set: { categoriaId: null } }
+    );
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

@@ -11,7 +11,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useSelector, useDispatch  } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { updateAssinatura } from "./assinaturaThunks";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
 import { fetchCategorias } from "../categorias/categoriasThunks";
@@ -50,7 +50,9 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
       setFormData({
         nome: assinatura.nome || "",
         valor: assinatura.valor || "",
-        categoriaId: assinatura.categoriaId || "",
+        categoriaId: categorias.some(cat => String(cat._id) === String(assinatura.categoriaId))
+          ? assinatura.categoriaId
+          : "",
         dataAssinatura: assinatura.dataAssinatura?.split("T")[0] || "",
         dataVencimento: assinatura.dataVencimento || "",
         frequencia: assinatura.frequencia || "",
@@ -60,7 +62,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
         linkCancelamento: assinatura.linkCancelamento || "",
       });
     }
-  }, [assinatura]);
+  }, [assinatura, categorias]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -96,7 +98,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const novaDataVencimento = calcularDataVencimento(
       formData.dataAssinatura,
       formData.frequencia
@@ -297,15 +299,14 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
 
           <Form.Group className="mb-3">
             <Form.Label className="fw-medium">Link de Cancelamento</Form.Label>
-                <FormControl
-                   type="url"
-                   id="linkCancelamento"
-                   placeholder="https://..."
-                   value={formData.linkCancelamento}
-                   onChange={handleChange}
-                />                
+            <FormControl
+              type="url"
+              id="linkCancelamento"
+              placeholder="https://..."
+              value={formData.linkCancelamento}
+              onChange={handleChange}
+            />
           </Form.Group>
-        
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" size="sm" onClick={onHide}>

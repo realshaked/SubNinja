@@ -13,9 +13,8 @@ export default function AssinaturaCard({ id }) {
     return <div>Assinatura não encontrada</div>;
   }
 
-  const { nome, categoriaId, valor, dataVencimento, frequencia, plano } =
-    assinatura;
-  const categoria = categorias.find((cat) => cat._id === categoriaId);
+  const { nome, categoriaId, valor, dataVencimento, frequencia, plano, linkCancelamento } = assinatura;
+  const categoria = categorias.find(cat => String(cat._id) === String(categoriaId));
 
   const formatarDataDDMMYYYY = (data) => {
     const dataObj = new Date(data);
@@ -40,7 +39,7 @@ export default function AssinaturaCard({ id }) {
             <div>
               <Card.Title className="mb-1">{nome}</Card.Title>
               <div className="d-flex gap-2">
-                {categoria && (
+                {categoria ? (
                   <span
                     className="badge"
                     style={{
@@ -51,6 +50,8 @@ export default function AssinaturaCard({ id }) {
                   >
                     {categoria.nome}
                   </span>
+                ) : (
+                  <span className="badge bg-secondary">Sem categoria</span>
                 )}
               </div>
             </div>
@@ -66,6 +67,16 @@ export default function AssinaturaCard({ id }) {
             <p className="mb-1">
               <strong>Plano:</strong> {plano}
             </p>
+            {linkCancelamento && (
+              <a
+                href={linkCancelamento}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline-danger btn-sm mt-2"
+              >
+                Cancelar Assinatura
+              </a>
+            )}
           </div>
         </Card.Body>
       </Card>

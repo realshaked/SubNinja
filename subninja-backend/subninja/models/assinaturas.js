@@ -3,7 +3,7 @@ const Schema = mongooose.Schema;
 
 const assinaturaSchema = new Schema({
   nome: { type: String, required: true },
-    categoriaId: { type: Schema.Types.ObjectId, ref: "Categoria", required: true },
+    categoriaId: { type: Schema.Types.ObjectId, ref: "Categoria", required: "false", default: null },
     valor: { type: Number, required: true },
     plano: { type: String, required: true },
     metodoPagamento: { type: String, required: true },
