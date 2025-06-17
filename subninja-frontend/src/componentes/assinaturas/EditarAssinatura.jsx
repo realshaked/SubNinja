@@ -30,6 +30,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     metodoPagamento: "",
     notificacao: "",
     plano: "",
+    linkCancelamento: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -56,6 +57,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
         metodoPagamento: assinatura.metodoPagamento || "",
         notificacao: assinatura.notificacao || "",
         plano: assinatura.plano || "",
+        linkCancelamento: assinatura.linkCancelamento || "",
       });
     }
   }, [assinatura]);
@@ -100,7 +102,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
       formData.frequencia
     );
 
-    if (!assinatura?.id) {
+    if (!assinatura?._id) {
       setError("ID da assinatura inválido");
       return;
     }
@@ -111,7 +113,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     try {
       await dispatch(
         updateAssinatura({
-          id: assinatura.id,
+          _id: assinatura._id,
           ...formData,
           valor: Number(formData.valor),
           dataVencimento: novaDataVencimento,
@@ -227,7 +229,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
                     Selecione a categoria
                   </option>
                   {categorias.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
+                    <option key={cat._id} value={cat._id}>
                       {cat.nome}
                     </option>
                   ))}
@@ -292,6 +294,18 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
               </Form.Group>
             </Col>
           </Row>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-medium">Link de Cancelamento</Form.Label>
+                <FormControl
+                   type="url"
+                   id="linkCancelamento"
+                   placeholder="https://..."
+                   value={formData.linkCancelamento}
+                   onChange={handleChange}
+                />                
+          </Form.Group>
+        
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" size="sm" onClick={onHide}>

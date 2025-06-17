@@ -15,7 +15,7 @@ export default function AssinaturaCard({ id }) {
 
   const { nome, categoriaId, valor, dataVencimento, frequencia, plano } =
     assinatura;
-  const categoria = categorias.find((cat) => cat.id === categoriaId);
+  const categoria = categorias.find((cat) => cat._id === categoriaId);
 
   const formatarDataDDMMYYYY = (data) => {
     const dataObj = new Date(data);
@@ -57,8 +57,7 @@ export default function AssinaturaCard({ id }) {
           </div>
           <div className="mt-3">
             <p className="mb-1">
-              <strong>Valor:</strong> R$ {valor /* .toFixed(2) */} ({frequencia}
-              )
+              <strong>Valor:</strong> R$ {valor} ({frequencia})
             </p>
             <p className="mb-1">
               <strong>Próximo vencimento:</strong>{" "}

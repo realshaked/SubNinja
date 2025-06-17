@@ -38,7 +38,7 @@ function AssinaturaLista() {
     <div className="assinatura-lista">
       {assinaturas.length > 0 ? (
         assinaturas.map((assinatura) => (
-          <AssinaturaCard key={assinatura.id} id={assinatura.id} />
+          <AssinaturaCard key={assinatura._id} id={assinatura._id} />
         ))
       ) : (
         <div className="text-muted">Nenhuma assinatura cadastrada</div>

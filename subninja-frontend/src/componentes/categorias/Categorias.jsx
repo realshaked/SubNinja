@@ -44,7 +44,7 @@ const Categorias = () => {
   };
 
   const handleDeleteCategoria = () => {
-    dispatch(deleteCategoria({ id: categoriaSelecionada.id }));
+    dispatch(deleteCategoria({ id: categoriaSelecionada._id }));
     dispatch(fecharModal("excluirCategoria"));
     dispatch(clearCategoriaSelecionada());
   };

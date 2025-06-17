@@ -33,7 +33,7 @@ export const updateCategoria = createAsyncThunk(
   'categorias/updateCategoria',
   async (categoria, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/categorias/${categoria.id}`, {
+      const response = await fetch(`/categorias/${categoria._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(categoria),

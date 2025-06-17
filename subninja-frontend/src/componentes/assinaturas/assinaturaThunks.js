@@ -32,20 +32,20 @@ export const createAssinatura = createAsyncThunk(
 );
 
 export const updateAssinatura = createAsyncThunk(
-  'assinaturas/updateAssinatura',
+  "assinaturas/updateAssinatura",
   async (assinatura, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/assinaturas/${assinatura.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(assinatura),
+      const { _id, ...rest } = assinatura;
+      const response = await fetch(`/assinaturas/${_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest), // NÃO envie _id no body!
       });
       if (!response.ok) {
         const error = await response.json();
-        return rejectWithValue(error.message || 'Erro ao atualizar assinatura');
+        return rejectWithValue(error.message || "Erro ao atualizar assinatura");
       }
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);
     }

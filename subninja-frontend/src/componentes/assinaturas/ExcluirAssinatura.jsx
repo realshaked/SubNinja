@@ -11,7 +11,7 @@ const ExcluirAssinatura = ({ show, onHide, assinatura }) => {
   const [error, setError] = useState(null);
 
   const handleConfirm = async () => {
-    if (!assinatura?.id) {
+    if (!assinatura?._id) {
       setError("ID da assinatura inválido");
       return;
     }
@@ -20,7 +20,7 @@ const ExcluirAssinatura = ({ show, onHide, assinatura }) => {
     setError(null);
 
     try {
-      await dispatch(deleteAssinatura(assinatura.id)).unwrap();
+      await dispatch(deleteAssinatura(assinatura._id)).unwrap();
       onHide(); // Fecha o modal
       navigate("/"); // Redireciona para a home page
     } catch (err) {

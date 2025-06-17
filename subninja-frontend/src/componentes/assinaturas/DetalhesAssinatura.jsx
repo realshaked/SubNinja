@@ -13,7 +13,7 @@ const DetalhesAssinatura = () => {
   const [showExcluirModal, setShowExcluirModal] = useState(false);
   const navigate = useNavigate();
   const categorias = useSelector(selectAllCategorias);
-  const categoria = categorias.find((cat) => cat.id === assinatura.categoriaId);
+  const categoria = categorias.find((cat) => cat._id === assinatura.categoriaId);
   /*   const assinaturaSelecionada = useSelector(
     (state) => state.assinaturas.assinaturaSelecionada
   );
@@ -113,6 +113,19 @@ const DetalhesAssinatura = () => {
                   <small className="text-muted">Notificação</small>
                   <p>{assinatura.notificacao}</p>
                 </div>
+              </div>
+            )}
+
+            {assinatura.linkCancelamento && (
+              <div className="mt-3">
+                <a
+                  href={assinatura.linkCancelamento}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-danger"
+                >
+                  Cancelar Assinatura
+                </a>
               </div>
             )}
           </div>

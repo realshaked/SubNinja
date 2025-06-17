@@ -5,7 +5,7 @@ import { createAssinatura } from './assinaturaThunks';
 // Criando o adapter para as assinaturas
 const assinaturasAdapter = createEntityAdapter({
   // Utilizando o id como identificador único
-  selectId: (assinatura) => assinatura.id,
+  selectId: (assinatura) => assinatura._id,
   // Ordenando por nome (como no seu slice original)
   sortComparer: (a, b) => a.nome.localeCompare(b.nome)
 });
@@ -53,7 +53,7 @@ const assinaturaSlice = createSlice({
     })
       .addCase(updateAssinatura.fulfilled, (state, action) => {
         assinaturasAdapter.updateOne(state, {
-          id: action.payload.id,
+          id: action.payload._id,
           changes: action.payload,
         });
       })

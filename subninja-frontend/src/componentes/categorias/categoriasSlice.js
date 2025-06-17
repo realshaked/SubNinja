@@ -2,7 +2,7 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { fetchCategorias, createCategoria, updateCategoria, deleteCategoria } from './categoriasThunks';
 
 const categoriasAdapter = createEntityAdapter({
-  selectId: (categoria) => categoria.id,
+  selectId: (categoria) => categoria._id,
   sortComparer: (a, b) => a.nome.localeCompare(b.nome),
 });
 
@@ -54,7 +54,7 @@ const categoriasSlice = createSlice({
       })
       .addCase(updateCategoria.fulfilled, (state, action) => {
         categoriasAdapter.updateOne(state, {
-          id: action.payload.id,
+          id: action.payload._id,
           changes: action.payload,
         });
       })

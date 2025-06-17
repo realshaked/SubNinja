@@ -31,6 +31,7 @@ const NovaAssinatura = () => {
     notificacao: "",
     dataAssinatura: new Date().toISOString().split("T")[0],
     dataVencimento: "",
+    linkCancelamento: "",
   });
 
   useEffect(() => {
@@ -98,6 +99,7 @@ const NovaAssinatura = () => {
       notificacao: "",
       dataAssinatura: new Date().toISOString().split("T")[0],
       dataVencimento: "",
+      linkCancelamento: "",
     });
 
     navigate("/assinaturas");
@@ -201,7 +203,7 @@ const NovaAssinatura = () => {
                         Selecione a categoria
                       </option>
                       {categorias.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
+                        <option key={cat._id} value={cat._id}>
                           {cat.nome}
                         </option>
                       ))}
@@ -263,6 +265,17 @@ const NovaAssinatura = () => {
                   </Form.Group>
                 </Col>
               </Row>
+
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-medium">Link de Cancelamento</Form.Label>
+                  <FormControl
+                    type="url"
+                    id="linkCancelamento"
+                    placeholder="https://..."
+                    value={formData.linkCancelamento}
+                    onChange={handleChange}
+                  />
+              </Form.Group>
 
               <div className="d-grid gap-2 d-flex justify-content-between mt-4">
                 <Button

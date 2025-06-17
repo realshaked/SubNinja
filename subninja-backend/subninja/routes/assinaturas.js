@@ -8,6 +8,18 @@ let assinaturas = [
   {id: 1, nome: 'Assinatura Básica', categoriaId:"1", valor:10, plano: "premium", metodoPagamento: "cartao", frequencia: "mensal", dataAssinatura:"10/06/2025", dataVencimento: "10/07/2025", notificacao: "sms" },
 ]; */
 
+// GET assinatura por id
+router.get("/:id", (req, res, next) => {
+  Assinaturas.findById(req.params.id)
+    .then(assinatura => {
+      if (!assinatura) {
+        return res.status(404).json({ error: "Assinatura não encontrada" });
+      }
+      res.json(assinatura);
+    })
+    .catch(err => next(err));
+});
+
 // GET todas
 router.get("/", (req, res, next) => {
   Assinaturas.find()

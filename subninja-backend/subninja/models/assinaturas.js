@@ -10,7 +10,8 @@ const assinaturaSchema = new Schema({
     frequencia: { type: String, required: true },
     dataAssinatura: { type: String, required: true },
     dataVencimento: { type: String, required: true },
-    notificacao: { type: String, required: true }
+    notificacao: { type: String, required: true },
+    linkCancelamento: { type: String, default: "" }
 });
 
 module.exports = mongooose.model('Assinatura', assinaturaSchema);
