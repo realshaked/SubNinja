@@ -12,3 +12,5 @@ const assinaturaSchema = new Schema({
     dataVencimento: { type: String, required: true },
     notificacao: { type: String, required: true }
 });
+
+module.exports = mongooose.model('Assinatura', assinaturaSchema);

@@ -7,6 +7,16 @@ var indexRouter = require('./routes/index');
 var assinaturasRouter = require('./routes/assinaturas');
 var categoriasRouter = require('./routes/categorias');
 
+const mongoose = require('mongoose');
+const connectionString = 'mongodb://localhost:27017/subninja';
+const connect = mongoose.connect(connectionString)
+
+connect.then((db) => {
+  console.log("Conectado ao MongoDB com sucesso!");
+}, (err) => {
+  console.log("Erro ao conectar ao MongoDB: ", err);
+});
+
 var app = express();
 
 app.use(logger('dev'));
