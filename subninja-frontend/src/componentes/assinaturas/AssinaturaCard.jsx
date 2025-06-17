@@ -67,16 +67,6 @@ export default function AssinaturaCard({ id }) {
             <p className="mb-1">
               <strong>Plano:</strong> {plano}
             </p>
-            {linkCancelamento && (
-              <a
-                href={linkCancelamento}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline-danger btn-sm mt-2"
-              >
-                Cancelar Assinatura
-              </a>
-            )}
           </div>
         </Card.Body>
       </Card>
