@@ -34,7 +34,7 @@ Para testar o site em uma máquina pessoal é preciso seguir os seguintes passos
 
 - **(1)** fazer o download dos arquivos fonte do github (preferencialmente usando git pull no vscode).
 - **(2)** navegar até o arquivo "subninja-frontend" e abrir um prompt de comando nessa pasta.
-- **(3)** executar o comando "npm install" para instalar dependências.
-- **(4)** executar o comando "npm run dev" para renderizar o frontend.
-- **(5)** pressionar CTRL e clicar no link do terminal para abrir a página no navegador.
-- **(6)** executar o comando "npx json-server --watch db.json --port 3001" para iniciar o backend mockado da aplicação.
+- **(3)** executar o comando "npm install" para instalar dependências e executar o comando "npm run dev" para renderizar o frontend.
+- **(4)** pressionar CTRL e clicar no link do terminal para abrir a página no navegador.
+- **(5)** retornar à raiz do projeto (arquivo "Subninja"), navegar até a pasta "subninja-backend/subninja" e executar um prompt de comando.
+- **(6)** inserir o comando "npm install" para instalar dependências e rodar o comando "npm start" para iniciar o backend.
