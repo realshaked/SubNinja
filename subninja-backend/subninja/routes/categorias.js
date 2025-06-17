@@ -1,35 +1,39 @@
 var express = require('express');
 var router = express.Router();
+const Categoria = require('../models/categorias');
 
-let categorias = [
-  {id: 1, nome: 'Categoria 1', cor:"", icone:"" },
-];
 // GET todas
-router.get("/", (req, res) => {
-  res.json(categorias);
+router.get("/", (req, res, next) => {
+  Categoria.find()
+    .then(categorias => res.json(categorias))
+    .catch(err => next(err));
 });
 
 // POST nova
-router.post("/", (req, res) => {
-  const nova = { ...req.body, id: Date.now().toString() };
-  categorias.push(nova);
-  res.status(201).json(nova);
+router.post("/", (req, res, next) => {
+  Categoria.create(req.body)
+    .then(categoria => res.status(201).json(categoria))
+    .catch(err => next(err));
 });
 
 // PUT editar
-router.put("/:id", (req, res) => {
-  const idx = categorias.findIndex(a => a.id == req.params.id);
-  if (idx === -1) return res.status(404).json({ error: "categoria não encontrada" });
-  categorias[idx] = { ...categorias[idx], ...req.body, id: categorias[idx].id };
-  res.json(categorias[idx]);
+router.put("/:id", (req, res, next) => {
+  Categoria.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(categoria => {
+      if (!categoria) return res.status(404).json({ error: "Categoria não encontrada" });
+      res.json(categoria);
+    })
+    .catch(err => next(err));
 });
 
 // DELETE
-router.delete("/:id", (req, res) => {
-  const idx = categorias.findIndex(a => a.id == req.params.id);
-  if (idx === -1) return res.status(404).json({ error: "categoria não encontrada" });
-  categorias.splice(idx, 1);
-  res.status(204).end();
+router.delete("/:id", (req, res, next) => {
+  Categoria.findByIdAndDelete(req.params.id)
+    .then(categoria => {
+      if (!categoria) return res.status(404).json({ error: "Categoria não encontrada" });
+      res.status(204).end();
+    })
+    .catch(err => next(err));
 });
 
 module.exports = router;
