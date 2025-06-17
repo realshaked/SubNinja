@@ -32,9 +32,9 @@ O **SubNinja** resolve esses problemas oferecendo uma plataforma centralizada pa
 
 Para testar o site em uma máquina pessoal é preciso seguir os seguintes passos:
 
-- **(1)** fazer o download dos arquivos fonte do github (preferencialmente usando git pull no vscode).
-- **(2)** navegar até o arquivo "subninja-frontend" e abrir um prompt de comando nessa pasta.
-- **(3)** executar o comando "npm install" para instalar dependências e executar o comando "npm run dev" para renderizar o frontend.
-- **(4)** pressionar CTRL e clicar no link do terminal para abrir a página no navegador.
-- **(5)** retornar à raiz do projeto (arquivo "Subninja"), navegar até a pasta "subninja-backend/subninja" e executar um prompt de comando.
-- **(6)** inserir o comando "npm install" para instalar dependências e rodar o comando "npm start" para iniciar o backend.
+- **(1)** Fazer o download dos arquivos fonte do github (preferencialmente usando git pull no vscode).
+- **(2)** Navegar até a pasta "subninja-backend/subninja" presente na raiz do projeto "Subninja" e executar um prompt de comando.
+- **(3)** inserir o comando "npm install" para instalar dependências e rodar o comando "npm start" para iniciar o backend.
+- **(4)** retroceder até a raiz do projeto "Subninja", navegar ao arquivo "subninja-frontend" e abrir um prompt de comando nessa pasta.
+- **(5)** executar o comando "npm install" para instalar dependências e executar o comando "npm run dev" para renderizar o frontend.
+- **(6)** pressionar CTRL e clicar no link do terminal para abrir a página no navegador.
