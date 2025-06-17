@@ -17,7 +17,7 @@ const EditarCategoria = ({ show, onHide, onSubmit, categoria }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ id: categoria._id, nome, cor, icone });
+    onSubmit({ _id: categoria._id, nome, cor, icone });
   };
 
   return (
