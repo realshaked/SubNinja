@@ -8,6 +8,9 @@ import store from "./store"; // Importando o store do Redux
 import { Provider } from "react-redux"; // Importando o Provider do Redux
 import DetalhesAssinatura from "./componentes/assinaturas/DetalhesAssinatura";
 import Relatorios from "./componentes/relatorios/Relatorios";
+import NotificacaoLista from './componentes/notificacoes/NotificacaoLista';
+import NotificacaoForm from './componentes/notificacoes/NotificacaoForm';
+import Notificacoes from './componentes/notificacoes/Notificacoes';
 
 function App() {
   return (
@@ -22,6 +25,7 @@ function App() {
             {/* Rota para Categorias */}
             <Route path="/assinaturas/:id" element={<DetalhesAssinatura />} />
             <Route path="/relatorios" element={<Relatorios />} />
+            <Route path="/notificacoes" element={<Notificacoes />} />
           </Routes>
         </Layout>
       </Router>

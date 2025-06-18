@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/categorias' : 'http://localhost:3000',
       '/assinaturas' : 'http://localhost:3000',
+      '/notificacoes' : 'http://localhost:3000',
     },
   },
 });

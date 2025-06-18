@@ -6,6 +6,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var assinaturasRouter = require('./routes/assinaturas');
 var categoriasRouter = require('./routes/categorias');
+var notificacoesRouter = require('./routes/notificacoes');
+
 
 const mongoose = require('mongoose');
 const connectionString = 'mongodb://localhost:27017/subninja';
@@ -28,5 +30,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/assinaturas', assinaturasRouter);
 app.use('/categorias', categoriasRouter);
+app.use('/notificacoes', notificacoesRouter);
 
 module.exports = app;
