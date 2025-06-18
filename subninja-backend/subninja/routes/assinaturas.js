@@ -32,24 +32,38 @@ router.get("/", (req, res, next) => {
 });
 
 // POST nova
-router.post("/", (req, res, next) => {
-  Assinaturas.create(req.body)
-    .then(assinatura => {
-      res.status(201).json(assinatura);
-    })
-    .catch(err => next(err));
+router.post("/", async (req, res, next) => {
+  try {
+    const assinatura = new Assinaturas(req.body);
+    await assinatura.validate();
+    await assinatura.save();
+    res.status(201).json(assinatura);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 // PUT editar
-router.put("/:id", (req, res, next) => {
-  Assinaturas.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then(assinatura => {
-      if (!assinatura) {
-        return res.status(404).json({ error: "Assinatura não encontrada" });
-      }
-      res.json(assinatura);
-    })
-    .catch(err => next(err));
+router.put("/:id", async (req, res, next) => {
+  try {
+    const assinatura = await Assinaturas.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!assinatura) {
+      return res.status(404).json({ error: "Assinatura não encontrada" });
+    }
+    res.json(assinatura);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 // DELETE

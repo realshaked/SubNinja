@@ -11,20 +11,38 @@ router.get("/", (req, res, next) => {
 });
 
 // POST nova
-router.post("/", (req, res, next) => {
-  Categoria.create(req.body)
-    .then(categoria => res.status(201).json(categoria))
-    .catch(err => next(err));
+router.post("/", async (req, res, next) => {
+  try {
+    const categoria = new Categoria(req.body);
+    await categoria.validate();
+    await categoria.save();
+    res.status(201).json(categoria);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 // PUT editar
-router.put("/:id", (req, res, next) => {
-  Categoria.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then(categoria => {
-      if (!categoria) return res.status(404).json({ error: "Categoria não encontrada" });
-      res.json(categoria);
-    })
-    .catch(err => next(err));
+router.put("/:id", async (req, res, next) => {
+  try {
+    const categoria = await Categoria.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria não encontrada" });
+    }
+    res.json(categoria);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 // DELETE
