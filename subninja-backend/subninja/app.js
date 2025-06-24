@@ -12,6 +12,9 @@ var notificacoesRouter = require('./routes/notificacoes');
 const mongoose = require('mongoose');
 const connectionString = 'mongodb://localhost:27017/subninja';
 const connect = mongoose.connect(connectionString)
+const session = require('express-session');
+const passport = require('passport');
+const authRouter = require('./routes/auth');
 
 connect.then((db) => {
   console.log("Conectado ao MongoDB com sucesso!");
@@ -21,6 +24,13 @@ connect.then((db) => {
 
 var app = express();
 
+app.use(session({
+  secret: 'subninja-segredo',
+  resave: false,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,5 +41,6 @@ app.use('/', indexRouter);
 app.use('/assinaturas', assinaturasRouter);
 app.use('/categorias', categoriasRouter);
 app.use('/notificacoes', notificacoesRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;

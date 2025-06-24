@@ -1,7 +1,11 @@
-var express = require('express');
-const Assinaturas = require('../models/assinaturas');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const Categoria = require('../models/categorias');
+const Assinaturas = require('../models/assinaturas');
+const passport = require('../auth/passport');
+
+// Protege todas as rotas abaixo com JWT
+router.use(passport.authenticate('jwt', { session: false }));
 
 // GET todas
 router.get("/", (req, res, next) => {
