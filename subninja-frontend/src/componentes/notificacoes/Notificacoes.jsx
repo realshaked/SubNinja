@@ -56,6 +56,9 @@ const Notificacoes = () => {
           <tr>
             <th>Título</th>
             <th>Mensagem</th>
+            <th>Data Programada</th>
+            <th>Status</th>
+            <th>Canal</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -64,6 +67,9 @@ const Notificacoes = () => {
             <tr key={n._id}>
               <td>{n.titulo}</td>
               <td>{n.mensagem}</td>
+              <td>{new Date(n.data_envio_programada).toLocaleString()}</td>
+              <td>{n.status}</td>
+              <td>{n.canal}</td>
               <td>
                 <Button
                   size="sm"
