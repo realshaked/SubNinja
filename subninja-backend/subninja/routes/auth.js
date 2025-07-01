@@ -1,18 +1,46 @@
 const express = require('express');
 const passport = require('../auth/passport');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuarios');
 const router = express.Router();
 const JWT_SECRET = 'subninja-segredo'; // Use variável de ambiente em produção!
 
-// Rota de login JWT (NÃO protegida)
+router.post('/register', async (req, res, next) => {
+  try {
+    const { username, senha, email, telefone, role = 'user' } = req.body;
+    if (!username || !senha || !email) {
+      return res.status(400).json({ error: 'Username, senha e email são obrigatórios.' });
+    }
+
+    const existe = await Usuario.findOne({ $or: [{ username }, { email }] });
+    if (existe) {
+      return res.status(409).json({ error: 'Usuário ou email já existe.' });
+    }
+
+    const hash = bcrypt.hashSync(senha, 10);
+    const novoUsuario = new Usuario({ username, senha: hash, email, telefone, role });
+    await novoUsuario.save();
+    res.status(201).json({ message: 'Usuário criado com sucesso.' });
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ error: 'Usuário ou email já existe.' });
+    }
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ error: 'Dados inválidos', message: err.message });
+    }
+    next(err);
+  }
+});
+
+// Login JWT
 router.post('/login-jwt', (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err || !user) {
       return res.status(401).json({ error: 'Credenciais inválidas' });
     }
     const token = jwt.sign(
-      { id: user._id, username: user.username, role: user.role },
+      { id: user._id, username: user.username },
       JWT_SECRET,
       { expiresIn: '1d' }
     );

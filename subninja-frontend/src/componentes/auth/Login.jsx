@@ -63,6 +63,18 @@ const Login = () => {
       >
         {status === "loading" ? "Entrando..." : "Entrar"}
       </Button>
+            <div className="text-center mt-3">
+        <small className="text-muted">
+          Não tem uma conta?{" "}
+          <Button
+            variant="link"
+            className="p-0"
+            onClick={() => navigate("/registro")}
+          >
+            Cadastre-se
+          </Button>
+        </small>
+      </div>
     </Form>
   );
 };

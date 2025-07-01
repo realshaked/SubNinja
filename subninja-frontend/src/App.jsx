@@ -13,23 +13,71 @@ import NotificacaoForm from "./componentes/notificacoes/NotificacaoForm";
 import Notificacoes from "./componentes/notificacoes/Notificacoes";
 import Login from "./componentes/auth/Login"; // Importando o componente de Login
 import Register from "./componentes/auth/Register"; // Importando o componente de Registro
-
+import RequireAuth from "./componentes/auth/RequireAuth"; // Importando o componente de autenticação 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<AssinaturaLista />} />
             <Route path="/registro" element={<Register />} />
             <Route path="/login" element={<Login />} /> {/* Rota para Login */}
-            <Route path="/nova-assinatura" element={<NovaAssinatura />} />
-            <Route path="/assinaturas" element={<AssinaturaLista />} />
-            <Route path="/categorias" element={<Categorias />} />{" "}
-            {/* Rota para Categorias */}
-            <Route path="/assinaturas/:id" element={<DetalhesAssinatura />} />
-            <Route path="/relatorios" element={<Relatorios />} />
-            <Route path="/notificacoes" element={<Notificacoes />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <AssinaturaLista />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/assinaturas"
+              element={
+                <RequireAuth>
+                  <AssinaturaLista />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/nova-assinatura"
+              element={
+                <RequireAuth>
+                  <NovaAssinatura />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/categorias"
+              element={
+                <RequireAuth>
+                  <Categorias />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/assinaturas/:id"
+              element={
+                <RequireAuth>
+                  <DetalhesAssinatura />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/relatorios"
+              element={
+                <RequireAuth>
+                  <Relatorios />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/notificacoes"
+              element={
+                <RequireAuth>
+                  <Notificacoes />
+                </RequireAuth>
+              }
+            />
           </Routes>
         </Layout>
       </Router>
