@@ -1,5 +1,6 @@
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { List, PlusCircle } from 'react-bootstrap-icons';
+import LogoutButton from './LogoutButton';
 
 const Header = ({ onToggleSidebar }) => {
   return (

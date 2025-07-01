@@ -3,6 +3,7 @@ const router = express.Router();
 const Categoria = require('../models/categorias');
 const Assinaturas = require('../models/assinaturas');
 const passport = require('../auth/passport');
+const isAdmin = require('../auth/isAdmin');
 
 // GET todas
 router.get("/", (req, res, next) => {
@@ -50,7 +51,7 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isAdmin, async (req, res, next) => {
   try {
     const categoria = await Categoria.findByIdAndDelete(req.params.id);
     if (!categoria) {
