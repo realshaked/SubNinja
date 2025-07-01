@@ -9,6 +9,7 @@ export default defineConfig({
       '/categorias' : 'http://localhost:3000',
       '/assinaturas' : 'http://localhost:3000',
       '/notificacoes' : 'http://localhost:3000',
+      '/auth' : 'http://localhost:3000',
     },
   },
 });

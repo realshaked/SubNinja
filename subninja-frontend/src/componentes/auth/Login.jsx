@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "./authThunks";
+import { login } from "./authThunks"; // Importe o thunk do arquivo correto
+import { clearError } from "./authSlice"; // Ações síncronas vêm do slice
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -13,12 +14,19 @@ const Login = () => {
   const navigate = useNavigate();
   const { status, error, isAuthenticated } = useSelector((state) => state.auth);
 
-  // Redireciona quando o login for bem-sucedido
   useEffect(() => {
-    if (isAuthenticated && status === "succeeded") {
+    // Limpa erros ao desmontar o componente
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  // Redireciona quando autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate("/assinaturas");
     }
-  }, [isAuthenticated, status, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

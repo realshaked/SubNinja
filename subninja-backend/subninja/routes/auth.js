@@ -22,8 +22,8 @@ router.post('/login-jwt', (req, res, next) => {
 
 router.post('/register', async (req, res, next) => {
   try{
-    const { username, password, role } = req.body;
-    if (!username || !password || !role) {
+    const { username, senha, role, email, telefone } = req.body;
+    if (!username || !senha || !role || !email|| !telefone) {
       return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     }
     
@@ -32,7 +32,7 @@ router.post('/register', async (req, res, next) => {
       return res.status(400).json({ error: 'Usuário já existe' });
     }
 
-    const novoUsuario = new Usuario({ username, password, role });
+    const novoUsuario = new Usuario({ username, senha, role, email, telefone });
     await novoUsuario.save();
     
     res.status(201).json({ message: 'Usuário criado com sucesso' });
