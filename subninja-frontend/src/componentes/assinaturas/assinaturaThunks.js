@@ -4,10 +4,13 @@ export const fetchAssinaturas = createAsyncThunk(
   'assinaturas/fetchAssinaturas',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/assinaturas');
+      const token = localStorage.getItem('token');
+      const response = await fetch('/assinaturas', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       if (!response.ok) throw new Error('Erro ao buscar assinaturas');
-   /*    const text = await response.text();
-      if (!text) return []; // Retorna array vazio se não houver dados */
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);
@@ -19,9 +22,13 @@ export const createAssinatura = createAsyncThunk(
   'assinaturas/createAssinatura',
   async (novaAssinatura, { rejectWithValue }) => {
     try {
+     const token = localStorage.getItem('token');
       const response = await fetch('/assinaturas', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(novaAssinatura),
       });
       return await response.json();
@@ -35,11 +42,15 @@ export const updateAssinatura = createAsyncThunk(
   "assinaturas/updateAssinatura",
   async (assinatura, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
       const { _id, ...rest } = assinatura;
       const response = await fetch(`/assinaturas/${_id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rest), // NÃO envie _id no body!
+        headers: { 
+                   'Content-Type': 'application/json', 
+                   'Authorization': `Bearer ${token}`,
+                 },
+        body: JSON.stringify(rest),
       });
       if (!response.ok) {
         const error = await response.json();
@@ -56,9 +67,12 @@ export const deleteAssinatura = createAsyncThunk(
   'assinaturas/deleteAssinatura',
   async ( id, {rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`/assinaturas/${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 
+                   'Authorization': 'Bearer ${token}'
+        },
       });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));

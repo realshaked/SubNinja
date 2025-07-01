@@ -1,9 +1,10 @@
-const mongooose = require('mongoose');
-const Schema = mongooose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const assinaturaSchema = new Schema({
-  nome: { type: String, required: true },
-    categoriaId: { type: Schema.Types.ObjectId, ref: "Categoria", required: "false", default: null },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
+    nome: { type: String, required: true },
+    categoriaId: { type: Schema.Types.ObjectId, ref: "Categoria", required: false, default: null },
     valor: { type: Number, required: true },
     plano: { type: String, required: true },
     metodoPagamento: { type: String, required: true },
@@ -14,4 +15,4 @@ const assinaturaSchema = new Schema({
     linkCancelamento: { type: String, default: "" }
 });
 
-module.exports = mongooose.model('Assinatura', assinaturaSchema);
+module.exports = mongoose.model('Assinatura', assinaturaSchema);

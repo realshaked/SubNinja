@@ -1,6 +1,7 @@
 import { Button, Nav } from 'react-bootstrap';
 import { X, HouseDoor, PlusCircle, BarChart } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
+import LogoutButton from './LogoutButton';
 
 const Sidebar = ({ isOpen, onClose }) => {
   return (
@@ -36,6 +37,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Nav.Link as={Link} to="/relatorios" className="text-white mb-2">
           <BarChart className="me-2" /> Relatório de Gastos
         </Nav.Link>
+        <LogoutButton />
       </Nav>
     </div>
   );

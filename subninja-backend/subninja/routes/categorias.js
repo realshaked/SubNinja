@@ -4,15 +4,15 @@ const Categoria = require('../models/categorias');
 const Assinaturas = require('../models/assinaturas');
 const passport = require('../auth/passport');
 
-// Protege todas as rotas abaixo com JWT
-router.use(passport.authenticate('jwt', { session: false }));
-
 // GET todas
 router.get("/", (req, res, next) => {
   Categoria.find()
     .then(categorias => res.json(categorias))
     .catch(err => next(err));
 });
+
+// Protege todas as rotas abaixo com JWT
+router.use(passport.authenticate('jwt', { session: false }));
 
 // POST nova
 router.post("/", async (req, res, next) => {
