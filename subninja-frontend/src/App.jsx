@@ -8,9 +8,11 @@ import store from "./store"; // Importando o store do Redux
 import { Provider } from "react-redux"; // Importando o Provider do Redux
 import DetalhesAssinatura from "./componentes/assinaturas/DetalhesAssinatura";
 import Relatorios from "./componentes/relatorios/Relatorios";
-import NotificacaoLista from './componentes/notificacoes/NotificacaoLista';
-import NotificacaoForm from './componentes/notificacoes/NotificacaoForm';
-import Notificacoes from './componentes/notificacoes/Notificacoes';
+import NotificacaoLista from "./componentes/notificacoes/NotificacaoLista";
+import NotificacaoForm from "./componentes/notificacoes/NotificacaoForm";
+import Notificacoes from "./componentes/notificacoes/Notificacoes";
+import Login from "./componentes/auth/Login"; // Importando o componente de Login
+import Register from "./componentes/auth/Register"; // Importando o componente de Registro
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<AssinaturaLista />} />
+            <Route path="/registro" element={<Register />} />
+            <Route path="/login" element={<Login />} /> {/* Rota para Login */}
             <Route path="/nova-assinatura" element={<NovaAssinatura />} />
             <Route path="/assinaturas" element={<AssinaturaLista />} />
             <Route path="/categorias" element={<Categorias />} />{" "}

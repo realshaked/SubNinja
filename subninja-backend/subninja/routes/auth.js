@@ -20,4 +20,49 @@ router.post('/login-jwt', (req, res, next) => {
   })(req, res, next);
 });
 
+router.post('/register', async (req, res, next) => {
+  try{
+    const { username, password, role } = req.body;
+    if (!username || !password || !role) {
+      return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    }
+    
+    const existe = await Usuario.findOne({ username });
+    if ( existe ) {
+      return res.status(400).json({ error: 'Usuário já existe' });
+    }
+
+    const novoUsuario = new Usuario({ username, password, role });
+    await novoUsuario.save();
+    
+    res.status(201).json({ message: 'Usuário criado com sucesso' });
+  }
+  catch(err){
+    console.error(err);
+    
+    if(err.code === 11000) {
+      return res.status(409).json({ error: 'Usuário já existe',
+        message: 'O nome de usuário já está em uso. Por favor, escolha outro.' 
+      });
+    }
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ 
+        error: 'Dados inválidos',
+        message: err.message
+      });
+    }
+    next(err);
+  }
+})
+
+router.get('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao fazer logout' });
+    }
+    res.json({ message: 'Logout realizado com sucesso' });
+  });
+});
+
+
 module.exports = router;
