@@ -5,7 +5,7 @@ const Notificacao = require('../models/notificacao');
 // GET todas
 router.get('/', async (req, res, next) => {
   try {
-    const notificacoes = await Notificacao.find().sort({ data: -1 });
+    const notificacoes = await Notificacao.find().sort({ data_envio_programada: -1 });
     res.json(notificacoes);
   } catch (err) {
     next(err);

@@ -87,7 +87,9 @@ const NovaAssinatura = () => {
       dataVencimento: novaDataVencimento,
     };
 
-    dispatch(createAssinatura(novaAssinatura));
+      dispatch(createAssinatura(novaAssinatura)).then(() => {
+      dispatch(fetchNotificacoes());
+    });
 
     setFormData({
       nome: "",

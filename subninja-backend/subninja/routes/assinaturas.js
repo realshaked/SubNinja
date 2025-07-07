@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Assinaturas = require('../models/assinaturas');
+const Notificacao = require('../models/notificacao');
 const mongoose = require('mongoose');
 const passport = require('passport');
 
@@ -29,16 +30,32 @@ router.get("/", (req, res, next) => {
     .catch(err => next(err));
 });
 
-// POST nova (vincula ao usuário autenticado)
+// POST nova (vincula ao usuário autenticado e cria notificação)
 router.post("/", async (req, res, next) => {
   try {
     const assinatura = new Assinaturas({
       ...req.body,
       userId: req.user._id
     });
+
     await assinatura.validate();
     await assinatura.save();
-    res.status(201).json(assinatura);
+
+    // Após salvar a assinatura, cria notificação para a data da renovação
+    const notificacao = new Notificacao({
+      titulo: "Renovação de assinatura",
+      mensagem: `Sua assinatura de ${assinatura.nome} será renovada hoje.`,
+      data_envio_programada: assinatura.dataVencimento,
+    });
+
+    await notificacao.validate();
+    await notificacao.save();
+
+    res.status(201).json({
+      assinatura,
+      notificacaoCriada: notificacao
+    });
+
   } catch (err) {
     if (err.name === "ValidationError") {
       return res.status(400).json({ error: err.message });
