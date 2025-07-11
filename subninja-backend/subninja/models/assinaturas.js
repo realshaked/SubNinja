@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const assinaturaSchema = new Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
+    usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
     nome: { type: String, required: true },
     categoriaId: { type: Schema.Types.ObjectId, ref: "Categoria", required: false, default: null },
     valor: { type: Number, required: true },
