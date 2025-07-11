@@ -5,11 +5,14 @@ const passport = require('../auth/passport');
 const isAdmin = require('../auth/isAdmin');
 const categoriaService = require('../services/categoriaService');
 
+// Protege todas as rotas abaixo com JWT
+router.use(passport.authenticate('jwt', { session: false }));
+
 // GET todas
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try{
     const usuarioId = req.user._id;
-    const categorias = categoriaService.getCategoriasDisponiveis(usuarioId);
+    const categorias = await categoriaService.getCategoriasDisponiveis(usuarioId);
     res.json(categorias);
   }
   catch(error) {
@@ -20,8 +23,7 @@ router.get("/", (req, res, next) => {
     .catch(err => next(err)); */
 });
 
-// Protege todas as rotas abaixo com JWT
-router.use(passport.authenticate('jwt', { session: false }));
+
 
 //Criar categoria de usuário
 router.post("/", async (req, res, next) => {
