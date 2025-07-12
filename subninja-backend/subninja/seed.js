@@ -64,7 +64,7 @@ async function seed() {
         valor: 39.90,
         plano: "Premium",
         metodoPagamento: "Cartão de Crédito",
-        frequencia: "Mensal",
+        frequencia: "mensal",
         dataAssinatura: "2024-01-01",
         dataVencimento: "",
         notificacao: "Sim",
@@ -76,11 +76,11 @@ async function seed() {
         categoriaId: categoriasPadrao[2]._id, // Música
         valor: 19.90,
         plano: "Individual",
-        metodoPagamento: "PIX",
-        frequencia: "Mensal",
+        metodoPagamento: "pix",
+        frequencia: "mensal",
         dataAssinatura: "2024-01-15",
-        dataVencimento: "2024-07-15",
-        notificacao: "Sim",
+        dataVencimento: "",
+        notificacao: "",
         linkCancelamento: ""
       },
       {
@@ -89,11 +89,11 @@ async function seed() {
         categoriaId: categoriasPadrao[1]._id, // Educação
         valor: 49.90,
         plano: "Plus",
-        metodoPagamento: "Cartão de Crédito",
-        frequencia: "Mensal",
+        metodoPagamento: "credito",
+        frequencia: "mensal",
         dataAssinatura: "2024-02-01",
-        dataVencimento: "2024-08-01",
-        notificacao: "Sim",
+        dataVencimento: "",
+        notificacao: "",
         linkCancelamento: ""
       },
       {
@@ -102,11 +102,11 @@ async function seed() {
         categoriaId: categoriaPersonalizada._id, // Categoria personalizada
         valor: 29.90,
         plano: "Básico",
-        metodoPagamento: "Cartão de Débito",
-        frequencia: "Mensal",
+        metodoPagamento: "debito",
+        frequencia: "mensal",
         dataAssinatura: "2024-03-01",
-        dataVencimento: "2024-09-01",
-        notificacao: "Não",
+        dataVencimento: "",
+        notificacao: "",
         linkCancelamento: ""
       }
     ]);

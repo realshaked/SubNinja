@@ -10,7 +10,7 @@ class AssinaturaService {
 
   // GET assinatura por id (só do usuário autenticado)
   async getAssinaturaById(id) {
-    const assinatura = await Assinaturas.findOne({ _id: id, userId: this.userId });
+    const assinatura = await Assinaturas.findOne({ _id: id, usuarioId: this.userId });
     if (!assinatura) {
       throw new Error('Assinatura não encontrada');
     }
@@ -19,7 +19,7 @@ class AssinaturaService {
 
   // GET todas (só do usuário autenticado)
   async getAllAssinaturas() {
-    return await Assinaturas.find({ userId: this.userId });
+    return await Assinaturas.find({ usuarioId: this.userId });
   }
 
   // POST nova (vincula ao usuário autenticado e cria notificação)
@@ -33,7 +33,7 @@ class AssinaturaService {
     const assinatura = new Assinaturas({
       ...assinaturaData,
       dataVencimento,
-      userId: this.userId
+      usuarioId: this.userId
     });
 
     await assinatura.validate();
@@ -44,7 +44,8 @@ class AssinaturaService {
       titulo: "Renovação de assinatura",
       mensagem: `Sua assinatura de ${assinatura.nome} será renovada amanhã.`,
       data_envio_programada: new Date(dataVencimento.getTime() - (DIAS_ANTES_NOTIFICACAO * 24 * 60 * 60 * 1000)), 
-      userId: this.userId 
+      usuarioId: this.userId,
+      assinaturaId: assinatura._id 
     });
 
     await notificacao.validate();
@@ -56,7 +57,7 @@ class AssinaturaService {
   // PUT editar (só se for do usuário autenticado)
   async updateAssinatura(id, updateData) {
     const assinatura = await Assinaturas.findOneAndUpdate(
-      { _id: id, userId: this.userId },
+      { _id: id, usuarioId: this.userId },
       updateData,
       { new: true, runValidators: true }
     );
@@ -70,7 +71,7 @@ class AssinaturaService {
 
   // DELETE (só se for do usuário autenticado)
   async deleteAssinatura(id) {
-    const assinatura = await Assinaturas.findOneAndDelete({ _id: id, userId: this.userId });
+    const assinatura = await Assinaturas.findOneAndDelete({ _id: id, usuarioId: this.userId });
     
     if (!assinatura) {
       throw new Error('Assinatura não encontrada');
