@@ -30,7 +30,6 @@ const NovaAssinatura = () => {
     plano: "",
     notificacao: "",
     dataAssinatura: new Date().toISOString().split("T")[0],
-    dataVencimento: "",
     linkCancelamento: "",
   });
 
@@ -48,63 +47,21 @@ const NovaAssinatura = () => {
     });
   };
 
-  const calcularDataVencimento = (dataAssinatura, frequencia) => {
-    let data = new Date(dataAssinatura);
-    switch (frequencia) {
-      case "mensal":
-        data.setMonth(data.getMonth() + 1);
-        break;
-      case "trimestral":
-        data.setMonth(data.getMonth() + 3);
-        break;
-      case "semestral":
-        data.setMonth(data.getMonth() + 6);
-        break;
-      case "anual":
-        data.setFullYear(data.getFullYear() + 1);
-        break;
-      case "semanal":
-        data.setDate(data.getDate() + 7);
-        break;
-      default:
-        break;
-    }
-    return data.toISOString().split("T")[0];
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const novaDataVencimento = calcularDataVencimento(
-      formData.dataAssinatura,
-      formData.frequencia
-    );
     const novaAssinatura = {
       ...formData,
-      id: Date.now().toString(),
       valor: Number(formData.valor),
-      dataCriacao: new Date().toISOString(),
-      dataVencimento: novaDataVencimento,
     };
 
-      dispatch(createAssinatura(novaAssinatura)).then(() => {
-      dispatch(fetchNotificacoes());
-    });
-
-    setFormData({
-      nome: "",
-      frequencia: "",
-      metodoPagamento: "",
-      categoriaId: "",
-      valor: "",
-      plano: "",
-      notificacao: "",
-      dataAssinatura: new Date().toISOString().split("T")[0],
-      dataVencimento: "",
-      linkCancelamento: "",
-    });
-
-    navigate("/assinaturas");
+    dispatch(createAssinatura(novaAssinatura))
+      .then(() => {
+        navigate("/assinaturas");
+      })
+      .catch((error) => {
+        console.error("Erro ao criar assinatura:", error);
+      });
   };
 
   const handleCancel = () => {
@@ -269,14 +226,16 @@ const NovaAssinatura = () => {
               </Row>
 
               <Form.Group className="mb-3">
-                <Form.Label className="fw-medium">Link de Cancelamento</Form.Label>
-                  <FormControl
-                    type="url"
-                    id="linkCancelamento"
-                    placeholder="https://..."
-                    value={formData.linkCancelamento}
-                    onChange={handleChange}
-                  />
+                <Form.Label className="fw-medium">
+                  Link de Cancelamento
+                </Form.Label>
+                <FormControl
+                  type="url"
+                  id="linkCancelamento"
+                  placeholder="https://..."
+                  value={formData.linkCancelamento}
+                  onChange={handleChange}
+                />
               </Form.Group>
 
               <div className="d-grid gap-2 d-flex justify-content-between mt-4">

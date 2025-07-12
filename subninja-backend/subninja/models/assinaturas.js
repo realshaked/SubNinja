@@ -8,9 +8,9 @@ const assinaturaSchema = new Schema({
     valor: { type: Number, required: true },
     plano: { type: String, required: true },
     metodoPagamento: { type: String, required: true },
-    frequencia: { type: String, required: true },
-    dataAssinatura: { type: String, required: true },
-    dataVencimento: { type: String, required: true },
+    frequencia: { type: String, required: true, enum: ['mensal', 'trimestral', 'semestral', 'anual', 'semanal'] },
+    dataAssinatura: { type: Date, required: true, default: Date.now },
+    dataVencimento: { type: Date,},
     notificacao: { type: String, required: true },
     linkCancelamento: { type: String, default: "" }
 });

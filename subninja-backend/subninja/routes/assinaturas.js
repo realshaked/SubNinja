@@ -1,61 +1,44 @@
 var express = require('express');
 var router = express.Router();
-const Assinaturas = require('../models/assinaturas');
-const Notificacao = require('../models/notificacao');
-const mongoose = require('mongoose');
 const passport = require('passport');
+const AssinaturaService = require('../services/assinaturaService');
 
 router.use(passport.authenticate('jwt', { session: false }));
 
+// Middleware para criar instância do serviço
+router.use((req, res, next) => {
+  res.locals.assinaturaService = new AssinaturaService(req.user._id);
+  next();
+});
+
 // GET assinatura por id (só do usuário autenticado)
-router.get("/:id", (req, res, next) => {
-  Assinaturas.findOne({ _id: req.params.id, userId: req.user._id })
-    .then(assinatura => {
-      if (!assinatura) {
-        return res.status(404).json({ error: "Assinatura não encontrada" });
-      }
-      res.json(assinatura);
-    })
-    .catch(err => next(err));
+router.get("/:id", async (req, res, next) => {
+  try {
+    const assinatura = await res.locals.assinaturaService.getAssinaturaById(req.params.id);
+    res.json(assinatura);
+  } catch (err) {
+    if (err.message === 'Assinatura não encontrada') {
+      return res.status(404).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 // GET todas (só do usuário autenticado)
-router.get("/", (req, res, next) => {
-  Assinaturas.find({ userId: req.user._id })
-    .then(assinaturasBanco => {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.json(assinaturasBanco);
-    })
-    .catch(err => next(err));
+router.get("/", async (req, res, next) => {
+  try {
+    const assinaturas = await res.locals.assinaturaService.getAllAssinaturas();
+    res.status(200).json(assinaturas);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // POST nova (vincula ao usuário autenticado e cria notificação)
 router.post("/", async (req, res, next) => {
   try {
-    const assinatura = new Assinaturas({
-      ...req.body,
-      userId: req.user._id
-    });
-
-    await assinatura.validate();
-    await assinatura.save();
-
-    // Após salvar a assinatura, cria notificação para a data da renovação
-    const notificacao = new Notificacao({
-      titulo: "Renovação de assinatura",
-      mensagem: `Sua assinatura de ${assinatura.nome} será renovada hoje.`,
-      data_envio_programada: assinatura.dataVencimento,
-    });
-
-    await notificacao.validate();
-    await notificacao.save();
-
-    res.status(201).json({
-      assinatura,
-      notificacaoCriada: notificacao
-    });
-
+    const result = await res.locals.assinaturaService.createAssinatura(req.body);
+    res.status(201).json(result);
   } catch (err) {
     if (err.name === "ValidationError") {
       return res.status(400).json({ error: err.message });
@@ -67,33 +50,30 @@ router.post("/", async (req, res, next) => {
 // PUT editar (só se for do usuário autenticado)
 router.put("/:id", async (req, res, next) => {
   try {
-    const assinatura = await Assinaturas.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!assinatura) {
-      return res.status(404).json({ error: "Assinatura não encontrada" });
-    }
+    const assinatura = await res.locals.assinaturaService.updateAssinatura(req.params.id, req.body);
     res.json(assinatura);
   } catch (err) {
     if (err.name === "ValidationError") {
       return res.status(400).json({ error: err.message });
+    }
+    if (err.message === 'Assinatura não encontrada') {
+      return res.status(404).json({ error: err.message });
     }
     next(err);
   }
 });
 
 // DELETE (só se for do usuário autenticado)
-router.delete("/:id", (req, res, next) => {
-  Assinaturas.findOneAndDelete({ _id: req.params.id, userId: req.user._id })
-    .then(assinatura => {
-      if (!assinatura) {
-        return res.status(404).json({ error: "Assinatura não encontrada" });
-      }
-      res.status(204).end();
-    })
-    .catch(err => next(err));
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await res.locals.assinaturaService.deleteAssinatura(req.params.id);
+    res.status(204).end();
+  } catch (err) {
+    if (err.message === 'Assinatura não encontrada') {
+      return res.status(404).json({ error: err.message });
+    }
+    next(err);
+  }
 });
 
 module.exports = router;

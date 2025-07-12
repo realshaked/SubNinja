@@ -1,34 +1,33 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import EditarAssinatura from "./EditarAssinatura";
-import ExcluirAssinatura from "./ExcluirAssinatura";
 import { useSelector } from "react-redux";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
 import { selectAssinaturaPorId } from "./assinaturaSlice";
+import EditarAssinatura from "./EditarAssinatura";
+import ExcluirAssinatura from "./ExcluirAssinatura";
+import {
+  formatarData,
+  formatarMoeda,
+  formatarFrequencia,
+  formatarMetodoPagamento,
+} from "../../utils/formatadores";
 
 const DetalhesAssinatura = () => {
   const location = useLocation();
   const { id } = useParams();
+  const navigate = useNavigate();
+
   // Busca assinatura do Redux se não vier pelo state (garante F5 funcionar)
   const assinatura =
-    location.state ||
-    useSelector((state) => selectAssinaturaPorId(state, id));
+    location.state || useSelector((state) => selectAssinaturaPorId(state, id));
+  const categorias = useSelector(selectAllCategorias);
+
   const [showEditarModal, setShowEditarModal] = useState(false);
   const [showExcluirModal, setShowExcluirModal] = useState(false);
-  const navigate = useNavigate();
-  const categorias = useSelector(selectAllCategorias);
+
   const categoria = categorias.find(
     (cat) => String(cat._id) === String(assinatura?.categoriaId)
   );
-
-  const formatarDataDDMMYYYY = (data) => {
-    if (!data) return "-";
-    const dataObj = new Date(data);
-    const dia = String(dataObj.getDate()).padStart(2, "0");
-    const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
-    const ano = dataObj.getFullYear();
-    return `${dia}-${mes}-${ano}`;
-  };
 
   if (!assinatura) {
     return (
@@ -56,14 +55,16 @@ const DetalhesAssinatura = () => {
             <div>
               <h2>{assinatura.nome}</h2>
               <div className="d-flex gap-2 mb-2">
-                <span className="badge bg-primary">{assinatura.plano}</span>
+                {assinatura.plano && (
+                  <span className="badge bg-primary">{assinatura.plano}</span>
+                )}
                 {categoria ? (
                   <span
                     className="badge"
                     style={{
                       backgroundColor: categoria.cor,
                       color: "#fff",
-                      fontWeight: "bold",
+                      fontWeight: "normal",
                     }}
                   >
                     {categoria.nome}
@@ -72,7 +73,9 @@ const DetalhesAssinatura = () => {
                   <span className="badge bg-secondary">Sem categoria</span>
                 )}
               </div>
-              <p className="text-muted">{assinatura.frequencia}</p>
+              <p className="text-muted">
+                {formatarFrequencia(assinatura.frequencia)}
+              </p>
             </div>
           </div>
 
@@ -81,7 +84,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-currency-dollar"></i>
               <div>
                 <small className="text-muted">Valor</small>
-                <p>R$ {Number(assinatura.valor).toFixed(2)}</p>
+                <p>{formatarMoeda(assinatura.valor)}</p>
               </div>
             </div>
 
@@ -89,7 +92,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-calendar"></i>
               <div>
                 <small className="text-muted">Próximo vencimento</small>
-                <p>{formatarDataDDMMYYYY(assinatura.dataVencimento)}</p>
+                <p>{formatarData(assinatura.dataVencimento)}</p>
               </div>
             </div>
 
@@ -97,7 +100,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-credit-card"></i>
               <div>
                 <small className="text-muted">Método de pagamento</small>
-                <p>{assinatura.metodoPagamento}</p>
+                <p>{formatarMetodoPagamento(assinatura.metodoPagamento)}</p>
               </div>
             </div>
 
@@ -119,7 +122,7 @@ const DetalhesAssinatura = () => {
                   rel="noopener noreferrer"
                   className="btn btn-outline-danger"
                 >
-                  Cancelar Assinatura
+                  <i className="bi bi-x-circle me-2"></i>Cancelar Assinatura
                 </a>
               </div>
             )}
