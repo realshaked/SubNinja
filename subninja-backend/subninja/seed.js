@@ -66,7 +66,7 @@ async function seed() {
         metodoPagamento: "Cartão de Crédito",
         frequencia: "Mensal",
         dataAssinatura: "2024-01-01",
-        dataVencimento: "2024-07-01",
+        dataVencimento: "",
         notificacao: "Sim",
         linkCancelamento: ""
       },

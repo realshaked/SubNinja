@@ -13,7 +13,8 @@ import NotificacaoForm from "./componentes/notificacoes/NotificacaoForm";
 import Notificacoes from "./componentes/notificacoes/Notificacoes";
 import Login from "./componentes/auth/Login"; // Importando o componente de Login
 import Register from "./componentes/auth/Register"; // Importando o componente de Registro
-import RequireAuth from "./componentes/auth/RequireAuth"; // Importando o componente de autenticação 
+import RequireAuth from "./componentes/auth/RequireAuth"; // Importando o componente de autenticação
+import AreaUsuario from "./componentes/auth/AreaUsuario";
 function App() {
   return (
     <Provider store={store}>
@@ -22,6 +23,14 @@ function App() {
           <Routes>
             <Route path="/registro" element={<Register />} />
             <Route path="/login" element={<Login />} /> {/* Rota para Login */}
+            <Route
+              path="/area-usuario"
+              element={
+                <RequireAuth>
+                  <AreaUsuario />
+                </RequireAuth>
+              }
+            />
             <Route
               path="/"
               element={

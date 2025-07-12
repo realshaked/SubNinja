@@ -53,6 +53,34 @@ export const register = createAsyncThunk(
   }
 );
 
+
+export const atualizarUsuario = createAsyncThunk(
+  'auth/atualizarUsuario',
+  async (dadosUsuario, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const resposta = await fetch('/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(dadosUsuario),
+      });
+      
+      if (!resposta.ok) {
+        const erro = await resposta.json();
+        return rejectWithValue(erro.error || 'Erro ao atualizar perfil');
+      }
+      
+      const dados = await resposta.json();
+      return dados;
+    } catch (erro) {
+      return rejectWithValue('Erro de conexão ao atualizar perfil');
+    }
+  }
+);
+
 export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
