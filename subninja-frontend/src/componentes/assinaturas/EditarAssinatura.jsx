@@ -16,6 +16,13 @@ import { updateAssinatura } from "./assinaturaThunks";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
 import { fetchCategorias } from "../categorias/categoriasThunks";
 import { useNavigate } from "react-router-dom";
+import {
+  formatarDataParaInput,
+  formatarMoeda,
+  formatarFrequencia,
+  formatarMetodoPagamento,
+  calcularDataVencimento,
+} from "../../utils/formatadores.js";
 
 const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const dispatch = useDispatch();
@@ -25,7 +32,6 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     valor: "",
     categoriaId: "",
     dataAssinatura: "",
-    dataVencimento: "",
     frequencia: "",
     metodoPagamento: "",
     notificacao: "",
@@ -49,12 +55,13 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     if (assinatura) {
       setFormData({
         nome: assinatura.nome || "",
-        valor: assinatura.valor || "",
-        categoriaId: categorias.some(cat => String(cat._id) === String(assinatura.categoriaId))
+        valor: formatarMoeda(assinatura.valor, false), // Formata para exibição
+        categoriaId: categorias.some(
+          (cat) => String(cat._id) === String(assinatura.categoriaId)
+        )
           ? assinatura.categoriaId
           : "",
-        dataAssinatura: assinatura.dataAssinatura?.split("T")[0] || "",
-        dataVencimento: assinatura.dataVencimento || "",
+        dataAssinatura: formatarDataParaInput(assinatura.dataAssinatura),
         frequencia: assinatura.frequencia || "",
         metodoPagamento: assinatura.metodoPagamento || "",
         notificacao: assinatura.notificacao || "",
@@ -72,37 +79,19 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     });
   };
 
-  const calcularDataVencimento = (dataAssinatura, frequencia) => {
-    let data = new Date(dataAssinatura);
-    switch (frequencia) {
-      case "mensal":
-        data.setMonth(data.getMonth() + 1);
-        break;
-      case "trimestral":
-        data.setMonth(data.getMonth() + 3);
-        break;
-      case "semestral":
-        data.setMonth(data.getMonth() + 6);
-        break;
-      case "anual":
-        data.setFullYear(data.getFullYear() + 1);
-        break;
-      case "semanal":
-        data.setDate(data.getDate() + 7);
-        break;
-      default:
-        break;
-    }
-    return data.toISOString().split("T")[0];
+  const handleValorChange = (e) => {
+    const { value } = e.target;
+    // Remove caracteres não numéricos e formata
+    const apenasNumeros = value.replace(/\D/g, "");
+    const valorDecimal = (apenasNumeros / 100).toFixed(2);
+    setFormData({
+      ...formData,
+      valor: formatarMoeda(valorDecimal, false), // Mantém formatado durante edição
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const novaDataVencimento = calcularDataVencimento(
-      formData.dataAssinatura,
-      formData.frequencia
-    );
 
     if (!assinatura?._id) {
       setError("ID da assinatura inválido");
@@ -113,11 +102,22 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     setError(null);
 
     try {
+      // Remove formatação do valor antes de enviar
+      const valorNumerico =
+        parseFloat(formData.valor.replace(/[^\d,-]/g, "").replace(",", ".")) ||
+        0;
+
+      // Calcula a nova data de vencimento
+      const novaDataVencimento = calcularDataVencimento(
+        formData.dataAssinatura,
+        formData.frequencia
+      );
+
       await dispatch(
         updateAssinatura({
           _id: assinatura._id,
           ...formData,
-          valor: Number(formData.valor),
+          valor: valorNumerico,
           dataVencimento: novaDataVencimento,
         })
       ).unwrap();
@@ -245,12 +245,11 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
                 <InputGroup size="sm">
                   <InputGroup.Text>R$</InputGroup.Text>
                   <FormControl
-                    type="number"
+                    type="text" // Mudado para text para permitir formatação
                     id="valor"
                     placeholder="0,00"
-                    step="0.01"
                     value={formData.valor}
-                    onChange={handleChange}
+                    onChange={handleValorChange}
                     required
                     disabled={isSubmitting}
                   />
@@ -305,11 +304,17 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
               placeholder="https://..."
               value={formData.linkCancelamento}
               onChange={handleChange}
+              disabled={isSubmitting}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-secondary" size="sm" onClick={onHide}>
+          <Button
+            variant="outline-secondary"
+            size="sm"
+            onClick={onHide}
+            disabled={isSubmitting}
+          >
             Cancelar
           </Button>
           <Button

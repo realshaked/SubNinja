@@ -8,11 +8,19 @@ const assinaturaSchema = new Schema({
     valor: { type: Number, required: true },
     plano: { type: String, required: true },
     metodoPagamento: { type: String, required: true },
-    frequencia: { type: String, required: true, enum: ['mensal', 'trimestral', 'semestral', 'anual', 'semanal'] },
+    frequencia: { 
+        type: String, 
+        required: true, 
+        enum: ['mensal', 'trimestral', 'semestral', 'anual', 'semanal'] 
+    },
     dataAssinatura: { type: Date, required: true, default: Date.now },
-    dataVencimento: { type: Date,},
-    notificacao: { type: String, required: true },
+    dataVencimento: { type: Date },
+    notificacoes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Notificacao',
+        required: false
+    }],
     linkCancelamento: { type: String, default: "" }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Assinatura', assinaturaSchema);

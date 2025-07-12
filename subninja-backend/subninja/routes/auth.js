@@ -44,7 +44,9 @@ router.post('/login-jwt', (req, res, next) => {
       JWT_SECRET,
       { expiresIn: '1d' }
     );
-    res.json({ token });
+    //retorna os dados do usuario
+    const {senha, ...userData} = user.toObject();
+    res.json({ token, user: userData });
   })(req, res, next);
 });
 

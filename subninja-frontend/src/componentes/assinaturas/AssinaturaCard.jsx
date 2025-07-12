@@ -5,10 +5,10 @@ import { useSelector } from "react-redux";
 import { selectAssinaturaPorId } from "./assinaturaSlice";
 import { selectAllCategorias } from "../categorias/categoriasSlice";
 import {
-  formatarData,
+  formatarDataParaInput,
   formatarMoeda,
   formatarFrequencia,
-} from "../../utils/formatadores";
+} from "../../utils/formatadores.js";
 
 export default function AssinaturaCard({ id }) {
   const assinatura = useSelector((state) => selectAssinaturaPorId(state, id));
@@ -64,7 +64,7 @@ export default function AssinaturaCard({ id }) {
             </p>
             <p className="mb-1">
               <strong>Próximo vencimento:</strong>{" "}
-              {formatarData(dataVencimento)}
+              {formatarDataParaInput(dataVencimento)}
             </p>
             {plano && (
               <p className="mb-1">

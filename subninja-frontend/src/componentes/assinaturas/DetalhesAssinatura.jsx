@@ -6,11 +6,11 @@ import { selectAssinaturaPorId } from "./assinaturaSlice";
 import EditarAssinatura from "./EditarAssinatura";
 import ExcluirAssinatura from "./ExcluirAssinatura";
 import {
-  formatarData,
+  formatarDataParaInput,
   formatarMoeda,
   formatarFrequencia,
   formatarMetodoPagamento,
-} from "../../utils/formatadores";
+} from "../../utils/formatadores.js";
 
 const DetalhesAssinatura = () => {
   const location = useLocation();
@@ -92,7 +92,7 @@ const DetalhesAssinatura = () => {
               <i className="bi bi-calendar"></i>
               <div>
                 <small className="text-muted">Próximo vencimento</small>
-                <p>{formatarData(assinatura.dataVencimento)}</p>
+                <p>{formatarDataParaInput(assinatura.dataVencimento)}</p>
               </div>
             </div>
 
