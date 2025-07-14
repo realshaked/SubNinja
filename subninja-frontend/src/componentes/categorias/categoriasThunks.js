@@ -4,7 +4,7 @@ export const fetchCategorias = createAsyncThunk(
   'categorias/fetchCategorias',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token'); // Seu token JWT
+      const token = sessionStorage.getItem('token'); // Seu token JWT
       const response = await fetch('/categorias', {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const createCategoria = createAsyncThunk(
   'categorias/createCategoria',
   async (novaCategoria, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch('/categorias', {
         method: 'POST',
         headers: { 
@@ -59,7 +59,7 @@ export const updateCategoria = createAsyncThunk(
   'categorias/updateCategoria',
   async (categoria, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`/categorias/${categoria._id}`, {
         method: 'PUT',
         headers: { 
@@ -91,7 +91,7 @@ export const deleteCategoria = createAsyncThunk(
         throw new Error('Não é possível excluir categorias padrão');
       }
       
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`/categorias/${id}`, {
         method: 'DELETE',
         headers: {
@@ -115,7 +115,7 @@ export const createCategoriaPadrao = createAsyncThunk(
   'categorias/createCategoriaPadrao',
   async (novaCategoria, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch('/categorias/padrao', {
         method: 'POST',
         headers: { 

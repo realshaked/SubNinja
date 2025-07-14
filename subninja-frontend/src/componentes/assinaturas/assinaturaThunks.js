@@ -4,7 +4,7 @@ export const fetchAssinaturas = createAsyncThunk(
   'assinaturas/fetchAssinaturas',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch('/assinaturas', {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -22,7 +22,7 @@ export const createAssinatura = createAsyncThunk(
   'assinaturas/createAssinatura',
   async (novaAssinatura, { rejectWithValue }) => {
     try {
-     const token = localStorage.getItem('token');
+     const token = sessionStorage.getItem('token');
       const response = await fetch('/assinaturas', {
         method: 'POST',
         headers: { 
@@ -42,7 +42,7 @@ export const updateAssinatura = createAsyncThunk(
   "assinaturas/updateAssinatura",
   async (assinatura, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const { _id, ...rest } = assinatura;
       const response = await fetch(`/assinaturas/${_id}`, {
         method: "PUT",
@@ -67,7 +67,7 @@ export const deleteAssinatura = createAsyncThunk(
   'assinaturas/deleteAssinatura',
   async ( id, {rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`/assinaturas/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 

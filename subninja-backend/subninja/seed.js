@@ -4,6 +4,8 @@ const Categoria = require('./models/categorias'); // Modelo de categorias do usu
 const Usuario = require('./models/usuarios');
 const Assinatura = require('./models/assinaturas');
 const bcrypt = require('bcryptjs');
+const calcularDataVencimento = require('./utils/calcularDataVencimento');
+
 
 const connectionString = 'mongodb://localhost:27017/subninja';
 
@@ -66,8 +68,8 @@ async function seed() {
         metodoPagamento: "Cartão de Crédito",
         frequencia: "mensal",
         dataAssinatura: "2024-01-01",
-        dataVencimento: "",
-        notificacao: "Sim",
+        dataVencimento: calcularDataVencimento("2024-01-01", "mensal"),
+        notificacao: [],
         linkCancelamento: ""
       },
       {
@@ -79,8 +81,8 @@ async function seed() {
         metodoPagamento: "pix",
         frequencia: "mensal",
         dataAssinatura: "2024-01-15",
-        dataVencimento: "",
-        notificacao: "",
+        dataVencimento: calcularDataVencimento("2024-01-15", "mensal"),
+        notificacao: [],
         linkCancelamento: ""
       },
       {
@@ -92,8 +94,8 @@ async function seed() {
         metodoPagamento: "credito",
         frequencia: "mensal",
         dataAssinatura: "2024-02-01",
-        dataVencimento: "",
-        notificacao: "",
+        dataVencimento: calcularDataVencimento("2024-02-01", "mensal"),
+        notificacao: [],
         linkCancelamento: ""
       },
       {
@@ -105,8 +107,8 @@ async function seed() {
         metodoPagamento: "debito",
         frequencia: "mensal",
         dataAssinatura: "2024-03-01",
-        dataVencimento: "",
-        notificacao: "",
+        dataVencimento: calcularDataVencimento("2024-03-01", "mensal"),
+        notificacao: [],
         linkCancelamento: ""
       }
     ]);
