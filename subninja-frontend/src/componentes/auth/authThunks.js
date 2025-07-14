@@ -16,7 +16,7 @@ export const login = createAsyncThunk(
       }
       
       const data = await res.json();
-      localStorage.setItem('token', data.token);
+      sessionStorage.setItem('token', data.token);
       return data; // Retorna o objeto completo com user e token
     } catch (err) {
       return rejectWithValue('Erro de conexão');
@@ -43,7 +43,7 @@ export const register = createAsyncThunk(
       
       // Se o registro retornar um token, salva no localStorage
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
       }
       
       return data; // Retorna os dados do usuário registrado
@@ -58,7 +58,7 @@ export const atualizarUsuario = createAsyncThunk(
   'auth/atualizarUsuario',
   async (dadosUsuario, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const resposta = await fetch('/auth/profile', {
         method: 'PUT',
         headers: {
@@ -86,10 +86,10 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // Remove o token do localStorage
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       
       // Opcional: chamar endpoint de logout no servidor
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (token) {
         await fetch('/auth/logout', {
           method: 'POST',
@@ -103,7 +103,7 @@ export const logout = createAsyncThunk(
       return null;
     } catch (err) {
       // Mesmo se houver erro no servidor, remove o token localmente
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       return null;
     }
   }
@@ -114,7 +114,7 @@ export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       
       if (!token) {
         return rejectWithValue('Token não encontrado');
@@ -129,14 +129,14 @@ export const checkAuth = createAsyncThunk(
       });
       
       if (!res.ok) {
-        localStorage.removeItem('token'); // Remove token inválido
+        sessionStorage.removeItem('token'); // Remove token inválido
         return rejectWithValue('Token inválido');
       }
       
       const data = await res.json();
       return data; // Retorna dados do usuário
     } catch (err) {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       return rejectWithValue('Erro ao verificar autenticação');
     }
   }
@@ -147,7 +147,7 @@ export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       
       if (!token) {
         return rejectWithValue('Token não encontrado');
@@ -162,15 +162,15 @@ export const refreshToken = createAsyncThunk(
       });
       
       if (!res.ok) {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         return rejectWithValue('Erro ao renovar token');
       }
       
       const data = await res.json();
-      localStorage.setItem('token', data.token);
+      sessionStorage.setItem('token', data.token);
       return data;
     } catch (err) {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       return rejectWithValue('Erro de conexão ao renovar token');
     }
   }

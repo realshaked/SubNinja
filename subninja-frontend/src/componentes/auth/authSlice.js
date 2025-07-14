@@ -3,8 +3,8 @@ import { login, register, logout as logoutThunk, checkAuth, refreshToken, atuali
 
 const initialState = {
   user: null,
-  token: localStorage.getItem('token') || null,
-  isAuthenticated: !!localStorage.getItem('token'),
+  token: sessionStorage.getItem('token') || null,
+  isAuthenticated: !!sessionStorage.getItem('token'),
   status: 'idle', // Para login e operações gerais
   error: null,
 };
@@ -20,7 +20,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.status = 'idle';
       state.error = null;
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
     },
     // Limpar erros
     clearError(state) {

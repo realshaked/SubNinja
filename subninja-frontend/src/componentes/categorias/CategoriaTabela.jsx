@@ -4,9 +4,7 @@ import CategoriaLinha from "./CategoriaLinha";
 const CategoriaTabela = ({ categorias, onEdit, onDelete, onNovaCategoria }) => {
   return (
     <div>
-      <button className="btn btn-primary mb-3" onClick={onNovaCategoria}>
-        Nova Categoria
-      </button>
+   
 
       <table className="table">
         <thead>

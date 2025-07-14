@@ -12,6 +12,7 @@ var notificacoesRouter = require('./routes/notificacoes');
 const mongoose = require('mongoose');
 const connectionString = 'mongodb://localhost:27017/subninja';
 const connect = mongoose.connect(connectionString)
+require('./jobs/notificacoesJob');
 const session = require('express-session');
 const passport = require('passport');
 const authRouter = require('./routes/auth');
