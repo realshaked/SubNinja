@@ -102,6 +102,25 @@ router.put("/padrao/:id", isAdmin, async (req, res) => {
   }
 });
 
+// DELETE categoria de usuário
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const usuarioId = req.user._id;
+    const categoria = await categoriaService.excluirCategoriaUsuario(req.params.id, usuarioId);
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria não encontrada ou você não tem permissão para excluí-la" });
+    }
+    // Atualiza assinaturas que usam essa categoria
+    await Assinaturas.updateMany(
+      { categoriaId: req.params.id },
+      { $set: { categoriaId: null } }
+    );
+    res.status(204).end();
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // DELETE categoria padrão (apenas admin)
 router.delete("/padrao/:id", isAdmin, async (req, res, next) => {
   try {
