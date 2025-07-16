@@ -17,7 +17,6 @@ const DetalhesAssinatura = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Busca assinatura do Redux se não vier pelo state (garante F5 funcionar)
   const assinatura =
     location.state || useSelector((state) => selectAssinaturaPorId(state, id));
   const categorias = useSelector(selectAllCategorias);

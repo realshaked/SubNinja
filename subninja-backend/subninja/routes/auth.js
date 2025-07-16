@@ -8,20 +8,31 @@ const JWT_SECRET = 'subninja-segredo'; // Use variável de ambiente em produçã
 
 router.post('/register', async (req, res, next) => {
   try {
-    const { username, senha, email, telefone, role = 'user' } = req.body;
-    if (!username || !senha || !email) {
-      return res.status(400).json({ error: 'Username, senha e email são obrigatórios.' });
+    const { username, senha, role, email, telefone } = req.body;
+    if (!username || !senha || !role || !email || !telefone) {
+      return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     }
 
-    const existe = await Usuario.findOne({ $or: [{ username }, { email }] });
+    const existe = await Usuario.findOne({ username });
     if (existe) {
-      return res.status(409).json({ error: 'Usuário ou email já existe.' });
+      return res.status(400).json({ error: 'Usuário já existe' });
     }
 
     const hash = bcrypt.hashSync(senha, 10);
-    const novoUsuario = new Usuario({ username, senha: hash, email, telefone, role });
+    const novoUsuario = new Usuario({ username, senha: hash, role, email, telefone });
     await novoUsuario.save();
-    res.status(201).json({ message: 'Usuário criado com sucesso.' });
+
+    // Gera o token JWT
+    const token = jwt.sign(
+      { id: novoUsuario._id, username: novoUsuario.username, role: novoUsuario.role },
+      JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    // Remove a senha do retorno
+    const { senha: _, ...userData } = novoUsuario.toObject();
+
+    res.status(201).json({ token, user: userData });
   } catch (err) {
     if (err.code === 11000) {
       return res.status(409).json({ error: 'Usuário ou email já existe.' });

@@ -43,14 +43,12 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
   const categorias = useSelector(selectAllCategorias);
   const status = useSelector((state) => state.categorias.status);
 
-  // Garante que as categorias estejam carregadas
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchCategorias());
     }
   }, [dispatch, status]);
 
-  // Preenche o formulário quando a assinatura muda
   useEffect(() => {
     if (assinatura) {
       setFormData({
@@ -81,7 +79,6 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
 
   const handleValorChange = (e) => {
     const { value } = e.target;
-    // Remove caracteres não numéricos e formata
     const apenasNumeros = value.replace(/\D/g, "");
     const valorDecimal = (apenasNumeros / 100).toFixed(2);
     setFormData({
@@ -102,12 +99,10 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
     setError(null);
 
     try {
-      // Remove formatação do valor antes de enviar
       const valorNumerico =
         parseFloat(formData.valor.replace(/[^\d,-]/g, "").replace(",", ".")) ||
         0;
 
-      // Calcula a nova data de vencimento
       const novaDataVencimento = calcularDataVencimento(
         formData.dataAssinatura,
         formData.frequencia
@@ -122,7 +117,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
         })
       ).unwrap();
 
-      onHide(); // Fecha o modal após sucesso
+      onHide();
       navigate("/assinaturas");
     } catch (err) {
       console.error("Falha ao atualizar assinatura:", err);
@@ -245,7 +240,7 @@ const EditarAssinatura = ({ show, onHide, assinatura }) => {
                 <InputGroup size="sm">
                   <InputGroup.Text>R$</InputGroup.Text>
                   <FormControl
-                    type="text" // Mudado para text para permitir formatação
+                    type="text"
                     id="valor"
                     placeholder="0,00"
                     value={formData.valor}

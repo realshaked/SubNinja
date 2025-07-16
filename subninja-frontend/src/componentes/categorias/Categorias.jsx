@@ -29,6 +29,7 @@ const Categorias = () => {
   const categoriasUsuario = useSelector(selectCategoriasUsuario);
   const status = useSelector((state) => state.categorias.status);
   const error = useSelector((state) => state.categorias.error);
+  const usuario = useSelector((state) => state.auth.user);
   const filtros = useSelector((state) => state.categorias.filtros);
   const categoriaSelecionada = useSelector(
     (state) => state.categorias.categoriaSelecionada
@@ -103,11 +104,32 @@ const Categorias = () => {
     <div className="container py-4">
       <div className="row mb-4">
         <div className="col">
-          <h2>Categorias</h2>
+          <h2
+            className="title"
+            style={{
+              textAlign: "center",
+              fontWeight: 600,
+              fontSize: "2rem",
+              color: "#1976d2",
+              letterSpacing: "1px",
+              marginBottom: "0.5em",
+            }}
+          >
+            Categorias
+          </h2>
+          <div
+            style={{
+              width: "60px",
+              height: "4px",
+              background: "#1976d2",
+              margin: "0 auto 16px auto",
+              borderRadius: "2px",
+              opacity: 0.2,
+            }}
+          />
         </div>
       </div>
 
-      {/* Filtros */}
       <div className="row mb-3">
         <div className="col">
           <div className="form-check form-check-inline">
@@ -138,7 +160,6 @@ const Categorias = () => {
         </div>
       </div>
 
-      {/* Botões de ação */}
       <div className="row mb-3">
         <div className="col">
           <button
@@ -148,17 +169,17 @@ const Categorias = () => {
             Nova Categoria
           </button>
 
-          {/* Mostrar apenas para admin - você pode adicionar a lógica de verificação aqui */}
+          {usuario?.role === "admin" && (
           <button
             className="btn btn-secondary"
             onClick={() => dispatch(abrirModal("novaCategoriaPadrao"))}
           >
             Nova Categoria Padrão
           </button>
+          )}
         </div>
       </div>
 
-      {/* Lista de categorias usando o componente CategoriaTabela ou renderização customizada */}
       <CategoriaTabela
         categorias={categoriasFiltradas}
         onEdit={handleEdit}

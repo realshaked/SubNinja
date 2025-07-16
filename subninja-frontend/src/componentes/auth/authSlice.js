@@ -5,7 +5,7 @@ const initialState = {
   user: null,
   token: sessionStorage.getItem('token') || null,
   isAuthenticated: !!sessionStorage.getItem('token'),
-  status: 'idle', // Para login e operações gerais
+  status: 'idle',
   error: null,
 };
 
@@ -13,7 +13,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // Logout síncrono (mantido para compatibilidade)
     logout(state) {
       state.user = null;
       state.token = null;
@@ -22,18 +21,15 @@ const authSlice = createSlice({
       state.error = null;
       sessionStorage.removeItem('token');
     },
-    // Limpar erros
     clearError(state) {
       state.error = null;
     },
-    // Reset status
     resetStatus(state) {
       state.status = 'idle';
     },
   },
   extraReducers: (builder) => {
     builder
-      // Login
       .addCase(login.pending, (state) => {
         state.status = 'loading';
         state.error = null;
@@ -41,7 +37,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload.token;
-        state.user = action.payload.user || action.payload; // Flexibilidade na estrutura da resposta
+        state.user = action.payload.user || action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })
@@ -53,7 +49,6 @@ const authSlice = createSlice({
         state.user = null;
       })
       
-      // Registro
       .addCase(register.pending, (state) => {
         state.status = 'loading';
         state.error = null;
@@ -62,13 +57,11 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         state.error = null;
         
-        // Se o registro retornar token, autentica automaticamente
         if (action.payload.token) {
           state.token = action.payload.token;
           state.user = action.payload.user || action.payload;
           state.isAuthenticated = true;
         } else {
-          // Se não retornar token, apenas indica sucesso
           state.isAuthenticated = false;
         }
       })
@@ -80,7 +73,6 @@ const authSlice = createSlice({
         state.user = null;
       })
       
-      // Logout assíncrono
       .addCase(logoutThunk.pending, (state) => {
         state.status = 'loading';
       })
@@ -92,7 +84,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutThunk.rejected, (state) => {
-        // Mesmo com erro, limpa o estado local
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
@@ -100,7 +91,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       
-      // Verificação de autenticação
       .addCase(checkAuth.pending, (state) => {
         state.status = 'loading';
       })
@@ -117,7 +107,6 @@ const authSlice = createSlice({
         state.token = null;
         state.user = null;
       })
-      // Atualização de usuário
       .addCase(atualizarUsuario.pending, (state) => {
         state.status = 'loading';
         state.error = null;
@@ -132,14 +121,13 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
             
-      // Refresh token
       .addCase(refreshToken.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload.token;
-        state.user = action.payload.user || state.user; // Mantém usuário existente se não vier na resposta
+        state.user = action.payload.user || state.user; 
         state.isAuthenticated = true;
         state.error = null;
       })

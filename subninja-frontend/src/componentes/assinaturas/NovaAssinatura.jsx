@@ -203,26 +203,6 @@ const NovaAssinatura = () => {
                     />
                   </Form.Group>
                 </Col>
-
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-medium">Notificação</Form.Label>
-                    <FormSelect
-                      size="sm"
-                      id="notificacao"
-                      value={formData.notificacao}
-                      onChange={handleChange}
-                    >
-                      <option disabled value="">
-                        Selecione a notificação
-                      </option>
-                      <option value="email">E-mail</option>
-                      <option value="sms">SMS</option>
-                      <option value="app">Notificação no App</option>
-                      <option value="nenhuma">Nenhuma</option>
-                    </FormSelect>
-                  </Form.Group>
-                </Col>
               </Row>
 
               <Form.Group className="mb-3">

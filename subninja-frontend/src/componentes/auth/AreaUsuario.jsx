@@ -15,7 +15,6 @@ export default function AreaUsuario() {
     telefone: "",
   });
 
-  // Inicializa dados de edição quando o usuário carrega
   useEffect(() => {
     if (user) {
       setEditData({
@@ -30,11 +29,9 @@ export default function AreaUsuario() {
     if (window.confirm("Tem certeza que deseja sair?")) {
       try {
         await dispatch(logoutThunk()).unwrap();
-        // Redirecionar para login após logout bem-sucedido
         navigate("/login");
       } catch (error) {
         console.error("Erro ao fazer logout:", error);
-        // Mesmo com erro, redireciona (o estado já foi limpo)
         navigate("/login");
       }
     }
@@ -46,7 +43,6 @@ export default function AreaUsuario() {
 
   const handleSave = async () => {
     try {
-      // Chama o thunk para atualizar os dados do usuário
       await dispatch(atualizarUsuario(editData)).unwrap();
 
       setIsEditing(false);
@@ -58,7 +54,6 @@ export default function AreaUsuario() {
   };
 
   const handleCancel = () => {
-    // Restaura os dados originais
     if (user) {
       setEditData({
         username: user.username || "",
@@ -89,7 +84,6 @@ export default function AreaUsuario() {
     return roleMap[role] || role;
   };
 
-  // Se não estiver autenticado, não mostra o componente
   if (!isAuthenticated || !user) {
     return (
       <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
@@ -108,7 +102,6 @@ export default function AreaUsuario() {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-lg-10">
-            {/* Header */}
             <div className="card shadow-sm mb-4">
               <div className="card-body">
                 <div className="row align-items-center">
@@ -155,7 +148,6 @@ export default function AreaUsuario() {
               </div>
             </div>
 
-            {/* Informações do Usuário */}
             <div className="card shadow-sm">
               <div className="card-body">
                 <div className="d-flex align-items-center mb-4">
@@ -164,7 +156,6 @@ export default function AreaUsuario() {
                 </div>
 
                 <div className="row g-4">
-                  {/* Username */}
                   <div className="col-md-6">
                     <label className="form-label">Nome de Usuário</label>
                     {isEditing ? (
@@ -185,7 +176,6 @@ export default function AreaUsuario() {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div className="col-md-6">
                     <label className="form-label">Email</label>
                     {isEditing ? (
@@ -206,7 +196,6 @@ export default function AreaUsuario() {
                     )}
                   </div>
 
-                  {/* Telefone */}
                   <div className="col-md-6">
                     <label className="form-label">Telefone</label>
                     {isEditing ? (
@@ -227,7 +216,6 @@ export default function AreaUsuario() {
                     )}
                   </div>
 
-                  {/* Função - Não editável */}
                   <div className="col-md-6">
                     <label className="form-label">Função</label>
                     <div className="d-flex align-items-center">
@@ -238,7 +226,6 @@ export default function AreaUsuario() {
                   </div>
                 </div>
 
-                {/* Informações Adicionais */}
                 <hr className="my-4" />
                 <h4 className="mb-3">Informações do Sistema</h4>
                 <div className="row g-3">
@@ -283,7 +270,6 @@ export default function AreaUsuario() {
                   )}
                 </div>
 
-                {/* Botões de Ação (quando editando) */}
                 {isEditing && (
                   <div className="mt-4">
                     <div className="d-flex gap-2">
@@ -314,7 +300,6 @@ export default function AreaUsuario() {
         </div>
       </div>
 
-      {/* Modal de Loading */}
       {status === "loading" && (
         <div
           className="modal d-block"

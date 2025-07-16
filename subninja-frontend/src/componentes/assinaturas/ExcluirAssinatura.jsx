@@ -21,8 +21,8 @@ const ExcluirAssinatura = ({ show, onHide, assinatura }) => {
 
     try {
       await dispatch(deleteAssinatura(assinatura._id)).unwrap();
-      onHide(); // Fecha o modal
-      navigate("/"); // Redireciona para a home page
+      onHide();
+      navigate("/");
     } catch (err) {
       console.error("Falha ao excluir assinatura:", err);
       setError(

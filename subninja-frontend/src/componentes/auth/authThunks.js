@@ -17,7 +17,7 @@ export const login = createAsyncThunk(
       
       const data = await res.json();
       sessionStorage.setItem('token', data.token);
-      return data; // Retorna o objeto completo com user e token
+      return data;
     } catch (err) {
       return rejectWithValue('Erro de conexão');
     }
@@ -41,12 +41,11 @@ export const register = createAsyncThunk(
       
       const data = await res.json();
       
-      // Se o registro retornar um token, salva no localStorage
       if (data.token) {
         sessionStorage.setItem('token', data.token);
       }
       
-      return data; // Retorna os dados do usuário registrado
+      return data;
     } catch (err) {
       return rejectWithValue('Erro de conexão');
     }
@@ -85,10 +84,8 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      // Remove o token do localStorage
       sessionStorage.removeItem('token');
       
-      // Opcional: chamar endpoint de logout no servidor
       const token = sessionStorage.getItem('token');
       if (token) {
         await fetch('/auth/logout', {
@@ -102,14 +99,12 @@ export const logout = createAsyncThunk(
       
       return null;
     } catch (err) {
-      // Mesmo se houver erro no servidor, remove o token localmente
       sessionStorage.removeItem('token');
       return null;
     }
   }
 );
 
-// Thunk para verificar se o usuário está autenticado (validar token)
 export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
   async (_, { rejectWithValue }) => {
@@ -129,12 +124,12 @@ export const checkAuth = createAsyncThunk(
       });
       
       if (!res.ok) {
-        sessionStorage.removeItem('token'); // Remove token inválido
+        sessionStorage.removeItem('token');
         return rejectWithValue('Token inválido');
       }
       
       const data = await res.json();
-      return data; // Retorna dados do usuário
+      return data;
     } catch (err) {
       sessionStorage.removeItem('token');
       return rejectWithValue('Erro ao verificar autenticação');
@@ -142,7 +137,6 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
-// Thunk para refresh do token (se necessário)
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async (_, { rejectWithValue }) => {
