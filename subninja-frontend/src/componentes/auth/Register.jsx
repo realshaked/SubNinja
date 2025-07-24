@@ -3,9 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "./authThunks";
 import { clearError } from "./authSlice";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
+import {
+  Button,
+  Form,
+  Alert,
+  Card,
+  Container,
+  Row,
+  Col,
+  FloatingLabel,
+  Spinner,
+} from "react-bootstrap";
+import {
+  PersonFill,
+  EnvelopeFill,
+  PhoneFill,
+  LockFill,
+} from "react-bootstrap-icons";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,13 +37,11 @@ const Register = () => {
   const { status, error, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // Limpa erros ao desmontar o componente
     return () => {
       dispatch(clearError());
     };
   }, [dispatch]);
 
-  // Redireciona quando autenticado
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/assinaturas");
@@ -73,7 +85,7 @@ const Register = () => {
     if (!formData.email.trim()) {
       newErrors.email = "Email é obrigatório";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Email deve ter um formato válido";
+      newErrors.email = "Email inválido";
     }
 
     if (!formData.telefone.trim()) {
@@ -89,7 +101,7 @@ const Register = () => {
     }
 
     if (!formData.confirmarSenha) {
-      newErrors.confirmarSenha = "Confirmação de senha é obrigatória";
+      newErrors.confirmarSenha = "Confirme sua senha";
     } else if (formData.senha !== formData.confirmarSenha) {
       newErrors.confirmarSenha = "As senhas não coincidem";
     }
@@ -100,7 +112,6 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       const { confirmarSenha, ...dataToSubmit } = formData;
       dispatch(register(dataToSubmit));
@@ -109,7 +120,6 @@ const Register = () => {
 
   const formatPhone = (value) => {
     const numbers = value.replace(/\D/g, "");
-
     if (numbers.length <= 10) {
       return numbers
         .replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3")
@@ -124,12 +134,10 @@ const Register = () => {
   const handlePhoneChange = (e) => {
     const { name, value } = e.target;
     const formattedValue = formatPhone(value);
-
     setFormData((prev) => ({
       ...prev,
       [name]: formattedValue,
     }));
-
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -139,122 +147,185 @@ const Register = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicUsername">
-        <Form.Label>Usuário</Form.Label>
-        <Form.Control
-          type="text"
-          name="username"
-          placeholder="Digite seu usuário"
-          value={formData.username}
-          onChange={handleChange}
-          isInvalid={!!errors.username}
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.username}
-        </Form.Control.Feedback>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          placeholder="Digite seu email"
-          value={formData.email}
-          onChange={handleChange}
-          isInvalid={!!errors.email}
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.email}
-        </Form.Control.Feedback>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPhone">
-        <Form.Label>Telefone</Form.Label>
-        <Form.Control
-          type="tel"
-          name="telefone"
-          placeholder="(XX) XXXXX-XXXX"
-          value={formData.telefone}
-          onChange={handlePhoneChange}
-          isInvalid={!!errors.telefone}
-          maxLength="15"
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.telefone}
-        </Form.Control.Feedback>
-        <Form.Text className="text-muted">
-          Digite seu telefone com DDD.
-        </Form.Text>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Senha</Form.Label>
-        <Form.Control
-          type="password"
-          name="senha"
-          placeholder="Digite sua senha"
-          value={formData.senha}
-          onChange={handleChange}
-          isInvalid={!!errors.senha}
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.senha}
-        </Form.Control.Feedback>
-        <Form.Text className="text-muted">
-          A senha deve ter pelo menos 6 caracteres.
-        </Form.Text>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
-        <Form.Label>Confirmar Senha</Form.Label>
-        <Form.Control
-          type="password"
-          name="confirmarSenha"
-          placeholder="Confirme sua senha"
-          value={formData.confirmarSenha}
-          onChange={handleChange}
-          isInvalid={!!errors.confirmarSenha}
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.confirmarSenha}
-        </Form.Control.Feedback>
-      </Form.Group>
-
-      {error && (
-        <Alert variant="danger" className="mb-3">
-          {error}
-        </Alert>
-      )}
-
-      <Button
-        variant="primary"
-        type="submit"
-        disabled={status === "loading"}
-        className="w-100"
+    <div
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 50%, #f5f5f5 100%)",
+        padding: "20px 0",
+      }}
+    >
+      <Container
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "calc(100vh - 40px)" }}
       >
-        {status === "loading" ? "Registrando..." : "Registrar"}
-      </Button>
+        <Row className="w-100">
+          <Col md={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }}>
+            <Card className="shadow-sm border-0">
+              <Card.Body className="p-4">
+                <div className="text-center mb-4">
+                  <h3 className="fw-bold">Crie sua conta</h3>
+                  <p className="text-muted">
+                    Preencha os campos para se registrar
+                  </p>
+                </div>
 
-      <div className="text-center mt-3">
-        <small className="text-muted">
-          Já tem uma conta?{" "}
-          <Button
-            variant="link"
-            className="p-0"
-            onClick={() => navigate("/login")}
-          >
-            Faça login
-          </Button>
-        </small>
-      </div>
-    </Form>
+                {error && (
+                  <Alert variant="danger" className="text-center">
+                    {error}
+                  </Alert>
+                )}
+
+                <Form onSubmit={handleSubmit}>
+                  <FloatingLabel
+                    controlId="floatingUsername"
+                    label="Usuário"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      name="username"
+                      placeholder="Digite seu usuário"
+                      value={formData.username}
+                      onChange={handleChange}
+                      isInvalid={!!errors.username}
+                      required
+                    />
+                    <PersonFill className="text-muted position-absolute end-0 top-50 me-3 translate-middle-y" />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.username}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+
+                  <FloatingLabel
+                    controlId="floatingEmail"
+                    label="Email"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Digite seu email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      isInvalid={!!errors.email}
+                      required
+                    />
+                    <EnvelopeFill className="text-muted position-absolute end-0 top-50 me-3 translate-middle-y" />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+
+                  <FloatingLabel
+                    controlId="floatingPhone"
+                    label="Telefone"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="tel"
+                      name="telefone"
+                      placeholder="(XX) XXXXX-XXXX"
+                      value={formData.telefone}
+                      onChange={handlePhoneChange}
+                      isInvalid={!!errors.telefone}
+                      maxLength="15"
+                      required
+                    />
+                    <PhoneFill className="text-muted position-absolute end-0 top-50 me-3 translate-middle-y" />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.telefone}
+                    </Form.Control.Feedback>
+                    <Form.Text className="text-muted ms-1">
+                      Com DDD (ex: 11987654321)
+                    </Form.Text>
+                  </FloatingLabel>
+
+                  <FloatingLabel
+                    controlId="floatingPassword"
+                    label="Senha"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="password"
+                      name="senha"
+                      placeholder="Digite sua senha"
+                      value={formData.senha}
+                      onChange={handleChange}
+                      isInvalid={!!errors.senha}
+                      required
+                    />
+                    <LockFill className="text-muted position-absolute end-0 top-50 me-3 translate-middle-y" />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.senha}
+                    </Form.Control.Feedback>
+                    <Form.Text className="text-muted ms-1">
+                      Mínimo 6 caracteres
+                    </Form.Text>
+                  </FloatingLabel>
+
+                  <FloatingLabel
+                    controlId="floatingConfirmPassword"
+                    label="Confirmar Senha"
+                    className="mb-4"
+                  >
+                    <Form.Control
+                      type="password"
+                      name="confirmarSenha"
+                      placeholder="Confirme sua senha"
+                      value={formData.confirmarSenha}
+                      onChange={handleChange}
+                      isInvalid={!!errors.confirmarSenha}
+                      required
+                    />
+                    <LockFill className="text-muted position-absolute end-0 top-50 me-3 translate-middle-y" />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.confirmarSenha}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-100 py-2 mb-3 fw-bold"
+                  >
+                    {status === "loading" ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="me-2"
+                        />
+                        Registrando...
+                      </>
+                    ) : (
+                      "Registrar"
+                    )}
+                  </Button>
+
+                  <div className="text-center mt-3">
+                    <small className="text-muted">
+                      Já tem uma conta?{" "}
+                      <Button
+                        variant="link"
+                        className="p-0 text-decoration-none fw-normal"
+                        onClick={() => navigate("/login")}
+                      >
+                        Faça login
+                      </Button>
+                    </small>
+                  </div>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 
