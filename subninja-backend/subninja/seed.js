@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const calcularDataVencimento = require('./utils/calcularDataVencimento');
 
 
-const connectionString = "mongodb+srv://subninja_db_user:ZvyTh6GqTs71gnwp@clustersubninja.dp7bbmw.mongodb.net/?appName=ClusterSubninja"
+const connectionString = ""
 
 async function seed() {
   try {
