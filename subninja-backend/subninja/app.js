@@ -10,7 +10,7 @@ var notificacoesRouter = require('./routes/notificacoes');
 
 
 const mongoose = require('mongoose');
-const connectionString = "mongodb+srv://subninja_db_user:ZvyTh6GqTs71gnwp@clustersubninja.dp7bbmw.mongodb.net/?appName=ClusterSubninja"
+const connectionString = ""
 const connect = mongoose.connect(connectionString)
 require('./jobs/notificacoesJob');
 const session = require('express-session');
